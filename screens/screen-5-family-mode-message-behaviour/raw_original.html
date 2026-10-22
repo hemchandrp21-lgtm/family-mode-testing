@@ -1,0 +1,190 @@
+<!DOCTYPE html><html lang="en"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport">
+<title>Family Mode - Message Behaviour</title>
+<!-- Load Tailwind CSS v3 with forms and container-queries -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['-apple-system', 'BlinkMacSystemFont', '"SF Pro Display"', '"SF Pro Text"', 'Roboto', 'Helvetica', 'Arial', 'sans-serif'],
+          },
+          colors: {
+            ios: {
+              bg: '#F5F5F7',
+              card: '#FFFFFF',
+              cardIcon: '#ECECED',
+              textPrimary: '#111827',
+              textSecondary: '#6B7280',
+              textMuted: '#9CA3AF',
+              border: '#E5E7EB',
+              inputBg: '#EFEFF1',
+              darkBtn: '#262626'
+            }
+          }
+        }
+      }
+    };
+  </script>
+<!-- BEGIN: Custom Styles -->
+<style data-purpose="base-layout">
+    body {
+      background-color: #E5E7EB;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+    /* iOS simulated phone screen frame */
+    .mobile-screen {
+      width: 100%;
+      max-width: 390px;
+      min-height: 844px;
+      background-color: #F8F9FA;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.15);
+    }
+  </style>
+<style data-purpose="typography">
+    .heading-title {
+      letter-spacing: -0.03em;
+    }
+    .badge-icon {
+      width: 44px;
+      height: 44px;
+    }
+  </style>
+<!-- END: Custom Styles -->
+</head>
+<body class="min-h-screen flex items-center justify-center p-0 sm:p-4">
+<!-- BEGIN: PhoneContainer -->
+<main class="mobile-screen flex flex-col justify-between rounded-[44px] overflow-hidden p-6 relative border border-gray-200/80" data-purpose="screen-container">
+<!-- Top Content Section -->
+<div class="w-full flex flex-col">
+<!-- BEGIN: NavigationBar -->
+<header class="flex items-center justify-between pt-2 pb-4" data-purpose="navigation-header">
+<!-- Back Chevron -->
+<button aria-label="Go back" class="p-1 -ml-1 text-gray-900 hover:text-gray-600 focus:outline-none transition-colors" type="button">
+<svg class="w-5 h-5 stroke-[2.5]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+<path d="M15 19l-7-7 7-7" stroke-linecap="round" stroke-linejoin="round"></path>
+</svg>
+</button>
+<!-- Segmented Progress Indicator (4 segments: 3 dark, 1 light) -->
+<div class="flex items-center gap-1.5 flex-1 max-w-[130px] justify-center mr-4" data-purpose="progress-indicator">
+<span class="h-1 flex-1 bg-neutral-800 rounded-full"></span>
+<span class="h-1 flex-1 bg-neutral-800 rounded-full"></span>
+<span class="h-1 flex-1 bg-neutral-800 rounded-full"></span>
+<span class="h-1 flex-1 bg-neutral-300 rounded-full"></span>
+</div>
+<!-- Spacer for alignment symmetry -->
+<div class="w-4"></div>
+</header>
+<!-- END: NavigationBar -->
+<!-- BEGIN: PageHeader -->
+<section class="mt-4 mb-6" data-purpose="page-title-section">
+<h1 class="text-[32px] font-bold text-gray-900 heading-title leading-[1.15]">
+          Message behaviour
+        </h1>
+<p class="text-[15px] text-gray-500 font-normal mt-2 leading-snug">
+          Choose how messages are handled during Family Mode.
+        </p>
+</section>
+<!-- END: PageHeader -->
+<!-- BEGIN: MessageOptionsList -->
+<section class="space-y-3" data-purpose="behavior-options-list">
+<!-- Card 1: Selected Option (Mark as undelivered) -->
+<label class="flex items-center justify-between p-3.5 bg-white rounded-2xl cursor-pointer shadow-sm hover:shadow transition-shadow border border-transparent">
+<div class="flex items-center space-x-3.5">
+<!-- Icon Badge -->
+<div class="badge-icon rounded-full bg-[#F3F4F6] flex items-center justify-center flex-shrink-0 text-gray-900">
+<!-- Prohibited / Slash Circle Icon -->
+<svg class="w-5 h-5 stroke-[2]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+<circle cx="12" cy="12" r="9"></circle>
+<path d="M5.636 5.636l12.728 12.728" stroke-linecap="round"></path>
+</svg>
+</div>
+<!-- Labels -->
+<div class="flex flex-col">
+<span class="text-[15px] font-semibold text-gray-900 leading-tight">Mark as undelivered</span>
+<span class="text-[12px] text-gray-500 leading-normal mt-0.5">Senders will see that you're in Family Mode</span>
+</div>
+</div>
+<!-- Selected Radio Icon (Solid dark circle with white checkmark) -->
+<div class="flex-shrink-0 ml-2">
+<div class="w-6 h-6 rounded-full bg-neutral-900 flex items-center justify-center shadow-xs">
+<svg class="w-3.5 h-3.5 text-white stroke-[3]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+<path d="M5 13l4 4L19 7" stroke-linecap="round" stroke-linejoin="round"></path>
+</svg>
+</div>
+</div>
+</label>
+<!-- Card 2: Unselected Option (Send auto-reply) -->
+<label class="flex items-center justify-between p-3.5 bg-white rounded-2xl cursor-pointer shadow-sm hover:shadow transition-shadow border border-transparent">
+<div class="flex items-center space-x-3.5">
+<!-- Icon Badge -->
+<div class="badge-icon rounded-full bg-[#F3F4F6] flex items-center justify-center flex-shrink-0 text-gray-900">
+<!-- Speech Bubble / Message Icon -->
+<svg class="w-5 h-5 stroke-[2]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+<path d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" stroke-linecap="round" stroke-linejoin="round"></path>
+</svg>
+</div>
+<!-- Labels -->
+<div class="flex flex-col">
+<span class="text-[15px] font-semibold text-gray-900 leading-tight">Send auto-reply</span>
+<span class="text-[12px] text-gray-500 leading-normal mt-0.5">Let senders know you're unavailable</span>
+</div>
+</div>
+<!-- Unselected Radio Circle -->
+<div class="flex-shrink-0 ml-2">
+<div class="w-6 h-6 rounded-full border-2 border-gray-300"></div>
+</div>
+</label>
+<!-- Card 3: Unselected Option (Deliver silently) -->
+<label class="flex items-center justify-between p-3.5 bg-white rounded-2xl cursor-pointer shadow-sm hover:shadow transition-shadow border border-transparent">
+<div class="flex items-center space-x-3.5">
+<!-- Icon Badge -->
+<div class="badge-icon rounded-full bg-[#F3F4F6] flex items-center justify-center flex-shrink-0 text-gray-900">
+<!-- Silent Bell Icon -->
+<svg class="w-5 h-5 stroke-[2]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+<path d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" stroke-linecap="round" stroke-linejoin="round"></path>
+</svg>
+</div>
+<!-- Labels -->
+<div class="flex flex-col">
+<span class="text-[15px] font-semibold text-gray-900 leading-tight">Deliver silently</span>
+<span class="text-[12px] text-gray-500 leading-normal mt-0.5">Allow messages but without notifications</span>
+</div>
+</div>
+<!-- Unselected Radio Circle -->
+<div class="flex-shrink-0 ml-2">
+<div class="w-6 h-6 rounded-full border-2 border-gray-300"></div>
+</div>
+</label>
+</section>
+<!-- END: MessageOptionsList -->
+<!-- BEGIN: AutoReplyMessageSection -->
+<section class="mt-6" data-purpose="autoreply-input-section">
+<label class="block text-[15px] font-semibold text-gray-900 mb-2.5" for="autoreply-text">
+          Auto-reply message
+        </label>
+<!-- Textbox Container -->
+<div class="relative bg-[#ECECED]/70 rounded-2xl p-4 border border-transparent focus-within:border-gray-400 focus-within:bg-white transition-all">
+<textarea class="w-full bg-transparent border-0 p-0 text-[14px] text-gray-700 leading-relaxed resize-none focus:ring-0 focus:outline-none placeholder-gray-400 font-normal" id="autoreply-text" placeholder="Type your auto-reply..." rows="3">I'm in Family Mode right now.
+I'll be available after 8:00 PM.</textarea>
+</div>
+<!-- Character Counter -->
+<div class="text-right mt-1.5 pr-1">
+<span class="text-[13px] text-gray-500 font-medium">0/100</span>
+</div>
+</section>
+<!-- END: AutoReplyMessageSection -->
+</div>
+<!-- BEGIN: BottomActionSection -->
+<footer class="pt-4 pb-2" data-purpose="bottom-cta-section">
+<button class="w-full bg-[#262626] hover:bg-[#1A1A1A] active:scale-[0.99] text-white text-[16px] font-semibold py-4 rounded-2xl transition-all shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-neutral-800" type="button">
+        Next
+      </button>
+</footer>
+<!-- END: BottomActionSection -->
+</main>
+<!-- END: PhoneContainer -->
+</body></html>

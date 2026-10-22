@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport"/>
+<title>Caller Status</title>
+<!-- Tailwind CSS v3 CDN with forms and container queries -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            appBackground: '#f7f7f8',
+            surfaceMuted: '#eceef0',
+            appDark: '#1c1d1f',
+            phoneBorder: '#6d7278',
+            phoneFill: '#e5e7eb',
+            phoneIconBg: '#a3a7ac'
+          },
+          fontFamily: {
+            sans: ['-apple-system', 'BlinkMacSystemFont', 'SF Pro Text', 'SF Pro Display', 'Segoe UI', 'Roboto', 'Helvetica', 'Arial', 'sans-serif']
+          }
+        }
+      }
+    };
+  </script>
+<style data-purpose="base-styling">
+    body {
+      -webkit-tap-highlight-color: transparent;
+      user-select: none;
+    }
+  </style>
+</head>
+<body class="bg-[#e9ebee] min-h-screen flex items-center justify-center p-0 sm:p-4 text-appDark font-sans antialiased">
+<!-- BEGIN: PhoneFrameContainer -->
+<!-- Main mobile viewport canvas imitating an iOS device container -->
+<div class="w-full max-w-[390px] h-[844px] bg-[#f8f9fa] sm:rounded-[44px] sm:shadow-2xl flex flex-col justify-between overflow-hidden relative border border-gray-200/60" data-purpose="device-viewport">
+<!-- Top Content Area -->
+<div class="px-6 pt-5 pb-2 flex-1 flex flex-col">
+<!-- BEGIN: NavigationAndProgress -->
+<nav class="relative flex items-center justify-between h-9 mb-5" data-purpose="top-navigation">
+<!-- Back Button -->
+<button aria-label="Go back" class="p-1 -ml-1 text-appDark hover:opacity-70 transition-opacity" type="button">
+<svg class="w-5 h-5 stroke-[2.5]" fill="none" stroke="currentColor" viewbox="0 0 24 24">
+<path d="M15 19l-7-7 7-7" stroke-linecap="round" stroke-linejoin="round"></path>
+</svg>
+</button>
+<!-- Segmented 4-step Progress Indicator -->
+<div class="absolute left-1/2 -translate-x-1/2 flex items-center space-x-1.5" data-purpose="progress-indicator">
+<span class="w-8 h-[3px] rounded-full bg-[#2d3134]"></span>
+<span class="w-8 h-[3px] rounded-full bg-[#2d3134]"></span>
+<span class="w-8 h-[3px] rounded-full bg-[#dce0e5]"></span>
+<span class="w-8 h-[3px] rounded-full bg-[#dce0e5]"></span>
+</div>
+<!-- Spacer for balancing flex layout -->
+<div class="w-5"></div>
+</nav>
+<!-- END: NavigationAndProgress -->
+<!-- BEGIN: HeaderTitles -->
+<header class="mb-5" data-purpose="screen-header">
+<h1 class="text-[28px] font-bold tracking-tight text-[#111315] leading-tight">
+          Caller status
+        </h1>
+<p class="text-[15px] text-[#5e6368] font-normal mt-1 leading-snug">
+          Choose what others will see when they call you.
+        </p>
+</header>
+<!-- END: HeaderTitles -->
+<!-- BEGIN: GraphicIllustration -->
+<!-- Visual preview displaying incoming caller UI inside mockup phone -->
+<section class="relative w-full h-[245px] bg-[#eceef0] rounded-3xl overflow-hidden flex items-end justify-center pt-5 shadow-inner" data-purpose="phone-mockup-wrapper">
+<!-- Wireframe Smartphone -->
+<div class="relative w-[214px] h-[225px] bg-[#f8f9fa] rounded-t-[34px] border-[3.5px] border-[#6b7280] border-b-0 shadow-sm flex flex-col items-center pt-2">
+<!-- Mock Phone Left/Right Hardware Buttons (Simulated) -->
+<div class="absolute -left-[6px] top-12 w-[3px] h-6 bg-[#6b7280] rounded-l-sm"></div>
+<div class="absolute -left-[6px] top-22 w-[3px] h-10 bg-[#6b7280] rounded-l-sm"></div>
+<div class="absolute -right-[6px] top-16 w-[3px] h-12 bg-[#6b7280] rounded-r-sm"></div>
+<!-- Top Speaker / Camera Notch Silhouette -->
+<div class="w-20 h-3 bg-[#6b7280] rounded-b-lg mb-4 flex items-center justify-center">
+<div class="w-6 h-[2px] bg-[#9ca3af] rounded-full mb-1"></div>
+</div>
+<!-- Avatar Placeholder -->
+<div class="w-16 h-16 rounded-full bg-[#9ca3af] flex items-center justify-center overflow-hidden mb-2.5 shadow-sm">
+<svg class="w-12 h-12 text-[#f3f4f6] translate-y-1" fill="currentColor" viewbox="0 0 24 24">
+<path clip-rule="evenodd" d="M12 2a5 5 0 100 10 5 5 0 000-10zM4 20a8 8 0 0116 0H4z" fill-rule="evenodd"></path>
+</svg>
+</div>
+<!-- Screen Text Content -->
+<div class="text-center px-2">
+<p class="text-[13px] font-semibold text-[#111827] leading-tight">
+              You’re in<br/>Family Mode
+            </p>
+<p class="text-[10.5px] text-[#4b5563] mt-1 font-medium">
+              Available after 8:00 PM
+            </p>
+</div>
+<!-- Mock Call Action Buttons -->
+<div class="mt-auto mb-2 flex items-center space-x-3.5">
+<!-- Call button -->
+<div class="w-9 h-9 rounded-full bg-[#9ca3af] flex items-center justify-center text-white shadow-sm">
+<svg class="w-4 h-4 fill-current rotate-[15deg]" viewbox="0 0 24 24">
+<path d="M6.62 10.79a15.05 15.05 0 006.59 6.59l2.2-2.2a1 1 0 011.05-.24 11.72 11.72 0 003.68.59 1 1 0 011 1v3.48a1 1 0 01-1 1A17.93 17.93 0 013 4.99a1 1 0 011-1H7.5a1 1 0 011 1c0 1.25.2 2.45.59 3.68a1 1 0 01-.24 1.05l-2.23 2.07z"></path>
+</svg>
+</div>
+<!-- Chat button -->
+<div class="w-9 h-9 rounded-full bg-[#9ca3af] flex items-center justify-center text-white shadow-sm">
+<svg class="w-4 h-4 fill-current" viewbox="0 0 24 24">
+<path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z"></path>
+</svg>
+</div>
+<!-- More options button -->
+<div class="w-9 h-9 rounded-full bg-[#9ca3af] flex items-center justify-center text-white shadow-sm">
+<svg class="w-4 h-4 fill-current" viewbox="0 0 24 24">
+<path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"></path>
+</svg>
+</div>
+</div>
+</div>
+</section>
+<!-- END: GraphicIllustration -->
+<!-- BEGIN: OptionCardsList -->
+<section class="mt-4 space-y-2.5" data-purpose="status-options-selection">
+<!-- Option 1: Selected State -->
+<label class="cursor-pointer flex items-center justify-between p-3.5 bg-white/70 hover:bg-white rounded-2xl border border-gray-100 shadow-[0_1px_3px_rgba(0,0,0,0.03)] transition-all">
+<div class="flex items-center space-x-3.5">
+<!-- Icon Eye Container -->
+<div class="w-11 h-11 rounded-full bg-[#e8ebee] flex items-center justify-center flex-shrink-0 text-[#1f2937]">
+<svg class="w-5 h-5 stroke-[2]" fill="none" stroke="currentColor" viewbox="0 0 24 24">
+<path d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" stroke-linecap="round" stroke-linejoin="round"></path>
+<path d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" stroke-linecap="round" stroke-linejoin="round"></path>
+</svg>
+</div>
+<!-- Labels -->
+<div>
+<p class="text-[14px] font-semibold text-[#111827] leading-snug">
+                Show Family Mode status
+              </p>
+<p class="text-[12px] text-[#6b7280] leading-snug mt-0.5">
+                Let callers know you're<br/>in Family Mode
+              </p>
+</div>
+</div>
+<!-- Radio Checked Indicator -->
+<div class="ml-2 flex-shrink-0">
+<div class="w-6 h-6 rounded-full bg-[#26282b] flex items-center justify-center">
+<svg class="w-3.5 h-3.5 text-white stroke-[3]" fill="none" stroke="currentColor" viewbox="0 0 24 24">
+<path d="M5 13l4 4L19 7" stroke-linecap="round" stroke-linejoin="round"></path>
+</svg>
+</div>
+</div>
+</label>
+<!-- Option 2: Unselected State -->
+<label class="cursor-pointer flex items-center justify-between p-3.5 bg-white/70 hover:bg-white rounded-2xl border border-gray-100 shadow-[0_1px_3px_rgba(0,0,0,0.03)] transition-all">
+<div class="flex items-center space-x-3.5">
+<!-- Icon Eye-Slash Container -->
+<div class="w-11 h-11 rounded-full bg-[#e8ebee] flex items-center justify-center flex-shrink-0 text-[#1f2937]">
+<svg class="w-5 h-5 stroke-[2]" fill="none" stroke="currentColor" viewbox="0 0 24 24">
+<path d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l18 18" stroke-linecap="round" stroke-linejoin="round"></path>
+</svg>
+</div>
+<!-- Labels -->
+<div>
+<p class="text-[14px] font-semibold text-[#111827] leading-snug">
+                Don’t show status
+              </p>
+<p class="text-[12px] text-[#6b7280] leading-snug mt-0.5">
+                Calls will go straight<br/>to voicemail
+              </p>
+</div>
+</div>
+<!-- Radio Unchecked Indicator -->
+<div class="ml-2 flex-shrink-0">
+<div class="w-6 h-6 rounded-full border-2 border-[#9ca3af]"></div>
+</div>
+</label>
+</section>
+<!-- END: OptionCardsList -->
+</div>
+<!-- BEGIN: BottomAction -->
+<!-- Sticky Call to Action Footer -->
+<footer class="px-6 pb-9 pt-2" data-purpose="primary-footer-cta">
+<button class="w-full h-13 py-3.5 bg-[#2d3034] hover:bg-[#1f2124] active:scale-[0.99] transition-all text-white font-medium text-[16px] rounded-2xl flex items-center justify-center shadow-md" type="button">
+        Next
+      </button>
+</footer>
+<!-- END: BottomAction -->
+</div>
+<!-- END: PhoneFrameContainer -->
+</body></html>

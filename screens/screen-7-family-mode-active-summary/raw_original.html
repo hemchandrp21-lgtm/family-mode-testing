@@ -1,0 +1,167 @@
+<!DOCTYPE html><html lang="en"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport">
+<title>Family Mode - Active Summary</title>
+<!-- Tailwind CSS CDN with forms and container queries plugins -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['-apple-system', 'BlinkMacSystemFont', '"SF Pro Display"', '"SF Pro Text"', 'Roboto', 'Helvetica', 'Arial', 'sans-serif'],
+          },
+          colors: {
+            iosBg: '#F5F5F7',
+            iosDark: '#2C2C2E',
+            iosGrayBadge: '#EFEFEF',
+            iosSubtext: '#68686E',
+            iosBorder: '#ECECEC',
+          }
+        }
+      }
+    }
+  </script>
+<style data-purpose="custom-styling">
+    /* Custom subtle tweaks for native iOS look and feel */
+    body {
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+    .custom-shadow {
+      box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.03);
+    }
+  </style>
+</head>
+<body class="bg-[#F5F5F7] min-h-screen flex items-center justify-center p-0 sm:p-4 text-neutral-900 font-sans selection:bg-neutral-800 selection:text-white">
+<!-- BEGIN: MobileDeviceFrame -->
+<main class="w-full max-w-[400px] min-h-screen sm:min-h-[820px] bg-[#F7F7F8] sm:rounded-[44px] sm:shadow-2xl flex flex-col justify-between px-6 pt-5 pb-8 relative overflow-hidden" data-purpose="mobile-screen-container">
+<!-- Top Navigation & Progress Section -->
+<div class="w-full flex flex-col items-center">
+<!-- BEGIN: StepProgressBar -->
+<!-- 4 progress segments indicating completion -->
+<nav aria-label="Progress steps" class="flex items-center space-x-2.5 mt-2 mb-7" data-purpose="step-indicator">
+<span class="w-7 h-[3px] bg-neutral-900 rounded-full"></span>
+<span class="w-7 h-[3px] bg-neutral-900 rounded-full"></span>
+<span class="w-7 h-[3px] bg-neutral-900 rounded-full"></span>
+<span class="w-7 h-[3px] bg-neutral-900 rounded-full"></span>
+</nav>
+<!-- END: StepProgressBar -->
+<!-- BEGIN: CentralIllustration -->
+<!-- Abstract soft grey backdrop with house and family icons -->
+<div class="relative w-48 h-36 flex items-center justify-center my-1" data-purpose="status-illustration">
+<!-- Soft overlapping circular cloud shapes -->
+<div class="absolute w-28 h-28 bg-[#E7E7E9] rounded-full top-2 left-6 opacity-75"></div>
+<div class="absolute w-24 h-24 bg-[#ECECED] rounded-full -top-1 right-7 opacity-90"></div>
+<div class="absolute w-14 h-14 bg-[#DFDFE2] rounded-full bottom-3 right-3 opacity-60"></div>
+<div class="absolute w-12 h-12 bg-[#E3E3E6] rounded-full top-6 left-2 opacity-50"></div>
+<!-- Foreground graphic: House with family members -->
+<div class="relative z-10 w-28 h-28 flex items-center justify-center">
+<svg class="w-24 h-24 text-neutral-900" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 100 100">
+<!-- House Outline -->
+<path d="M14 44L50 16L86 44V84H14V44Z" fill="none" stroke-width="3.5"></path>
+<!-- Adult Figure Left -->
+<circle cx="39" cy="56" r="4.5" stroke-width="3"></circle>
+<path d="M30 75C30 68 34 65 39 65C44 65 48 68 48 75" stroke-width="3"></path>
+<!-- Adult Figure Right -->
+<circle cx="61" cy="56" r="4.5" stroke-width="3"></circle>
+<path d="M52 75C52 68 56 65 61 65C66 65 70 68 70 75" stroke-width="3"></path>
+<!-- Child / Center Small Figure -->
+<circle cx="50" cy="62" r="3.5" stroke-width="2.5"></circle>
+<path d="M43 75C43 70 46 68.5 50 68.5C54 68.5 57 70 57 75" stroke-width="2.5"></path>
+</svg>
+<!-- Verified Check Badge -->
+<div class="absolute bottom-1.5 right-1.5 bg-[#2B2B2D] rounded-full w-[26px] h-[26px] flex items-center justify-center border-2 border-white shadow-sm" data-purpose="success-badge">
+<svg class="w-3.5 h-3.5 text-white" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="3.5" viewBox="0 0 24 24">
+<polyline points="20 6 9 17 4 12"></polyline>
+</svg>
+</div>
+</div>
+</div>
+<!-- END: CentralIllustration -->
+<!-- BEGIN: HeaderTitles -->
+<div class="text-center mt-3 mb-5" data-purpose="title-section">
+<h1 class="text-[26px] leading-[1.2] font-bold text-neutral-900 tracking-tight">
+          Family Mode<br>is Active
+        </h1>
+<p class="text-[14px] text-neutral-500 font-normal mt-2 tracking-tight">
+          Enjoy your time with your loved ones.
+        </p>
+</div>
+<!-- END: HeaderTitles -->
+<!-- BEGIN: SummaryListCard -->
+<section aria-label="Active settings summary" class="w-full bg-white rounded-[22px] px-4 py-1 border border-neutral-100 shadow-sm" data-purpose="settings-summary-card">
+<!-- Row 1: Duration -->
+<div class="flex items-center py-3 border-b border-neutral-100 last:border-0" data-purpose="summary-row">
+<div class="w-10 h-10 rounded-full bg-[#F5F5F7] flex items-center justify-center flex-shrink-0 mr-3.5 text-neutral-800">
+<svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24">
+<circle cx="12" cy="12" r="10"></circle>
+<polyline points="12 6 12 12 16 14"></polyline>
+</svg>
+</div>
+<div class="flex flex-col">
+<span class="text-[14.5px] font-semibold text-neutral-900 leading-snug">Duration</span>
+<span class="text-[13px] text-neutral-500 font-normal leading-tight">1 hour</span>
+</div>
+</div>
+<!-- Row 2: Allowed Contacts -->
+<div class="flex items-center py-3 border-b border-neutral-100 last:border-0" data-purpose="summary-row">
+<div class="w-10 h-10 rounded-full bg-[#F5F5F7] flex items-center justify-center flex-shrink-0 mr-3.5 text-neutral-800">
+<svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24">
+<path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+<circle cx="9" cy="7" r="4"></circle>
+<path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+<path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+</svg>
+</div>
+<div class="flex flex-col">
+<span class="text-[14.5px] font-semibold text-neutral-900 leading-snug">Allowed contacts</span>
+<span class="text-[13px] text-neutral-500 font-normal leading-tight">Family, Close Friends</span>
+</div>
+</div>
+<!-- Row 3: Message Behaviour -->
+<div class="flex items-center py-3 border-b border-neutral-100 last:border-0" data-purpose="summary-row">
+<div class="w-10 h-10 rounded-full bg-[#F5F5F7] flex items-center justify-center flex-shrink-0 mr-3.5 text-neutral-800">
+<svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24">
+<path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path>
+<line stroke-width="2.5" x1="8" x2="8.01" y1="12" y2="12"></line>
+<line stroke-width="2.5" x1="12" x2="12.01" y1="12" y2="12"></line>
+<line stroke-width="2.5" x1="16" x2="16.01" y1="12" y2="12"></line>
+</svg>
+</div>
+<div class="flex flex-col">
+<span class="text-[14.5px] font-semibold text-neutral-900 leading-snug">Message behaviour</span>
+<span class="text-[13px] text-neutral-500 font-normal leading-tight">Mark as undelivered</span>
+</div>
+</div>
+<!-- Row 4: Caller Status -->
+<div class="flex items-center py-3" data-purpose="summary-row">
+<div class="w-10 h-10 rounded-full bg-[#F5F5F7] flex items-center justify-center flex-shrink-0 mr-3.5 text-neutral-800">
+<svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24">
+<path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+</svg>
+</div>
+<div class="flex flex-col">
+<span class="text-[14.5px] font-semibold text-neutral-900 leading-snug">Caller status</span>
+<span class="text-[13px] text-neutral-500 font-normal leading-tight">Show Family Mode status</span>
+</div>
+</div>
+</section>
+<!-- END: SummaryListCard -->
+</div>
+<!-- BEGIN: ActionButtons -->
+<!-- Bottom fixed actions: Done & Edit Settings -->
+<footer class="w-full flex flex-col space-y-2.5 mt-6" data-purpose="bottom-actions">
+<!-- Primary Done Button -->
+<button class="w-full h-12 bg-[#2D2D2F] hover:bg-neutral-800 active:scale-[0.99] text-white text-[15.5px] font-semibold rounded-full flex items-center justify-center transition duration-150 ease-in-out shadow-sm" data-purpose="done-button" type="button">
+        Done
+      </button>
+<!-- Secondary Edit Settings Button -->
+<button class="w-full h-12 bg-[#EBEBEF] hover:bg-[#E2E2E6] active:scale-[0.99] text-neutral-900 text-[15.5px] font-semibold rounded-full flex items-center justify-center transition duration-150 ease-in-out" data-purpose="edit-settings-button" type="button">
+        Edit Settings
+      </button>
+</footer>
+<!-- END: ActionButtons -->
+</main>
+<!-- END: MobileDeviceFrame -->
+</body></html>

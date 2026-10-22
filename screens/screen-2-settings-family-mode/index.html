@@ -1,0 +1,740 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport"/>
+  <title>Settings - OriginOS</title>
+  <!-- Load Tailwind CSS v3 -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Google Fonts: Inter / Roboto -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    * {
+      -webkit-tap-highlight-color: transparent;
+      user-select: none;
+      box-sizing: border-box;
+    }
+    html, body {
+      height: 100%;
+      width: 100%;
+      overflow: hidden !important;
+      margin: 0;
+      padding: 0;
+      background-color: #000000;
+      color: #E2E2E6;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+    input[type="search"]::-webkit-search-cancel-button,
+    input[type="search"]::-webkit-search-decoration {
+      -webkit-appearance: none;
+      appearance: none;
+    }
+    /* Completely eliminate all scrollbars */
+    ::-webkit-scrollbar,
+    html::-webkit-scrollbar,
+    body::-webkit-scrollbar,
+    *::-webkit-scrollbar {
+      display: none !important;
+      width: 0 !important;
+      height: 0 !important;
+      background: transparent !important;
+    }
+    html, body, * {
+      scrollbar-width: none !important;
+      -ms-overflow-style: none !important;
+    }
+
+    /* OriginOS Settings Card Aesthetics */
+    .settings-card {
+      background: #181A1F;
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      border-radius: 22px;
+      overflow: hidden;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+    }
+
+    /* Icon styling in OriginOS vibrant electric blue */
+    .setting-icon {
+      color: #5390F5;
+      width: 24px;
+      height: 24px;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* Inner item row */
+    .setting-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 13.5px 16px;
+      position: relative;
+      cursor: pointer;
+      text-decoration: none;
+      transition: background-color 0.15s ease;
+    }
+    .setting-row:hover {
+      background-color: rgba(255, 255, 255, 0.04);
+    }
+    .setting-row:active {
+      background-color: rgba(255, 255, 255, 0.07);
+    }
+
+    /* Divider that starts at the text label indent */
+    .setting-divider {
+      margin-left: 54px;
+      margin-right: 16px;
+      height: 1px;
+      background-color: rgba(255, 255, 255, 0.06);
+    }
+
+    /* Highlight pulse for Family Mode */
+    .family-mode-highlight {
+      background: linear-gradient(90deg, rgba(83, 144, 245, 0.08) 0%, rgba(24, 26, 31, 0) 100%);
+    }
+  </style>
+</head>
+<body class="h-full w-full flex items-center justify-center p-0 sm:p-2 bg-black overflow-hidden select-none">
+
+<!-- Phone Frame Container -->
+<main class="w-full max-w-[392px] h-full sm:h-[min(844px,calc(100vh-1rem))] bg-[#000000] sm:rounded-[44px] shadow-2xl relative flex flex-col justify-between overflow-hidden border border-neutral-800/80 select-none">
+
+  <!-- TOP STATUS BAR (OriginOS Status Bar: 6:48 | VoLTE, 5G, Alarm, 5% Battery) -->
+  <header id="top-status-bar" class="w-full px-5 pt-2.5 pb-1 flex items-center justify-between text-white text-xs font-medium z-30 select-none cursor-pointer group" title="Swipe down or click to open Control Center" onclick="openControlCenter()">
+    <!-- Left: Time 6:48 -->
+    <div class="text-[14px] font-semibold tracking-tight text-white/95 pl-0.5">
+      6:48
+    </div>
+
+
+    <!-- Right: Network, Alarm, VoLTE, 5G, and 5% Battery -->
+    <div class="flex items-center space-x-1.5 text-white/90 pr-0.5">
+      <!-- Alarm -->
+      <svg class="w-3.5 h-3.5 stroke-current stroke-[2] fill-none" viewBox="0 0 24 24" title="Alarm">
+        <circle cx="12" cy="13" r="8"/>
+        <path d="M12 9v4l2.5 2.5" stroke-linecap="round"/>
+        <path d="M5 3L2 6M19 3l3 3" stroke-linecap="round"/>
+      </svg>
+
+      <!-- Cellular / VoLTE / 5G icon cluster -->
+      <div class="flex items-center space-x-0.5">
+        <!-- 4 Cellular signal bars -->
+        <div class="flex items-end space-x-[1px] h-3">
+          <div class="w-[2px] h-1 bg-white/90 rounded-xs"></div>
+          <div class="w-[2px] h-1.5 bg-white/90 rounded-xs"></div>
+          <div class="w-[2px] h-2 bg-white/90 rounded-xs"></div>
+          <div class="w-[2px] h-2.5 bg-white/90 rounded-xs"></div>
+        </div>
+        <!-- 5G Badge -->
+        <span class="text-[9px] font-bold text-white/90 tracking-tighter leading-none ml-0.5">5G</span>
+      </div>
+
+      <!-- Battery 5% (Matching screenshot's low battery with red fill) -->
+      <div class="flex items-center space-x-0.5 pl-0.5" title="Battery 5%">
+        <div class="w-[18px] h-[9.5px] border border-white/80 rounded-[2.5px] p-[1px] relative flex items-center">
+          <div class="h-full w-[15%] bg-[#FF453A] rounded-[1px]"></div>
+          <div class="w-[1.5px] h-[3px] bg-white/80 rounded-r-xs absolute -right-[2px] top-[2.2px]"></div>
+        </div>
+        <span class="text-[11px] font-semibold text-white tracking-tight">5%</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- SLIDING CONTROL CENTER OVERLAY (Slides down from top when requested) -->
+  <div id="control-center-drawer" class="absolute inset-0 bg-[#121316] z-50 transform -translate-y-full transition-transform duration-300 ease-out flex flex-col justify-between overflow-hidden shadow-2xl">
+    <iframe id="cc-iframe" src="/screens/screen-8-control-center-quick-settings/" class="w-full h-full border-none"></iframe>
+  </div>
+
+  <!-- SETTINGS TITLE & SEARCH BAR (Sticky Header) -->
+  <div class="px-5 pt-1 pb-3 z-20 shrink-0">
+    <!-- Big Settings Heading -->
+    <h1 class="text-[32px] font-semibold text-white tracking-tight leading-tight mb-3">
+      Settings
+    </h1>
+
+    <!-- Search Bar Pill -->
+    <div class="relative w-full">
+      <span class="absolute inset-y-0 left-0 flex items-center pl-4 pointer-events-none text-[#7A7F8A]">
+        <svg class="w-4 h-4 stroke-current stroke-[2.2] fill-none" viewBox="0 0 24 24">
+          <circle cx="11" cy="11" r="7"/>
+          <line x1="16.5" y1="16.5" x2="21" y2="21" stroke-linecap="round"/>
+        </svg>
+      </span>
+      <input id="settings-search" oninput="filterSettings(this.value)" class="w-full bg-[#1C1E22] text-[14px] text-white placeholder-[#7A7F8A] rounded-full pl-10 pr-4 py-2.5 border border-white/[0.05] focus:outline-none focus:border-[#5390F5] transition" placeholder="Search settings" type="search" autocomplete="off"/>
+    </div>
+  </div>
+
+  <!-- SCROLLABLE SETTINGS CONTENT (Grouped OriginOS Cards matching media_1792676381087.jpg) -->
+  <main class="flex-1 px-5 pb-4 overflow-y-auto no-scrollbar space-y-3.5">
+    
+    <!-- CARD 0: Hemchand Account / Profile Card -->
+    <section class="settings-card" data-setting-card="profile">
+      <div class="setting-row" onclick="alert('Account Settings: Hemchand')">
+        <div class="flex items-center space-x-3.5 min-w-0">
+          <!-- Real Profile Avatar from Reference -->
+          <div class="w-12 h-12 rounded-full overflow-hidden shrink-0 border border-white/10 bg-[#252830]">
+            <img src="avatar.jpg" alt="Hemchand avatar" class="w-full h-full object-cover"/>
+          </div>
+          <div class="leading-tight truncate">
+            <span class="text-[16px] font-semibold text-white tracking-tight block truncate">Hemchand</span>
+            <span class="text-[12.5px] font-normal text-[#8E939D] tracking-tight block truncate mt-0.5">Account password &amp; security</span>
+          </div>
+        </div>
+        <svg class="w-4 h-4 text-[#5F636B] stroke-[2.2] shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <polyline points="9 18 15 12 9 6"/>
+        </svg>
+      </div>
+    </section>
+
+    <!-- CARD 1: Connectivity (Wi-Fi, Bluetooth, Mobile Network, More Connections) -->
+    <section class="settings-card" data-setting-card="connectivity">
+      
+      <!-- 1. Wi-Fi -->
+      <div class="setting-row" data-search-item="wifi wi-fi internet network wireless">
+        <div class="flex items-center space-x-3.5 min-w-0">
+          <div class="setting-icon">
+            <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24">
+              <path d="M12 18.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3zm-5.66-5.66a8 8 0 0 1 11.32 0l-1.42 1.42a6 6 0 0 0-8.48 0l-1.42-1.42zm-2.83-2.83a12 12 0 0 1 16.98 0l-1.42 1.42a10 10 0 0 0-14.14 0l-1.42-1.42z"/>
+            </svg>
+          </div>
+          <span class="text-[15px] font-normal text-white tracking-tight">Wi-Fi</span>
+        </div>
+        <div class="flex items-center space-x-2">
+          <span class="text-[13px] font-normal text-[#8E939D]">Off</span>
+          <svg class="w-4 h-4 text-[#5F636B] stroke-[2.2]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <polyline points="9 18 15 12 9 6"/>
+          </svg>
+        </div>
+      </div>
+      <div class="setting-divider"></div>
+
+      <!-- 2. Bluetooth -->
+      <div class="setting-row" data-search-item="bluetooth wireless audio connect">
+        <div class="flex items-center space-x-3.5 min-w-0">
+          <div class="setting-icon">
+            <svg class="w-5 h-5 fill-none stroke-current stroke-[2]" viewBox="0 0 24 24">
+              <path d="m7 7 10 10-5 5V2l5 5L7 17"/>
+            </svg>
+          </div>
+          <span class="text-[15px] font-normal text-white tracking-tight">Bluetooth</span>
+        </div>
+        <div class="flex items-center space-x-2">
+          <span class="text-[13px] font-normal text-[#8E939D]">On</span>
+          <svg class="w-4 h-4 text-[#5F636B] stroke-[2.2]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <polyline points="9 18 15 12 9 6"/>
+          </svg>
+        </div>
+      </div>
+      <div class="setting-divider"></div>
+
+      <!-- 3. Mobile network -->
+      <div class="setting-row" data-search-item="mobile network sim cellular data 5g 4g">
+        <div class="flex items-center space-x-3.5 min-w-0">
+          <div class="setting-icon">
+            <svg class="w-4 h-4 fill-current" viewBox="0 0 20 20">
+              <rect x="5.5" y="3" width="1.8" height="10" rx="0.4"/>
+              <polygon points="3,12 6.4,17 9.8,12"/>
+              <rect x="12.7" y="7" width="1.8" height="10" rx="0.4"/>
+              <polygon points="10.2,8 13.6,3 17,8"/>
+            </svg>
+          </div>
+          <span class="text-[15px] font-normal text-white tracking-tight">Mobile network</span>
+        </div>
+        <svg class="w-4 h-4 text-[#5F636B] stroke-[2.2]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <polyline points="9 18 15 12 9 6"/>
+        </svg>
+      </div>
+      <div class="setting-divider"></div>
+
+      <!-- 4. More connections -->
+      <div class="setting-row" data-search-item="more connections hotspot nfc cast vpn sharing">
+        <div class="flex items-center space-x-3.5 min-w-0">
+          <div class="setting-icon">
+            <svg class="w-5 h-5 fill-none stroke-current stroke-[2]" viewBox="0 0 24 24">
+              <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/>
+              <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>
+            </svg>
+          </div>
+          <span class="text-[15px] font-normal text-white tracking-tight">More connections</span>
+        </div>
+        <svg class="w-4 h-4 text-[#5F636B] stroke-[2.2]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <polyline points="9 18 15 12 9 6"/>
+        </svg>
+      </div>
+
+    </section>
+
+    <!-- CARD 2: Notifications, Audio & Display -->
+    <section class="settings-card" data-setting-card="personalization">
+      
+      <!-- 1. Notifications & status bar -->
+      <div class="setting-row" data-search-item="notifications status bar alerts badges">
+        <div class="flex items-center space-x-3.5 min-w-0">
+          <div class="setting-icon">
+            <svg class="w-5 h-5 fill-none stroke-current stroke-[2]" viewBox="0 0 24 24">
+              <rect x="2" y="4" width="20" height="15" rx="3"/>
+              <line x1="2" y1="8" x2="22" y2="8"/>
+              <circle cx="6" cy="6" r="0.75" fill="currentColor"/>
+              <circle cx="9" cy="6" r="0.75" fill="currentColor"/>
+            </svg>
+          </div>
+          <span class="text-[15px] font-normal text-white tracking-tight">Notifications &amp; status bar</span>
+        </div>
+        <svg class="w-4 h-4 text-[#5F636B] stroke-[2.2]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <polyline points="9 18 15 12 9 6"/>
+        </svg>
+      </div>
+      <div class="setting-divider"></div>
+
+      <!-- 2. Sounds & vibration -->
+      <div class="setting-row" data-search-item="sounds vibration volume ringtone media haptics">
+        <div class="flex items-center space-x-3.5 min-w-0">
+          <div class="setting-icon">
+            <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24">
+              <path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3a4.5 4.5 0 0 0-2.5-4.02v8.05c1.48-.7 2.5-2.22 2.5-4.03zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/>
+            </svg>
+          </div>
+          <span class="text-[15px] font-normal text-white tracking-tight">Sounds &amp; vibration</span>
+        </div>
+        <svg class="w-4 h-4 text-[#5F636B] stroke-[2.2]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <polyline points="9 18 15 12 9 6"/>
+        </svg>
+      </div>
+      <div class="setting-divider"></div>
+
+      <!-- 3. Display, brightness & eye protection -->
+      <div class="setting-row" data-search-item="display brightness eye protection dark mode screen">
+        <div class="flex items-center space-x-3.5 min-w-0">
+          <div class="setting-icon">
+            <svg class="w-5 h-5 fill-none stroke-current stroke-[2]" viewBox="0 0 24 24">
+              <circle cx="12" cy="12" r="9"/>
+              <circle cx="12" cy="12" r="4" fill="currentColor"/>
+            </svg>
+          </div>
+          <span class="text-[15px] font-normal text-white tracking-tight">Display, brightness &amp; eye protection</span>
+        </div>
+        <svg class="w-4 h-4 text-[#5F636B] stroke-[2.2]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <polyline points="9 18 15 12 9 6"/>
+        </svg>
+      </div>
+      <div class="setting-divider"></div>
+
+      <!-- 4. Home screen, lock screen & wallpaper -->
+      <div class="setting-row" data-search-item="home screen lock screen wallpaper themes icons font">
+        <div class="flex items-center space-x-3.5 min-w-0">
+          <div class="setting-icon">
+            <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24">
+              <path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/>
+            </svg>
+          </div>
+          <span class="text-[15px] font-normal text-white tracking-tight">Home screen, lock screen &amp; wallpaper</span>
+        </div>
+        <svg class="w-4 h-4 text-[#5F636B] stroke-[2.2]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <polyline points="9 18 15 12 9 6"/>
+        </svg>
+      </div>
+
+    </section>
+
+    <!-- CARD 3: Apps, Security, Location, Storage, Battery -->
+    <section class="settings-card" data-setting-card="system-health">
+      
+      <!-- 1. Apps -->
+      <div class="setting-row" data-search-item="apps applications default app permissions manager">
+        <div class="flex items-center space-x-3.5 min-w-0">
+          <div class="setting-icon">
+            <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24">
+              <rect x="3" y="3" width="7" height="7" rx="2"/>
+              <rect x="14" y="3" width="7" height="7" rx="2"/>
+              <rect x="3" y="14" width="7" height="7" rx="2"/>
+              <rect x="14" y="14" width="7" height="7" rx="2"/>
+            </svg>
+          </div>
+          <span class="text-[15px] font-normal text-white tracking-tight">Apps</span>
+        </div>
+        <svg class="w-4 h-4 text-[#5F636B] stroke-[2.2]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <polyline points="9 18 15 12 9 6"/>
+        </svg>
+      </div>
+      <div class="setting-divider"></div>
+
+      <!-- 2. Security & privacy -->
+      <div class="setting-row" data-search-item="security privacy biometric fingerprint face lock password">
+        <div class="flex items-center space-x-3.5 min-w-0">
+          <div class="setting-icon">
+            <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24">
+              <path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm-2 16l-4-4 1.41-1.41L10 14.17l6.59-6.59L18 9l-8 8z"/>
+            </svg>
+          </div>
+          <span class="text-[15px] font-normal text-white tracking-tight">Security &amp; privacy</span>
+        </div>
+        <svg class="w-4 h-4 text-[#5F636B] stroke-[2.2]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <polyline points="9 18 15 12 9 6"/>
+        </svg>
+      </div>
+      <div class="setting-divider"></div>
+
+      <!-- 3. Location -->
+      <div class="setting-row" data-search-item="location gps maps tracking permissions">
+        <div class="flex items-center space-x-3.5 min-w-0">
+          <div class="setting-icon">
+            <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24">
+              <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5a2.5 2.5 0 0 1 0-5 2.5 2.5 0 0 1 0 5z"/>
+            </svg>
+          </div>
+          <span class="text-[15px] font-normal text-white tracking-tight">Location</span>
+        </div>
+        <svg class="w-4 h-4 text-[#5F636B] stroke-[2.2]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <polyline points="9 18 15 12 9 6"/>
+        </svg>
+      </div>
+      <div class="setting-divider"></div>
+
+      <!-- 4. RAM & storage -->
+      <div class="setting-row" data-search-item="ram storage memory space clean cache sd card">
+        <div class="flex items-center space-x-3.5 min-w-0">
+          <div class="setting-icon">
+            <!-- Pie slice / storage chart -->
+            <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24">
+              <path d="M11 2v10H2a10 10 0 0 0 9 10 10 10 0 0 0 10-10A10 10 0 0 0 11 2z"/>
+              <path d="M13 2.05V11h8.95A9.01 9.01 0 0 0 13 2.05z"/>
+            </svg>
+          </div>
+          <span class="text-[15px] font-normal text-white tracking-tight">RAM &amp; storage</span>
+        </div>
+        <svg class="w-4 h-4 text-[#5F636B] stroke-[2.2]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <polyline points="9 18 15 12 9 6"/>
+        </svg>
+      </div>
+      <div class="setting-divider"></div>
+
+      <!-- 5. Battery -->
+      <div class="setting-row" data-search-item="battery power saver charging fast charge">
+        <div class="flex items-center space-x-3.5 min-w-0">
+          <div class="setting-icon">
+            <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24">
+              <path d="M17 6H4c-1.1 0-2 .9-2 2v8c0 1.1.9 2 2 2h13c1.1 0 2-.9 2-2v-1h1.5a1 1 0 0 0 1-1v-4a1 1 0 0 0-1-1H19V8c0-1.1-.9-2-2-2z"/>
+            </svg>
+          </div>
+          <span class="text-[15px] font-normal text-white tracking-tight">Battery</span>
+        </div>
+        <svg class="w-4 h-4 text-[#5F636B] stroke-[2.2]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <polyline points="9 18 15 12 9 6"/>
+        </svg>
+      </div>
+
+    </section>
+
+    <!-- CARD 4: Features & Family Mode (Highlighting the Core Workflow to Screen 3) -->
+    <section class="settings-card" data-setting-card="special-features">
+      
+      <!-- 1. Ultra Game Mode -->
+      <div class="setting-row" data-search-item="ultra game mode gaming esports boost fps">
+        <div class="flex items-center space-x-3.5 min-w-0">
+          <div class="setting-icon">
+            <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24">
+              <path d="M21 6H3c-1.1 0-2 .9-2 2v8c0 1.1.9 2 2 2h18c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2zm-10 7H8v3H6v-3H3v-2h3V8h2v3h3v2zm4.5 2c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5zm4-3c-.83 0-1.5-.67-1.5-1.5S18.67 9 19.5 9s1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/>
+            </svg>
+          </div>
+          <span class="text-[15px] font-normal text-white tracking-tight">Ultra Game Mode</span>
+        </div>
+        <svg class="w-4 h-4 text-[#5F636B] stroke-[2.2]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <polyline points="9 18 15 12 9 6"/>
+        </svg>
+      </div>
+      <div class="setting-divider"></div>
+
+      <!-- 2. Safety & emergency -->
+      <div class="setting-row" data-search-item="safety emergency sos medical info contacts">
+        <div class="flex items-center space-x-3.5 min-w-0">
+          <div class="setting-icon">
+            <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24">
+              <path d="M12 2a5 5 0 0 0-5 5v3H5a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7a2 2 0 0 0-2-2h-2V7a5 5 0 0 0-5-5zm-3 8V7a3 3 0 0 1 6 0v3H9z"/>
+            </svg>
+          </div>
+          <span class="text-[15px] font-normal text-white tracking-tight">Safety &amp; emergency</span>
+        </div>
+        <svg class="w-4 h-4 text-[#5F636B] stroke-[2.2]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <polyline points="9 18 15 12 9 6"/>
+        </svg>
+      </div>
+      <div class="setting-divider"></div>
+
+      <!-- 3. Digital Wellbeing & parental controls -->
+      <div class="setting-row" data-search-item="digital wellbeing parental controls screen time focus kids">
+        <div class="flex items-center space-x-3.5 min-w-0">
+          <div class="setting-icon">
+            <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24">
+              <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+            </svg>
+          </div>
+          <span class="text-[15px] font-normal text-white tracking-tight">Digital Wellbeing &amp; parental controls</span>
+        </div>
+        <svg class="w-4 h-4 text-[#5F636B] stroke-[2.2]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <polyline points="9 18 15 12 9 6"/>
+        </svg>
+      </div>
+      <div class="setting-divider"></div>
+
+      <!-- 4. FAMILY MODE (Highlighted Core Feature Link to Screen 3!) -->
+      <a href="/screens/screen-3-family-mode-set-duration/" class="setting-row family-mode-highlight group" data-search-item="family mode focus duration contacts quiet quiet time call filter">
+        <div class="flex items-center space-x-3.5 min-w-0">
+          <div class="setting-icon text-[#5390F5]">
+            <!-- OriginOS Family Silhouette + House Icon -->
+            <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24">
+              <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/>
+            </svg>
+          </div>
+          <div class="flex items-center space-x-2">
+            <span class="text-[15px] font-medium text-white tracking-tight group-hover:text-[#5390F5] transition">Family Mode</span>
+            <span class="w-2 h-2 rounded-full bg-[#5390F5] shadow-[0_0_8px_#5390F5]"></span>
+          </div>
+        </div>
+        <div class="flex items-center space-x-2">
+          <span class="text-[12.5px] font-medium text-[#5390F5] bg-[#5390F5]/10 px-2 py-0.5 rounded-full border border-[#5390F5]/20">Setup &rarr;</span>
+          <svg class="w-4 h-4 text-[#5390F5] stroke-[2.2]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <polyline points="9 18 15 12 9 6"/>
+          </svg>
+        </div>
+      </a>
+      <div class="setting-divider"></div>
+
+      <!-- 5. Shortcuts & accessibility -->
+      <div class="setting-row" data-search-item="shortcuts accessibility gestures one handed quick actions">
+        <div class="flex items-center space-x-3.5 min-w-0">
+          <div class="setting-icon">
+            <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24">
+              <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/>
+            </svg>
+          </div>
+          <span class="text-[15px] font-normal text-white tracking-tight">Shortcuts &amp; accessibility</span>
+        </div>
+        <svg class="w-4 h-4 text-[#5F636B] stroke-[2.2]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <polyline points="9 18 15 12 9 6"/>
+        </svg>
+      </div>
+
+    </section>
+
+    <!-- CARD 5: System, Accounts & About -->
+    <section class="settings-card" data-setting-card="system-about">
+      
+      <!-- 1. System update -->
+      <div class="setting-row" data-search-item="system update software ota android version patch">
+        <div class="flex items-center space-x-3.5 min-w-0">
+          <div class="setting-icon">
+            <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24">
+              <path d="M12 2L4 10h5v8h6v-8h5L12 2zm-8 18h16v2H4v-2z"/>
+            </svg>
+          </div>
+          <span class="text-[15px] font-normal text-white tracking-tight">System update</span>
+        </div>
+        <svg class="w-4 h-4 text-[#5F636B] stroke-[2.2]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <polyline points="9 18 15 12 9 6"/>
+        </svg>
+      </div>
+      <div class="setting-divider"></div>
+
+      <!-- 2. System management -->
+      <div class="setting-row" data-search-item="system management navigation date time backup reset languages">
+        <div class="flex items-center space-x-3.5 min-w-0">
+          <div class="setting-icon">
+            <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24">
+              <path d="M19.43 12.98c.04-.32.07-.64.07-.98s-.03-.66-.07-.98l2.11-1.65c.19-.15.24-.42.12-.64l-2-3.46c-.12-.22-.39-.3-.61-.22l-2.49 1c-.52-.4-1.08-.73-1.69-.98l-.38-2.65A.488.488 0 0 0 14 2h-4c-.25 0-.46.18-.49.42l-.38 2.65c-.61.25-1.17.59-1.69.98l-2.49-1c-.23-.09-.49 0-.61.22l-2 3.46c-.13.22-.07.49.12.64l2.11 1.65c-.04.32-.07.65-.07.98s.03.66.07.98l-2.11 1.65c-.19.15-.24.42-.12.64l2 3.46c.12.22.39.3.61.22l2.49-1c.52.4 1.08.73 1.69.98l.38 2.65c.03.24.24.42.49.42h4c.25 0 .46-.18.49-.42l.38-2.65c.61-.25 1.17-.59 1.69-.98l2.49 1c.23.09.49 0 .61-.22l2-3.46c.12-.22.07-.49-.12-.64l-2.11-1.65zM12 15.5c-1.93 0-3.5-1.57-3.5-3.5s1.57-3.5 3.5-3.5 3.5 1.57 3.5 3.5-1.57 3.5-3.5 3.5z"/>
+            </svg>
+          </div>
+          <span class="text-[15px] font-normal text-white tracking-tight">System management</span>
+        </div>
+        <svg class="w-4 h-4 text-[#5F636B] stroke-[2.2]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <polyline points="9 18 15 12 9 6"/>
+        </svg>
+      </div>
+      <div class="setting-divider"></div>
+
+      <!-- 3. Users & accounts -->
+      <div class="setting-row" data-search-item="users accounts sync profiles multiple users">
+        <div class="flex items-center space-x-3.5 min-w-0">
+          <div class="setting-icon">
+            <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24">
+              <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+            </svg>
+          </div>
+          <span class="text-[15px] font-normal text-white tracking-tight">Users &amp; accounts</span>
+        </div>
+        <svg class="w-4 h-4 text-[#5F636B] stroke-[2.2]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <polyline points="9 18 15 12 9 6"/>
+        </svg>
+      </div>
+      <div class="setting-divider"></div>
+
+      <!-- 4. Google -->
+      <div class="setting-row" data-search-item="google services account play protect backup">
+        <div class="flex items-center space-x-3.5 min-w-0">
+          <div class="setting-icon">
+            <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24">
+              <path d="M12.545 10.239v3.821h5.445c-.712 2.315-2.647 3.972-5.445 3.972a6.033 6.033 0 1 1 0-12.064c1.498 0 2.866.549 3.921 1.453l2.814-2.814A9.969 9.969 0 0 0 12.545 2C7.021 2 2.543 6.477 2.543 12s4.478 10 10.002 10c8.396 0 10.249-7.85 9.426-11.761h-9.426z"/>
+            </svg>
+          </div>
+          <span class="text-[15px] font-normal text-white tracking-tight">Google</span>
+        </div>
+        <svg class="w-4 h-4 text-[#5F636B] stroke-[2.2]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <polyline points="9 18 15 12 9 6"/>
+        </svg>
+      </div>
+      <div class="setting-divider"></div>
+
+      <!-- 5. About phone -->
+      <div class="setting-row" data-search-item="about phone device specs model imei storage cpu originos">
+        <div class="flex items-center space-x-3.5 min-w-0">
+          <div class="setting-icon">
+            <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24">
+              <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/>
+            </svg>
+          </div>
+          <span class="text-[15px] font-normal text-white tracking-tight">About phone</span>
+        </div>
+        <svg class="w-4 h-4 text-[#5F636B] stroke-[2.2]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <polyline points="9 18 15 12 9 6"/>
+        </svg>
+      </div>
+
+    </section>
+
+  </main>
+
+  <!-- BOTTOM GESTURE NAVIGATION BAR -->
+  <footer class="w-full pb-2.5 pt-1 flex justify-center items-center bg-[#000000]">
+    <div class="w-32 h-1 bg-[#4A4E54] rounded-full"></div>
+  </footer>
+
+</main>
+
+<script>
+  // Dynamic Live Search Filtering
+  function filterSettings(query) {
+    const q = (query || '').toLowerCase().trim();
+    const rows = document.querySelectorAll('.setting-row');
+    const cards = document.querySelectorAll('.settings-card');
+    
+    if (!q) {
+      rows.forEach(r => r.style.display = 'flex');
+      document.querySelectorAll('.setting-divider').forEach(d => d.style.display = 'block');
+      cards.forEach(c => c.style.display = 'block');
+      return;
+    }
+
+    cards.forEach(card => {
+      const cardRows = card.querySelectorAll('.setting-row');
+      let visibleCount = 0;
+      
+      cardRows.forEach(row => {
+        const text = (row.textContent + ' ' + (row.getAttribute('data-search-item') || '')).toLowerCase();
+        if (text.includes(q)) {
+          row.style.display = 'flex';
+          visibleCount++;
+        } else {
+          row.style.display = 'none';
+        }
+      });
+
+      card.style.display = visibleCount > 0 ? 'block' : 'none';
+    });
+  }
+
+  // Control Center Drawer Interactions
+  function openControlCenter() {
+    const drawer = document.getElementById('control-center-drawer');
+    if (drawer) {
+      drawer.style.transition = 'transform 0.3s cubic-bezier(0.16, 1, 0.3, 1)';
+      drawer.classList.remove('-translate-y-full');
+      drawer.classList.add('translate-y-0');
+      drawer.style.transform = '';
+    }
+  }
+
+  function closeControlCenter() {
+    const drawer = document.getElementById('control-center-drawer');
+    if (drawer) {
+      drawer.style.transition = 'transform 0.3s cubic-bezier(0.16, 1, 0.3, 1)';
+      drawer.classList.remove('translate-y-0');
+      drawer.classList.add('-translate-y-full');
+      drawer.style.transform = '';
+    }
+  }
+
+  window.addEventListener('message', (e) => {
+    if (e.data === 'close-control-center') {
+      closeControlCenter();
+    } else if (e.data && e.data.action === 'open-family-mode') {
+      closeControlCenter();
+      window.location.href = '/screens/screen-3-family-mode-set-duration/';
+    }
+  });
+
+  // Touch & Mouse Drag Down Gestures for Pull-Down Control Center
+  (function initDrag() {
+    const statusBar = document.getElementById('top-status-bar');
+    const drawer = document.getElementById('control-center-drawer');
+    const mainEl = document.querySelector('main');
+    if (!statusBar || !drawer || !mainEl) return;
+
+    let isDragging = false;
+    let startY = 0;
+
+    function onStart(clientY) {
+      isDragging = true;
+      startY = clientY;
+      drawer.style.transition = 'none';
+    }
+
+    function onMove(clientY) {
+      if (!isDragging) return;
+      const diff = clientY - startY;
+      if (diff > 0) {
+        const h = mainEl.clientHeight || 844;
+        const translateY = Math.min(0, -h + diff);
+        drawer.style.transform = `translateY(${translateY}px)`;
+      }
+    }
+
+    function onEnd(clientY) {
+      if (!isDragging) return;
+      isDragging = false;
+      const diff = clientY - startY;
+      if (diff > 50) {
+        openControlCenter();
+      } else {
+        closeControlCenter();
+      }
+    }
+
+    statusBar.addEventListener('touchstart', (e) => onStart(e.touches[0].clientY), { passive: true });
+    window.addEventListener('touchmove', (e) => { if (isDragging) onMove(e.touches[0].clientY); }, { passive: true });
+    window.addEventListener('touchend', (e) => { if (isDragging) onEnd(e.changedTouches[0].clientY); }, { passive: true });
+
+    statusBar.addEventListener('mousedown', (e) => {
+      onStart(e.clientY);
+      function onMouseMove(ev) { onMove(ev.clientY); }
+      function onMouseUp(ev) {
+        onEnd(ev.clientY);
+        window.removeEventListener('mousemove', onMouseMove);
+        window.removeEventListener('mouseup', onMouseUp);
+      }
+      window.addEventListener('mousemove', onMouseMove);
+      window.addEventListener('mouseup', onMouseUp);
+    });
+
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') closeControlCenter();
+      if (e.key.toLowerCase() === 'c') openControlCenter();
+    });
+  })();
+</script>
+
+</body>
+</html>

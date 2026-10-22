@@ -1,0 +1,160 @@
+<!DOCTYPE html><html lang="en"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport">
+<title>Family Mode - Activating</title>
+<!-- Tailwind CSS CDN with plugins -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            appBg: '#F8F9FA',
+            darkText: '#121212',
+            subText: '#71717A',
+            trackBg: '#E5E7EB',
+            progressDark: '#52525B',
+            activePill: '#27272A',
+            inactivePill: '#E4E4E7',
+          },
+          fontFamily: {
+            sans: [
+              '-apple-system',
+              'BlinkMacSystemFont',
+              '"SF Pro Display"',
+              '"SF Pro Text"',
+              'system-ui',
+              'sans-serif'
+            ],
+          }
+        }
+      }
+    };
+  </script>
+<style data-purpose="custom-layout">
+    /* Precise iOS viewport styling & subtle animations */
+    body {
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      background-color: #ECEEF2;
+    }
+
+    @keyframes spin-subtle {
+      0% {
+        transform: rotate(0deg);
+      }
+      100% {
+        transform: rotate(360deg);
+      }
+    }
+
+    .loader-spin {
+      animation: spin-subtle 1.4s linear infinite;
+    }
+  </style>
+</head>
+<body class="min-h-screen flex items-center justify-center p-0 sm:p-4 text-darkText select-none">
+<!-- BEGIN: PhoneShellContainer -->
+<!-- Outer iOS container matching mobile viewport dimensions and styling -->
+<main class="w-full max-w-[390px] h-[844px] bg-[#FAFAFA] rounded-[48px] shadow-2xl relative flex flex-col justify-between overflow-hidden border border-[#E5E7EB]/60 px-7 pt-12 pb-6">
+<!-- BEGIN: TopSection -->
+<header class="w-full flex flex-col items-start" data-purpose="screen-header">
+<!-- Progress Bar Indicators: 4 segmented pills with first 3 filled -->
+<nav aria-label="Step Progress" class="w-full flex justify-center items-center gap-[6px] mb-9" data-purpose="step-indicators">
+<div aria-current="false" class="h-[3px] w-8 rounded-full bg-activePill"></div>
+<div aria-current="false" class="h-[3px] w-8 rounded-full bg-activePill"></div>
+<div aria-current="true" class="h-[3px] w-8 rounded-full bg-activePill"></div>
+<div aria-current="false" class="h-[3px] w-8 rounded-full bg-inactivePill"></div>
+</nav>
+<!-- Main Heading and Subtitle -->
+<div class="space-y-1.5" data-purpose="header-text">
+<h1 class="text-[34px] leading-[1.12] font-bold tracking-tight text-darkText">
+          Activating<br>Family Mode...
+        </h1>
+<p class="text-[17px] font-normal text-subText tracking-tight">
+          Your settings are being applied.
+        </p>
+</div>
+</header>
+<!-- END: TopSection -->
+<!-- BEGIN: CentralGraphic -->
+<!-- Circular progress ring with House & Family line art icon -->
+<section class="flex flex-col items-center justify-center my-auto py-2" data-purpose="visual-status-meter">
+<div class="relative w-64 h-64 flex items-center justify-center">
+<!-- Circular Progress Ring SVG -->
+<svg aria-hidden="true" class="w-full h-full transform -rotate-90" viewBox="0 0 200 200">
+<!-- Background Track Circle -->
+<circle cx="100" cy="100" fill="transparent" r="82" stroke="#E5E7EB" stroke-width="7"></circle>
+<!-- Progress Stroke Segment (approx. 72% filled) -->
+<circle cx="100" cy="100" fill="transparent" r="82" stroke="#4B5563" stroke-dasharray="515.22" stroke-dashoffset="145" stroke-linecap="round" stroke-width="7"></circle>
+</svg>
+<!-- Center Line-Art Icon: House with Family Figures inside -->
+<div class="absolute inset-0 flex items-center justify-center pointer-events-none" data-purpose="family-house-icon">
+<svg class="w-28 h-28 text-darkText" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" viewBox="0 0 100 100">
+<!-- House Roof and Walls -->
+<path d="M 50 16 L 86 46 L 86 84 L 14 84 L 14 46 Z"></path>
+<!-- Person 1 (Adult Left) -->
+<circle cx="36" cy="48" r="4.2" stroke-width="2.5"></circle>
+<path d="M 28 66 C 28 58 44 58 44 66 L 44 76" stroke-width="2.5"></path>
+<!-- Person 2 (Child Center) -->
+<circle cx="50" cy="54" r="3.5" stroke-width="2.3"></circle>
+<path d="M 43 72 C 43 65 57 65 57 72 L 57 76" stroke-width="2.3"></path>
+<!-- Person 3 (Adult Right) -->
+<circle cx="64" cy="48" r="4.2" stroke-width="2.5"></circle>
+<path d="M 56 66 C 56 58 72 58 72 66 L 72 76" stroke-width="2.5"></path>
+</svg>
+</div>
+</div>
+</section>
+<!-- END: CentralGraphic -->
+<!-- BEGIN: ChecklistSection -->
+<!-- Activation step statuses with completed checks and an active spinner -->
+<section class="w-full flex flex-col space-y-[18px] mb-8" data-purpose="activation-checklist">
+<!-- Step 1: Completed -->
+<div class="flex items-center space-x-3.5" data-purpose="checklist-item">
+<div class="w-6 h-6 rounded-full bg-darkText flex items-center justify-center shrink-0">
+<svg class="w-3.5 h-3.5 text-white" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24">
+<path d="M5 13l4 4L19 7" stroke-linecap="round" stroke-linejoin="round"></path>
+</svg>
+</div>
+<span class="text-[16px] font-medium text-darkText tracking-tight">Setting duration</span>
+</div>
+<!-- Step 2: Completed -->
+<div class="flex items-center space-x-3.5" data-purpose="checklist-item">
+<div class="w-6 h-6 rounded-full bg-darkText flex items-center justify-center shrink-0">
+<svg class="w-3.5 h-3.5 text-white" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24">
+<path d="M5 13l4 4L19 7" stroke-linecap="round" stroke-linejoin="round"></path>
+</svg>
+</div>
+<span class="text-[16px] font-medium text-darkText tracking-tight">Applying contact settings</span>
+</div>
+<!-- Step 3: Completed -->
+<div class="flex items-center space-x-3.5" data-purpose="checklist-item">
+<div class="w-6 h-6 rounded-full bg-darkText flex items-center justify-center shrink-0">
+<svg class="w-3.5 h-3.5 text-white" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24">
+<path d="M5 13l4 4L19 7" stroke-linecap="round" stroke-linejoin="round"></path>
+</svg>
+</div>
+<span class="text-[16px] font-medium text-darkText tracking-tight">Updating message behaviour</span>
+</div>
+<!-- Step 4: In Progress / Loading -->
+<div class="flex items-center space-x-3.5" data-purpose="checklist-item-active">
+<div class="w-6 h-6 flex items-center justify-center shrink-0">
+<svg class="w-6 h-6 loader-spin" fill="none" viewBox="0 0 24 24">
+<circle class="opacity-25" cx="12" cy="12" r="9.5" stroke="#71717A" stroke-width="2.5"></circle>
+<path class="opacity-90" d="M12 2.5 A 9.5 9.5 0 0 1 21.5 12" fill="none" stroke="#27272A" stroke-linecap="round" stroke-width="2.5"></path>
+</svg>
+</div>
+<span class="text-[16px] font-normal text-subText tracking-tight">Preparing caller status</span>
+</div>
+</section>
+<!-- END: ChecklistSection -->
+<!-- BEGIN: iOSHomeIndicator -->
+<!-- Standard bottom home indicator bar -->
+<footer class="w-full flex justify-center pb-2" data-purpose="ios-indicator">
+<div class="w-32 h-[5px] bg-[#18181B] rounded-full"></div>
+</footer>
+<!-- END: iOSHomeIndicator -->
+</main>
+<!-- END: PhoneShellContainer -->
+</body></html>

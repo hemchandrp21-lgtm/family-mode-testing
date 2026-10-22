@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport"/>
+  <title>Family Mode - Message Behaviour</title>
+  <!-- Load Tailwind CSS v3 -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Google Fonts: Roboto -->
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+
+  <style>
+    * {
+      -webkit-tap-highlight-color: transparent;
+      user-select: none;
+      box-sizing: border-box;
+    }
+    ::-webkit-scrollbar,
+    html::-webkit-scrollbar,
+    body::-webkit-scrollbar,
+    *::-webkit-scrollbar {
+      display: none !important;
+      width: 0 !important;
+      height: 0 !important;
+      background: transparent !important;
+    }
+    html, body, * {
+      scrollbar-width: none !important;
+      -ms-overflow-style: none !important;
+    }
+    body {
+      background-color: #000000;
+      color: #E2E2E6;
+      font-family: 'Roboto', -apple-system, BlinkMacSystemFont, sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+    .minimal-radio {
+      appearance: none;
+      -webkit-appearance: none;
+      width: 22px;
+      height: 22px;
+      border: 2px solid #8C9199;
+      border-radius: 50%;
+      background-color: transparent;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      transition: all 0.15s ease;
+      flex-shrink: 0;
+    }
+    .minimal-radio:checked {
+      border-color: #7CAEFF;
+    }
+    .minimal-radio:checked::after {
+      content: '';
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background-color: #7CAEFF;
+    }
+    .option-card.selected {
+      background-color: #1E2530;
+      border-color: #2F3E52;
+    }
+  </style>
+</head>
+<body class="min-h-screen flex items-center justify-center p-0 sm:p-4 bg-black">
+
+<!-- Phone Frame Container -->
+<main class="w-full max-w-[392px] h-screen sm:h-[844px] bg-[#121316] sm:rounded-[44px] shadow-2xl relative flex flex-col justify-between overflow-hidden border border-neutral-800/60 select-none">
+
+  <!-- TOP PULL HANDLE (Pull down or click to open Control Center) -->
+  <div id="top-status-bar" class="w-full pt-3 pb-1 flex flex-col items-center justify-center select-none cursor-pointer group z-30 transition-colors" title="Drag down or click to open Control Center" onclick="openControlCenter()">
+    <div class="w-10 h-1 bg-white/20 group-hover:bg-[#7CAEFF] rounded-full transition-colors duration-200"></div>
+  </div>
+
+  <!-- SLIDING CONTROL CENTER OVERLAY -->
+  <div id="control-center-drawer" class="absolute inset-0 bg-[#121316] z-50 transform -translate-y-full transition-transform duration-300 ease-out flex flex-col justify-between overflow-hidden shadow-2xl">
+    <iframe id="cc-iframe" src="/screens/screen-8-control-center-quick-settings/" class="w-full h-full border-none"></iframe>
+  </div>
+
+  <!-- NAVIGATION HEADER -->
+  <header class="w-full px-5 pt-3 pb-2 flex items-center justify-between text-white z-20">
+    <!-- Back Button -->
+    <a href="/screens/screen-4-family-mode-allow-contacts/" aria-label="Go back" class="p-1 -ml-1 text-neutral-200 hover:text-white transition">
+      <svg class="w-6 h-6 stroke-[2]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path d="M10 19l-7-7m0 0l7-7m-7 7h18" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </a>
+    <div class="w-6"></div>
+  </header>
+
+  <!-- MAIN SCROLLABLE CONTENT -->
+  <div class="flex-1 px-6 pt-2 pb-4 overflow-y-auto">
+    
+    <h1 class="text-[34px] font-normal text-white tracking-tight leading-tight mb-2">
+      Message behaviour
+    </h1>
+    <p class="text-[14.5px] text-[#A0A4A8] leading-relaxed mb-6 font-normal">
+      Choose how messages are handled during Family Mode.
+    </p>
+
+    <!-- 3 MESSAGE BEHAVIOR OPTIONS (Minimal dark cards) -->
+    <section class="space-y-3 mb-6" data-purpose="behavior-options-list">
+      
+      <!-- Option 1: Mark as undelivered (Default Selected) -->
+      <label class="option-card selected flex items-center justify-between p-3.5 bg-[#1E2530] border border-[#2F3E52] rounded-[18px] cursor-pointer hover:bg-[#20242A] transition" onclick="selectOption(this)">
+        <div class="flex items-center gap-3.5">
+          <div class="w-10 h-10 rounded-full bg-[#121316] border border-neutral-800 flex items-center justify-center text-[#7CAEFF] flex-shrink-0">
+            <svg class="w-5 h-5 stroke-[2]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <circle cx="12" cy="12" r="9"/>
+              <path d="M5.636 5.636l12.728 12.728" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <div>
+            <h2 class="text-[15.5px] font-normal text-white leading-tight">Mark as undelivered</h2>
+            <p class="text-[12.5px] text-[#8C9094] leading-normal mt-0.5">Senders will see that you're in Family Mode</p>
+          </div>
+        </div>
+        <input checked name="message_behaviour" type="radio" value="undelivered" class="minimal-radio"/>
+      </label>
+
+      <!-- Option 2: Send auto-reply -->
+      <label class="option-card flex items-center justify-between p-3.5 bg-[#1A1D21] border border-neutral-800/80 rounded-[18px] cursor-pointer hover:bg-[#20242A] transition" onclick="selectOption(this)">
+        <div class="flex items-center gap-3.5">
+          <div class="w-10 h-10 rounded-full bg-[#121316] border border-neutral-800 flex items-center justify-center text-[#8C9199] flex-shrink-0">
+            <svg class="w-5 h-5 stroke-[2]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <div>
+            <h2 class="text-[15.5px] font-normal text-neutral-200 leading-tight">Send auto-reply</h2>
+            <p class="text-[12.5px] text-[#8C9094] leading-normal mt-0.5">Let senders know you're unavailable</p>
+          </div>
+        </div>
+        <input name="message_behaviour" type="radio" value="autoreply" class="minimal-radio"/>
+      </label>
+
+      <!-- Option 3: Deliver silently -->
+      <label class="option-card flex items-center justify-between p-3.5 bg-[#1A1D21] border border-neutral-800/80 rounded-[18px] cursor-pointer hover:bg-[#20242A] transition" onclick="selectOption(this)">
+        <div class="flex items-center gap-3.5">
+          <div class="w-10 h-10 rounded-full bg-[#121316] border border-neutral-800 flex items-center justify-center text-[#8C9199] flex-shrink-0">
+            <svg class="w-5 h-5 stroke-[2]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <div>
+            <h2 class="text-[15.5px] font-normal text-neutral-200 leading-tight">Deliver silently</h2>
+            <p class="text-[12.5px] text-[#8C9094] leading-normal mt-0.5">Allow messages but without notifications</p>
+          </div>
+        </div>
+        <input name="message_behaviour" type="radio" value="silent" class="minimal-radio"/>
+      </label>
+
+    </section>
+
+    <!-- AUTO-REPLY TEXTAREA SECTION -->
+    <section class="mb-4">
+      <div class="flex items-center justify-between mb-2">
+        <label class="text-[14px] font-medium text-[#8AB4F8]" for="autoreply-text">
+          Auto-reply message
+        </label>
+        <span class="text-[12px] text-[#8C9199]">Preset</span>
+      </div>
+
+      <div class="w-full bg-[#1A1D21] border border-neutral-800 rounded-[20px] p-4 focus-within:border-[#7CAEFF] transition">
+        <textarea id="autoreply-text" rows="3" class="w-full bg-transparent border-0 p-0 text-[14px] text-white leading-relaxed resize-none focus:ring-0 focus:outline-none placeholder-[#6A6E75]" placeholder="Type your auto-reply...">I'm in Family Mode right now. I'll be available after 8:00 PM.</textarea>
+      </div>
+
+      <div class="text-right mt-1.5 pr-1">
+        <span id="char-counter" class="text-[12px] text-[#8C9199]">61/100</span>
+      </div>
+    </section>
+
+  </div>
+
+  <!-- BOTTOM ACTION (Deep Blue Pill Button -> Next links to Screen 5b Caller Status) -->
+  <footer class="w-full px-6 pt-2 pb-3">
+    <a href="/screens/screen-5b-family-mode-caller-status/" class="w-full py-3.5 rounded-full bg-[#004F7C] hover:bg-[#005E94] active:scale-95 text-white text-[15.5px] font-medium transition shadow-sm flex items-center justify-center text-decoration-none">
+      Next
+    </a>
+
+    <!-- Bottom Gesture Home Bar -->
+    <div class="w-36 h-1 bg-[#4A4E54] rounded-full mx-auto mt-4"></div>
+  </footer>
+
+</main>
+
+<script>
+  function selectOption(el) {
+    document.querySelectorAll('.option-card').forEach(card => {
+      card.classList.remove('selected', 'bg-[#1E2530]', 'border-[#2F3E52]');
+      card.classList.add('bg-[#1A1D21]', 'border-neutral-800/80');
+      const radio = card.querySelector('input[type="radio"]');
+      if (radio) radio.checked = false;
+    });
+    el.classList.add('selected', 'bg-[#1E2530]', 'border-[#2F3E52]');
+    el.classList.remove('bg-[#1A1D21]', 'border-neutral-800/80');
+    const activeRadio = el.querySelector('input[type="radio"]');
+    if (activeRadio) activeRadio.checked = true;
+  }
+
+  // Dynamic character counter
+  const textarea = document.getElementById('autoreply-text');
+  const counter = document.getElementById('char-counter');
+  if (textarea && counter) {
+    textarea.addEventListener('input', () => {
+      counter.textContent = `${textarea.value.length}/100`;
+    });
+  }
+
+  // Sliding Control Center Quick Settings drawer
+  function openControlCenter() {
+    const drawer = document.getElementById('control-center-drawer');
+    if (drawer) {
+      drawer.style.transition = 'transform 0.3s cubic-bezier(0.16, 1, 0.3, 1)';
+      drawer.classList.remove('-translate-y-full');
+      drawer.classList.add('translate-y-0');
+      drawer.style.transform = '';
+    }
+  }
+
+  function closeControlCenter() {
+    const drawer = document.getElementById('control-center-drawer');
+    if (drawer) {
+      drawer.style.transition = 'transform 0.3s cubic-bezier(0.16, 1, 0.3, 1)';
+      drawer.classList.remove('translate-y-0');
+      drawer.classList.add('-translate-y-full');
+      drawer.style.transform = '';
+    }
+  }
+
+  window.addEventListener('message', (e) => {
+    if (e.data === 'close-control-center') {
+      closeControlCenter();
+    } else if (e.data && e.data.action === 'open-family-mode') {
+      closeControlCenter();
+    }
+  });
+
+  // Touch & Mouse Drag Down Gestures
+  (function initDrag() {
+    const statusBar = document.getElementById('top-status-bar');
+    const drawer = document.getElementById('control-center-drawer');
+    const mainEl = document.querySelector('main');
+    if (!statusBar || !drawer || !mainEl) return;
+
+    let isDragging = false;
+    let startY = 0;
+
+    function onStart(clientY) {
+      isDragging = true;
+      startY = clientY;
+      drawer.style.transition = 'none';
+    }
+
+    function onMove(clientY) {
+      if (!isDragging) return;
+      const diff = clientY - startY;
+      if (diff > 0) {
+        const h = mainEl.clientHeight || 844;
+        const translateY = Math.min(0, -h + diff);
+        drawer.style.transform = `translateY(${translateY}px)`;
+      }
+    }
+
+    function onEnd(clientY) {
+      if (!isDragging) return;
+      isDragging = false;
+      const diff = clientY - startY;
+      if (diff > 60) {
+        openControlCenter();
+      } else {
+        closeControlCenter();
+      }
+    }
+
+    statusBar.addEventListener('touchstart', (e) => onStart(e.touches[0].clientY), { passive: true });
+    window.addEventListener('touchmove', (e) => { if (isDragging) onMove(e.touches[0].clientY); }, { passive: true });
+    window.addEventListener('touchend', (e) => { if (isDragging) onEnd(e.changedTouches[0].clientY); }, { passive: true });
+
+    statusBar.addEventListener('mousedown', (e) => {
+      onStart(e.clientY);
+      function onMouseMove(ev) { onMove(ev.clientY); }
+      function onMouseUp(ev) {
+        onEnd(ev.clientY);
+        window.removeEventListener('mousemove', onMouseMove);
+        window.removeEventListener('mouseup', onMouseUp);
+      }
+      window.addEventListener('mousemove', onMouseMove);
+      window.addEventListener('mouseup', onMouseUp);
+    });
+
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') closeControlCenter();
+      if (e.key.toLowerCase() === 'c') openControlCenter();
+    });
+  })();
+</script>
+
+</body>
+</html>

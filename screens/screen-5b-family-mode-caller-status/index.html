@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport"/>
+  <title>Caller status - Family Mode</title>
+  <!-- Load Tailwind CSS v3 -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Google Fonts: Roboto & Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+
+  <style>
+    * {
+      -webkit-tap-highlight-color: transparent;
+      user-select: none;
+      box-sizing: border-box;
+    }
+    /* Universal scrollbar elimination */
+    ::-webkit-scrollbar,
+    html::-webkit-scrollbar,
+    body::-webkit-scrollbar,
+    *::-webkit-scrollbar {
+      display: none !important;
+      width: 0 !important;
+      height: 0 !important;
+      background: transparent !important;
+    }
+    html, body, * {
+      scrollbar-width: none !important;
+      -ms-overflow-style: none !important;
+    }
+    body {
+      background-color: #000000;
+      color: #E2E2E6;
+      font-family: 'Roboto', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+    .minimal-radio {
+      appearance: none;
+      -webkit-appearance: none;
+      width: 22px;
+      height: 22px;
+      border: 2px solid #8C9199;
+      border-radius: 50%;
+      background-color: transparent;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      transition: all 0.15s ease;
+      flex-shrink: 0;
+    }
+    .minimal-radio:checked {
+      border-color: #7CAEFF;
+      background-color: #7CAEFF;
+    }
+    .minimal-radio:checked::after {
+      content: '';
+      width: 5px;
+      height: 9px;
+      border: solid #041E49;
+      border-width: 0 2px 2px 0;
+      transform: rotate(45deg);
+      margin-bottom: 2px;
+    }
+  </style>
+</head>
+<body class="min-h-screen flex items-center justify-center p-0 sm:p-4 bg-black">
+
+<!-- Phone Frame Container -->
+<main class="w-full max-w-[392px] h-screen sm:h-[844px] bg-[#121316] sm:rounded-[44px] shadow-2xl relative flex flex-col justify-between overflow-hidden border border-neutral-800/60 select-none">
+
+  <!-- TOP PULL HANDLE (Pull down or click to open Control Center) -->
+  <div id="top-status-bar" class="w-full pt-3 pb-1 flex flex-col items-center justify-center select-none cursor-pointer group z-30 transition-colors" title="Drag down or click to open Control Center" onclick="openControlCenter()">
+    <div class="w-10 h-1 bg-white/20 group-hover:bg-[#7CAEFF] rounded-full transition-colors duration-200"></div>
+  </div>
+
+  <!-- SLIDING CONTROL CENTER OVERLAY -->
+  <div id="control-center-drawer" class="absolute inset-0 bg-[#121316] z-50 transform -translate-y-full transition-transform duration-300 ease-out flex flex-col justify-between overflow-hidden shadow-2xl">
+    <iframe id="cc-iframe" src="/screens/screen-8-control-center-quick-settings/" class="w-full h-full border-none"></iframe>
+  </div>
+
+  <!-- NAVIGATION HEADER & STEPPER -->
+  <header class="w-full px-5 pt-3 pb-2 flex items-center justify-between text-white z-20">
+    <a href="/screens/screen-5-family-mode-message-behaviour/" aria-label="Go back" class="p-1 -ml-1 text-neutral-200 hover:text-white transition">
+      <svg class="w-6 h-6 stroke-[2]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path d="M10 19l-7-7m0 0l7-7m-7 7h18" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </a>
+
+    <!-- 4-segment Stepper Progress (Step 3/4) -->
+    <div class="flex items-center space-x-1.5" title="Step 3 of 4">
+      <span class="w-8 h-[3px] rounded-full bg-[#7CAEFF]"></span>
+      <span class="w-8 h-[3px] rounded-full bg-[#7CAEFF]"></span>
+      <span class="w-8 h-[3px] rounded-full bg-[#7CAEFF]"></span>
+      <span class="w-8 h-[3px] rounded-full bg-[#2A2E35]"></span>
+    </div>
+
+    <div class="w-6"></div>
+  </header>
+
+  <!-- MAIN SCROLLABLE CONTENT -->
+  <div class="flex-1 px-6 pt-1 pb-4 overflow-y-auto">
+    
+    <h1 class="text-[32px] font-normal text-white tracking-tight leading-tight mb-1.5">
+      Caller status
+    </h1>
+    <p class="text-[14px] text-[#A0A4A8] leading-relaxed mb-4 font-normal">
+      Choose what others will see when they call you.
+    </p>
+
+    <!-- CALLER PREVIEW GRAPHIC CARD -->
+    <section class="relative w-full h-[225px] bg-[#181A1F] border border-neutral-800/80 rounded-[22px] overflow-hidden flex items-end justify-center pt-3 shadow-inner mb-4" data-purpose="phone-mockup-wrapper">
+      <!-- Wireframe Smartphone -->
+      <div class="relative w-[210px] h-[205px] bg-[#0E1013] rounded-t-[32px] border-[3px] border-[#2E333D] border-b-0 shadow-2xl flex flex-col items-center pt-2">
+        <!-- Hardware Buttons (Mock Left/Right) -->
+        <div class="absolute -left-[5px] top-10 w-[3px] h-5 bg-[#2E333D] rounded-l-sm"></div>
+        <div class="absolute -left-[5px] top-18 w-[3px] h-8 bg-[#2E333D] rounded-l-sm"></div>
+        <div class="absolute -right-[5px] top-12 w-[3px] h-10 bg-[#2E333D] rounded-r-sm"></div>
+
+        <!-- Speaker / Camera Notch Silhouette -->
+        <div class="w-18 h-2.5 bg-[#20242B] rounded-b-md mb-2 flex items-center justify-center">
+          <div class="w-5 h-[2px] bg-[#4B5260] rounded-full"></div>
+        </div>
+
+        <!-- Avatar Placeholder -->
+        <div class="w-13 h-13 rounded-full bg-[#242831] border border-neutral-700/60 flex items-center justify-center overflow-hidden mb-2 shadow-sm text-[#8C9199]">
+          <svg class="w-9 h-9 translate-y-1 fill-current" viewBox="0 0 24 24">
+            <path clip-rule="evenodd" d="M12 2a5 5 0 100 10 5 5 0 000-10zM4 20a8 8 0 0116 0H4z" fill-rule="evenodd"/>
+          </svg>
+        </div>
+
+        <!-- Dynamic Screen Content -->
+        <div id="mock-screen-content" class="text-center px-3 transition-opacity duration-200">
+          <p id="mock-title" class="text-[12.5px] font-medium text-white leading-tight">
+            You're in<br/><span class="text-[#7CAEFF]">Family Mode</span>
+          </p>
+          <p id="mock-subtext" class="text-[10px] text-[#8C9094] mt-0.5 font-normal">
+            Available after 8:00 PM
+          </p>
+        </div>
+
+        <!-- Mock Call Action Buttons -->
+        <div class="mt-auto mb-2.5 flex items-center space-x-3.5">
+          <!-- Call button -->
+          <div class="w-8 h-8 rounded-full bg-[#242831] border border-neutral-700/60 flex items-center justify-center text-[#E2E2E6] shadow-sm">
+            <svg class="w-3.5 h-3.5 fill-current rotate-[15deg]" viewBox="0 0 24 24">
+              <path d="M6.62 10.79a15.05 15.05 0 006.59 6.59l2.2-2.2a1 1 0 011.05-.24 11.72 11.72 0 003.68.59 1 1 0 011 1v3.48a1 1 0 01-1 1A17.93 17.93 0 013 4.99a1 1 0 011-1H7.5a1 1 0 011 1c0 1.25.2 2.45.59 3.68a1 1 0 01-.24 1.05l-2.23 2.07z"/>
+            </svg>
+          </div>
+          <!-- Chat button -->
+          <div class="w-8 h-8 rounded-full bg-[#242831] border border-neutral-700/60 flex items-center justify-center text-[#E2E2E6] shadow-sm">
+            <svg class="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24">
+              <path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z"/>
+            </svg>
+          </div>
+          <!-- More options button -->
+          <div class="w-8 h-8 rounded-full bg-[#242831] border border-neutral-700/60 flex items-center justify-center text-[#E2E2E6] shadow-sm">
+            <svg class="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24">
+              <path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/>
+            </svg>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- OPTION CARDS SELECTION -->
+    <section class="space-y-3" data-purpose="status-options-selection">
+      
+      <!-- Option 1: Show Family Mode status (Default Selected) -->
+      <label id="opt-show" class="option-card selected flex items-center justify-between p-3.5 bg-[#1E2530] border border-[#2F3E52] rounded-[18px] cursor-pointer hover:bg-[#20242A] transition" onclick="selectCallerOption('show')">
+        <div class="flex items-center space-x-3.5">
+          <!-- Eye Icon Container -->
+          <div class="w-10 h-10 rounded-full bg-[#121316] border border-neutral-800 flex items-center justify-center flex-shrink-0 text-[#7CAEFF]">
+            <svg class="w-5 h-5 stroke-[2]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <div>
+            <h2 class="text-[15px] font-normal text-white leading-snug">
+              Show Family Mode status
+            </h2>
+            <p class="text-[12px] text-[#8C9094] leading-normal mt-0.5">
+              Let callers know you're in Family Mode
+            </p>
+          </div>
+        </div>
+        <!-- Radio Checked Indicator -->
+        <input checked name="caller_status" type="radio" value="show" class="minimal-radio"/>
+      </label>
+
+      <!-- Option 2: Don't show status -->
+      <label id="opt-hide" class="option-card flex items-center justify-between p-3.5 bg-[#1A1D21] border border-neutral-800/80 rounded-[18px] cursor-pointer hover:bg-[#20242A] transition" onclick="selectCallerOption('hide')">
+        <div class="flex items-center space-x-3.5">
+          <!-- Eye-Slash Icon Container -->
+          <div class="w-10 h-10 rounded-full bg-[#121316] border border-neutral-800 flex items-center justify-center flex-shrink-0 text-[#8C9199]">
+            <svg class="w-5 h-5 stroke-[2]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l18 18" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <div>
+            <h2 class="text-[15px] font-normal text-neutral-200 leading-snug">
+              Don’t show status
+            </h2>
+            <p class="text-[12px] text-[#8C9094] leading-normal mt-0.5">
+              Calls will go straight to voicemail
+            </p>
+          </div>
+        </div>
+        <!-- Radio Unchecked Indicator -->
+        <input name="caller_status" type="radio" value="hide" class="minimal-radio"/>
+      </label>
+
+    </section>
+
+  </div>
+
+  <!-- BOTTOM ACTION (Deep Blue Pill Button -> Next links to Screen 6 Activating) -->
+  <footer class="w-full px-6 pt-2 pb-3">
+    <a href="/screens/screen-6-family-mode-activating/" class="w-full py-3.5 rounded-full bg-[#004F7C] hover:bg-[#005E94] active:scale-95 text-white text-[15.5px] font-medium transition shadow-sm flex items-center justify-center text-decoration-none">
+      Next
+    </a>
+
+    <!-- Bottom Gesture Home Bar -->
+    <div class="w-36 h-1 bg-[#4A4E54] rounded-full mx-auto mt-4"></div>
+  </footer>
+
+</main>
+
+<script>
+  function selectCallerOption(type) {
+    const optShow = document.getElementById('opt-show');
+    const optHide = document.getElementById('opt-hide');
+    const mockTitle = document.getElementById('mock-title');
+    const mockSubtext = document.getElementById('mock-subtext');
+
+    if (type === 'show') {
+      optShow.classList.add('selected', 'bg-[#1E2530]', 'border-[#2F3E52]');
+      optShow.classList.remove('bg-[#1A1D21]', 'border-neutral-800/80');
+      optShow.querySelector('input').checked = true;
+
+      optHide.classList.remove('selected', 'bg-[#1E2530]', 'border-[#2F3E52]');
+      optHide.classList.add('bg-[#1A1D21]', 'border-neutral-800/80');
+      optHide.querySelector('input').checked = false;
+
+      mockTitle.innerHTML = 'You\'re in<br/><span class="text-[#7CAEFF]">Family Mode</span>';
+      mockSubtext.textContent = 'Available after 8:00 PM';
+    } else {
+      optHide.classList.add('selected', 'bg-[#1E2530]', 'border-[#2F3E52]');
+      optHide.classList.remove('bg-[#1A1D21]', 'border-neutral-800/80');
+      optHide.querySelector('input').checked = true;
+
+      optShow.classList.remove('selected', 'bg-[#1E2530]', 'border-[#2F3E52]');
+      optShow.classList.add('bg-[#1A1D21]', 'border-neutral-800/80');
+      optShow.querySelector('input').checked = false;
+
+      mockTitle.innerHTML = 'Incoming Call<br/><span class="text-[#8C9199]">Voicemail Active</span>';
+      mockSubtext.textContent = 'Caller status hidden';
+    }
+  }
+
+  // Sliding Control Center Quick Settings drawer
+  function openControlCenter() {
+    const drawer = document.getElementById('control-center-drawer');
+    if (drawer) {
+      drawer.classList.remove('-translate-y-full');
+      drawer.classList.add('translate-y-0');
+    }
+  }
+
+  function closeControlCenter() {
+    const drawer = document.getElementById('control-center-drawer');
+    if (drawer) {
+      drawer.classList.remove('translate-y-0');
+      drawer.classList.add('-translate-y-full');
+    }
+  }
+
+  window.addEventListener('message', (e) => {
+    if (e.data === 'close-control-center') {
+      closeControlCenter();
+    }
+  });
+
+  // Touch & Mouse swipe gestures from top
+  let touchStartY = 0;
+  window.addEventListener('touchstart', (e) => {
+    touchStartY = e.touches[0].clientY;
+  }, { passive: true });
+
+  window.addEventListener('touchend', (e) => {
+    const diff = e.changedTouches[0].clientY - touchStartY;
+    const drawer = document.getElementById('control-center-drawer');
+    if (diff > 45 && touchStartY < 140) {
+      openControlCenter();
+    } else if (diff < -50 && drawer && !drawer.classList.contains('-translate-y-full')) {
+      closeControlCenter();
+    }
+  }, { passive: true });
+
+  window.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') closeControlCenter();
+    if (e.key.toLowerCase() === 'c') openControlCenter();
+  });
+</script>
+
+</body>
+</html>

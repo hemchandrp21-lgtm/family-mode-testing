@@ -1,0 +1,466 @@
+<!DOCTYPE html><html lang="en"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>Control Center</title>
+<!-- Tailwind CSS v3 -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Google Fonts: Inter -->
+<link href="https://fonts.googleapis.com" rel="preconnect">
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+<script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'system-ui', '-apple-system', 'sans-serif'],
+          },
+          colors: {
+            osBg: '#f2f3f5',
+            cardBg: '#e9ecef',
+            cardBgLight: '#eef0f3',
+            darkActive: '#54585c',
+            darkActiveHover: '#46494d',
+            iconInactive: '#1e2022',
+            sliderInactive: '#a3a7ab',
+            textPrimary: '#1a1c1e',
+            textSecondary: '#44474b',
+          }
+        }
+      }
+    }
+  </script>
+<style data-purpose="custom-layout">
+    body {
+      background-color: #d1d5db;
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      user-select: none;
+      -webkit-tap-highlight-color: transparent;
+    }
+    /* Hide scrollbars for clean presentation */
+    ::-webkit-scrollbar {
+      display: none;
+    }
+  </style>
+</head>
+<body class="min-h-screen flex items-center justify-center p-0 sm:p-4">
+<!-- BEGIN: PhoneContainer -->
+<!-- Outer Device Mockup Container representing the mobile viewport -->
+<div class="relative w-full max-w-[420px] bg-[#f2f3f5] min-h-[920px] rounded-[48px] shadow-2xl overflow-hidden flex flex-col justify-between pt-4 pb-2 px-4 border border-black/5" data-purpose="mobile-viewport">
+<div class="flex flex-col gap-3">
+<!-- BEGIN: StatusBar -->
+<header class="flex items-center justify-between px-2 pt-1 pb-1 select-none text-textPrimary" data-purpose="status-bar">
+<!-- Date Display -->
+<div class="text-[14px] font-semibold tracking-tight pl-1">
+          Mon, 14 Oct
+        </div>
+<!-- System Status Icons -->
+<div class="flex items-center gap-1.5 text-[12px] font-medium tracking-normal pr-1">
+<!-- Alarm Clock -->
+<svg class="w-3.5 h-3.5 stroke-[2]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+<circle cx="12" cy="13" r="8"></circle>
+<path d="M12 9v4l2.5 2.5"></path>
+<path d="M5 3L2 6"></path>
+<path d="M19 3l3 3"></path>
+</svg>
+<!-- Cellular Network Indicator -->
+<svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24">
+<rect height="6" rx="0.5" width="3" x="2" y="16"></rect>
+<rect height="10" rx="0.5" width="3" x="7" y="12"></rect>
+<rect height="14" rx="0.5" width="3" x="12" y="8"></rect>
+<rect height="18" rx="0.5" width="3" x="17" y="4"></rect>
+</svg>
+<!-- Wi-Fi Indicator -->
+<svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24">
+<path d="M12 18.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3zm-5.66-5.66a8 8 0 0 1 11.32 0l-1.42 1.42a6 6 0 0 0-8.48 0l-1.42-1.42zm-2.83-2.83a12 12 0 0 1 16.98 0l-1.42 1.42a10 10 0 0 0-14.14 0l-1.42-1.42z"></path>
+</svg>
+<!-- Battery Pill & Level -->
+<div class="flex items-center gap-1">
+<div class="w-4 h-2.5 border-[1.5px] border-textPrimary rounded-sm p-[1px] relative flex items-center">
+<div class="bg-textPrimary w-2 h-full rounded-[1px]"></div>
+<div class="absolute -right-[3px] top-[2px] w-[2px] h-[3px] bg-textPrimary rounded-r-sm"></div>
+</div>
+<span class="text-[12px] font-semibold ml-0.5">51%</span>
+</div>
+</div>
+</header>
+<!-- END: StatusBar -->
+<!-- BEGIN: HeaderActions -->
+<section class="flex items-center justify-between px-1" data-purpose="quick-actions-bar">
+<!-- Page Indicator Pill -->
+<button class="flex items-center gap-2 bg-[#e2e5e9] hover:bg-[#d8dce1] transition px-3 py-1.5 rounded-full text-textSecondary" title="Switch page">
+<svg class="w-4 h-4 fill-current" viewBox="0 0 24 24">
+<rect height="7" rx="2" width="7" x="3" y="3"></rect>
+<rect height="7" rx="2" width="7" x="14" y="3"></rect>
+<rect height="7" rx="2" width="7" x="3" y="14"></rect>
+<rect height="7" rx="2" width="7" x="14" y="14"></rect>
+</svg>
+<span class="text-sm font-semibold text-textPrimary">1</span>
+<svg class="w-3.5 h-3.5 stroke-[2.5]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+<polyline points="9 18 15 12 9 6"></polyline>
+</svg>
+</button>
+<!-- Right System Controls: Settings, Edit, Overflow -->
+<div class="flex items-center gap-2">
+<!-- Settings Icon -->
+<button class="w-9 h-9 rounded-full bg-[#e2e5e9] hover:bg-[#d8dce1] transition flex items-center justify-center text-textSecondary" title="Settings">
+<svg class="w-5 h-5 fill-none stroke-current stroke-[2.2]" viewBox="0 0 24 24">
+<circle cx="12" cy="12" r="3"></circle>
+<path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+</svg>
+</button>
+<!-- Edit Icon -->
+<button class="w-9 h-9 rounded-full bg-[#e2e5e9] hover:bg-[#d8dce1] transition flex items-center justify-center text-textSecondary" title="Edit tiles">
+<svg class="w-4 h-4 fill-none stroke-current stroke-[2.2]" viewBox="0 0 24 24">
+<path d="M12 20h9"></path>
+<path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path>
+</svg>
+</button>
+<!-- More Options Icon -->
+<button class="w-9 h-9 rounded-full bg-[#e2e5e9] hover:bg-[#d8dce1] transition flex items-center justify-center text-textSecondary" title="More options">
+<svg class="w-5 h-5 fill-current" viewBox="0 0 24 24">
+<circle cx="12" cy="6" r="1.75"></circle>
+<circle cx="12" cy="12" r="1.75"></circle>
+<circle cx="12" cy="18" r="1.75"></circle>
+</svg>
+</button>
+</div>
+</section>
+<!-- END: HeaderActions -->
+<!-- BEGIN: TopCardsSection -->
+<section class="grid grid-cols-2 gap-3" data-purpose="featured-cards">
+<!-- Left Card: Network & Connectivity -->
+<article class="bg-[#e7eaf0] rounded-3xl p-3 flex flex-col justify-between h-[154px] shadow-sm" data-purpose="network-card">
+<!-- Active Wi-Fi Info Row -->
+<div class="flex items-center justify-between cursor-pointer">
+<div class="flex items-center gap-2.5 min-w-0">
+<div class="w-11 h-11 rounded-full bg-darkActive text-white flex items-center justify-center flex-shrink-0 shadow-sm">
+<!-- Wi-Fi Connected -->
+<svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+<path d="M12 18.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3zm-5.66-5.66a8 8 0 0 1 11.32 0l-1.42 1.42a6 6 0 0 0-8.48 0l-1.42-1.42zm-2.83-2.83a12 12 0 0 1 16.98 0l-1.42 1.42a10 10 0 0 0-14.14 0l-1.42-1.42z"></path>
+</svg>
+</div>
+<div class="leading-tight truncate">
+<span class="text-xs font-semibold text-textPrimary tracking-tight block truncate">SYMBI_N</span>
+<span class="text-xs font-semibold text-textPrimary tracking-tight block truncate">GP_STU...</span>
+</div>
+</div>
+<svg class="w-4 h-4 text-gray-500 stroke-[2.5] flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+<polyline points="9 18 15 12 9 6"></polyline>
+</svg>
+</div>
+<!-- Divider -->
+<div class="w-full h-[1px] bg-black/[0.06]"></div>
+<!-- Network Sub-actions: Cellular Data & Flight Mode -->
+<div class="flex items-center justify-around px-1">
+<!-- Cellular Data -->
+<button class="w-11 h-11 rounded-full bg-[#dbe0e6] hover:bg-[#d0d6de] flex items-center justify-center text-textPrimary transition" title="Mobile Data">
+<svg class="w-5 h-5 fill-current" viewBox="0 0 24 24">
+<path d="M7 3v13.59l-2.29-2.3-1.42 1.42L7.59 20l4.3-4.29-1.42-1.42L8.18 16.59V3H7zm9.82 21V10.41l2.29 2.3 1.42-1.42L16.23 7l-4.3 4.29 1.42 1.42 2.29-2.3V24h2.18z"></path>
+</svg>
+</button>
+<!-- Airplane Mode -->
+<button class="w-11 h-11 rounded-full bg-[#dbe0e6] hover:bg-[#d0d6de] flex items-center justify-center text-textPrimary transition" title="Airplane Mode">
+<svg class="w-5 h-5 fill-current transform -rotate-45" viewBox="0 0 24 24">
+<path d="M21 16v-2l-8-5V3.5c0-.83-.67-1.5-1.5-1.5S10 2.67 10 3.5V9l-8 5v2l8-2.5V19l-2 1.5V22l3.5-1 3.5 1v-1.5L13 19v-5.5l8 2.5z"></path>
+</svg>
+</button>
+</div>
+</article>
+<!-- Right Card: Media Player -->
+<article class="bg-[#e7eaf0] rounded-3xl p-3 flex flex-col justify-between h-[154px] shadow-sm relative" data-purpose="media-player-card">
+<!-- Top Row: Album Icon & Cast -->
+<div class="flex items-start justify-between">
+<div class="w-11 h-11 rounded-2xl bg-[#cbcfd4] text-white flex items-center justify-center shadow-inner">
+<svg class="w-6 h-6 fill-current text-white/95" viewBox="0 0 24 24">
+<path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"></path>
+</svg>
+</div>
+<!-- Cast / Output Selector -->
+<button class="text-textSecondary hover:text-textPrimary transition p-1" title="Output Media">
+<svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+<circle cx="12" cy="12" fill="currentColor" r="2"></circle>
+<path d="M16.24 7.76a6 6 0 0 1 0 8.49m-8.48-.01a6 6 0 0 1 0-8.49m11.31-2.82a10 10 0 0 1 0 14.14m-14.14 0a10 10 0 0 1 0-14.14" stroke-linecap="round"></path>
+</svg>
+</button>
+</div>
+<!-- Middle Row: Media Status -->
+<div class="px-0.5">
+<span class="text-[13px] font-semibold text-textPrimary tracking-tight">Not playing</span>
+</div>
+<!-- Bottom Row: Controls -->
+<div class="flex items-center justify-between px-1 text-textPrimary">
+<!-- Prev -->
+<button class="hover:opacity-70 transition p-1">
+<svg class="w-4 h-4 fill-current" viewBox="0 0 24 24">
+<path d="M6 6h2v12H6zm3.5 6l8.5 6V6z"></path>
+</svg>
+</button>
+<!-- Play -->
+<button class="hover:opacity-70 transition p-1">
+<svg class="w-6 h-6 fill-current" viewBox="0 0 24 24">
+<polygon points="5 3 19 12 5 21 5 3"></polygon>
+</svg>
+</button>
+<!-- Next -->
+<button class="hover:opacity-70 transition p-1">
+<svg class="w-4 h-4 fill-current" viewBox="0 0 24 24">
+<path d="M6 18l8.5-6L6 6v12zM16 6v12h2V6h-2z"></path>
+</svg>
+</button>
+</div>
+</article>
+</section>
+<!-- END: TopCardsSection -->
+<!-- BEGIN: MiddleControlsSection -->
+<!-- Split layout containing Sound mode/DND on left and Sliders on right -->
+<section class="grid grid-cols-2 gap-3" data-purpose="sound-and-sliders">
+<!-- Left Sub-column: Sound Mode & Do Not Disturb -->
+<div class="flex flex-col justify-between gap-3">
+<!-- Sound Profile Toggle Pill (Vibrate / Mute) -->
+<div class="bg-[#e7eaf0] h-[66px] rounded-3xl p-1.5 flex items-center justify-between" data-purpose="vibrate-mute-toggle">
+<!-- Vibrate Button -->
+<button class="flex-1 h-full rounded-2xl flex items-center justify-center hover:bg-black/5 transition" title="Vibrate mode">
+<div class="w-10 h-10 rounded-full bg-[#d8dde3] flex items-center justify-center text-textPrimary">
+<!-- Vibrating Phone Icon -->
+<svg class="w-5 h-5 fill-current" viewBox="0 0 24 24">
+<path d="M16 4H8a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2zm0 14H8V6h8v12zM3 9h2v6H3zm16 0h2v6h-2zM0 11h2v2H0zm22 0h2v2h-2z"></path>
+</svg>
+</div>
+</button>
+<!-- Vertical Separator -->
+<div class="w-[1px] h-6 bg-black/10"></div>
+<!-- Mute Button -->
+<button class="flex-1 h-full rounded-2xl flex items-center justify-center hover:bg-black/5 transition" title="Mute mode">
+<div class="w-10 h-10 rounded-full bg-[#d8dde3] flex items-center justify-center text-textPrimary">
+<!-- Bell Mute / Silent -->
+<svg class="w-5 h-5 fill-current" viewBox="0 0 24 24">
+<path d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.9 2 2 2zm6-6v-5c0-3.07-1.63-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.64 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2zm-2 1H8v-6c0-2.48 1.51-4.5 4-4.5s4 2.02 4 4.5v6zM4.41 2.86L3 4.27l9 9 7.73 7.73 1.41-1.41L4.41 2.86z"></path>
+</svg>
+</div>
+</button>
+</div>
+<!-- Do Not Disturb Card -->
+<div class="bg-[#e7eaf0] h-[66px] rounded-3xl px-3 py-2 flex items-center gap-3 cursor-pointer hover:bg-[#e1e4ea] transition" data-purpose="dnd-toggle">
+<div class="w-11 h-11 rounded-full bg-darkActive text-white flex items-center justify-center flex-shrink-0 shadow-sm">
+<!-- Moon Icon -->
+<svg class="w-5 h-5 fill-current" viewBox="0 0 24 24">
+<path d="M12.3 2a10 10 0 0 0-1.9 19.8 10 10 0 0 0 10.9-10.9A10.02 10.02 0 0 1 12.3 2z"></path>
+</svg>
+</div>
+<div class="text-[13px] font-semibold text-textPrimary leading-tight">
+              Do Not<br>Disturb
+            </div>
+</div>
+</div>
+<!-- Right Sub-column: Dual Vertical Sliders -->
+<div class="grid grid-cols-2 gap-3 h-[144px]" data-purpose="volume-brightness-sliders">
+<!-- Volume Slider (Muted state) -->
+<div class="bg-[#9ea3a8] rounded-3xl flex flex-col justify-end p-2 items-center relative overflow-hidden shadow-sm" data-purpose="volume-slider">
+<!-- Slider icon at bottom -->
+<div class="w-full flex items-center justify-center pb-1 z-10 text-white">
+<!-- Speaker Off Icon -->
+<svg class="w-6 h-6 fill-current stroke-current" viewBox="0 0 24 24">
+<path d="M16.5 12c0-1.77-1.02-3.29-2.5-4.03v2.21l2.45 2.45c.03-.2.05-.41.05-.63zm2.5 0c0 .94-.2 1.82-.54 2.64l1.51 1.51C20.63 14.91 21 13.5 21 12c0-4.28-2.99-7.86-7-8.77v2.06c2.89.86 5 3.54 5 6.71zM4.27 3L3 4.27 7.73 9H3v6h4l5 5v-6.73l4.25 4.25c-.67.52-1.42.93-2.25 1.18v2.06c1.38-.31 2.63-.95 3.69-1.81L19.73 21 21 19.73l-9-9L4.27 3zM12 4L9.91 6.09 12 8.18V4z"></path>
+</svg>
+</div>
+</div>
+<!-- Brightness Slider with Auto indicator -->
+<div class="bg-[#9ea3a8] rounded-3xl flex flex-col justify-end items-center relative overflow-hidden shadow-sm" data-purpose="brightness-slider">
+<!-- Active Fill Level (White bottom half) -->
+<div class="w-full h-[65%] bg-white rounded-3xl flex items-center justify-center pb-2 pt-2">
+<!-- Brightness Sun with 'A' Icon -->
+<div class="relative flex items-center justify-center text-textSecondary">
+<!-- Sun burst rays -->
+<svg class="w-7 h-7 fill-none stroke-current stroke-[2]" viewBox="0 0 24 24">
+<circle cx="12" cy="12" r="5" stroke-dasharray="2 2"></circle>
+<line x1="12" x2="12" y1="1" y2="3"></line>
+<line x1="12" x2="12" y1="21" y2="23"></line>
+<line x1="4.22" x2="5.64" y1="4.22" y2="5.64"></line>
+<line x1="18.36" x2="19.78" y1="18.36" y2="19.78"></line>
+<line x1="1" x2="3" y1="12" y2="12"></line>
+<line x1="21" x2="23" y1="12" y2="12"></line>
+<line x1="4.22" x2="5.64" y1="19.78" y2="18.36"></line>
+<line x1="18.36" x2="19.78" y1="5.64" y2="4.22"></line>
+</svg>
+<!-- Centered letter A -->
+<span class="absolute text-[9px] font-bold tracking-tighter text-textSecondary">A</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- END: MiddleControlsSection -->
+<!-- BEGIN: QuickTogglesGrid -->
+<!-- 4x4 Quick Settings Action Grid -->
+<section class="grid grid-cols-4 gap-y-3 gap-x-2 pt-1" data-purpose="quick-toggles-grid">
+<!-- Row 1, Col 1: Bluetooth -->
+<div class="flex flex-col items-center gap-1.5" data-purpose="toggle-item">
+<button class="w-[52px] h-[52px] rounded-full bg-[#e2e5e9] hover:bg-[#d8dce1] flex items-center justify-center text-textPrimary transition shadow-sm" title="Bluetooth">
+<svg class="w-5 h-5 fill-none stroke-current stroke-[2]" viewBox="0 0 24 24">
+<path d="m7 7 10 10-5 5V2l5 5L7 17"></path>
+</svg>
+</button>
+<span class="text-[11px] font-medium text-textPrimary text-center tracking-tight leading-tight">Bluetooth</span>
+</div>
+<!-- Row 1, Col 2: Auto-rotate -->
+<div class="flex flex-col items-center gap-1.5" data-purpose="toggle-item">
+<button class="w-[52px] h-[52px] rounded-full bg-[#e2e5e9] hover:bg-[#d8dce1] flex items-center justify-center text-textPrimary transition shadow-sm" title="Auto-rotate">
+<svg class="w-5 h-5 fill-none stroke-current stroke-[2]" viewBox="0 0 24 24">
+<path d="M21.5 2v6h-6M2.5 22v-6h6M2 11.5a10 10 0 0 1 18.8-4.3M22 12.5a10 10 0 0 1-18.8 4.2"></path>
+</svg>
+</button>
+<span class="text-[11px] font-medium text-textPrimary text-center tracking-tight leading-tight">Auto-rotate</span>
+</div>
+<!-- Row 1, Col 3: Flashlight -->
+<div class="flex flex-col items-center gap-1.5" data-purpose="toggle-item">
+<button class="w-[52px] h-[52px] rounded-full bg-[#e2e5e9] hover:bg-[#d8dce1] flex items-center justify-center text-textPrimary transition shadow-sm" title="Flashlight">
+<svg class="w-5 h-5 fill-current" viewBox="0 0 24 24">
+<path d="M6 2h12v3l-4 4v11a2 2 0 0 1-2 2h0a2 2 0 0 1-2-2V9L6 5V2zm5 9v3h2v-3h-2z"></path>
+</svg>
+</button>
+<span class="text-[11px] font-medium text-textPrimary text-center tracking-tight leading-tight">Flashlight</span>
+</div>
+<!-- Row 1, Col 4: Location (ACTIVE) -->
+<div class="flex flex-col items-center gap-1.5" data-purpose="toggle-item">
+<button class="w-[52px] h-[52px] rounded-full bg-darkActive hover:bg-darkActiveHover flex items-center justify-center text-white transition shadow-sm" title="Location">
+<svg class="w-5 h-5 fill-current" viewBox="0 0 24 24">
+<path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5a2.5 2.5 0 1 1 0-5 2.5 2.5 0 0 1 0 5z"></path>
+</svg>
+</button>
+<span class="text-[11px] font-medium text-textPrimary text-center tracking-tight leading-tight">Location</span>
+</div>
+<!-- Row 2, Col 1: Personal hotspot -->
+<div class="flex flex-col items-center gap-1.5" data-purpose="toggle-item">
+<button class="w-[52px] h-[52px] rounded-full bg-[#e2e5e9] hover:bg-[#d8dce1] flex items-center justify-center text-textPrimary transition shadow-sm" title="Personal hotspot">
+<svg class="w-5 h-5 fill-none stroke-current stroke-[2.2]" viewBox="0 0 24 24">
+<circle cx="12" cy="12" fill="currentColor" r="2"></circle>
+<path d="M16.24 7.76a6 6 0 0 1 0 8.49m-8.48 0a6 6 0 0 1 0-8.49m11.31-2.83a10 10 0 0 1 0 14.15m-14.14 0a10 10 0 0 1 0-14.15" stroke-linecap="round"></path>
+</svg>
+</button>
+<span class="text-[11px] font-medium text-textPrimary text-center tracking-tight leading-tight">Personal<br>hotspot</span>
+</div>
+<!-- Row 2, Col 2: Device controls -->
+<div class="flex flex-col items-center gap-1.5" data-purpose="toggle-item">
+<button class="w-[52px] h-[52px] rounded-full bg-[#e2e5e9] hover:bg-[#d8dce1] flex items-center justify-center text-textPrimary transition shadow-sm" title="Device controls">
+<svg class="w-5 h-5 fill-current" viewBox="0 0 24 24">
+<path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"></path>
+</svg>
+</button>
+<span class="text-[11px] font-medium text-textPrimary text-center tracking-tight leading-tight">Device<br>controls</span>
+</div>
+<!-- Row 2, Col 3: Wallet -->
+<div class="flex flex-col items-center gap-1.5" data-purpose="toggle-item">
+<button class="w-[52px] h-[52px] rounded-full bg-[#e2e5e9] hover:bg-[#d8dce1] flex items-center justify-center text-textPrimary transition shadow-sm" title="Wallet">
+<svg class="w-5 h-5 fill-current" viewBox="0 0 24 24">
+<path d="M20 7h-2V5c0-1.1-.9-2-2-2H4c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2v-9a3 3 0 0 0-2-3zm-4-2v2H4V5h12zm4 14H4V9h16v10zm-3-4a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z"></path>
+</svg>
+</button>
+<span class="text-[11px] font-medium text-textPrimary text-center tracking-tight leading-tight">Wallet</span>
+</div>
+<!-- Row 2, Col 4: iQOOshare -->
+<div class="flex flex-col items-center gap-1.5" data-purpose="toggle-item">
+<button class="w-[52px] h-[52px] rounded-full bg-[#e2e5e9] hover:bg-[#d8dce1] flex items-center justify-center text-textPrimary transition shadow-sm" title="iQOOshare">
+<svg class="w-5 h-5 fill-none stroke-current stroke-[2.2]" viewBox="0 0 24 24">
+<path d="M8 8a4 4 0 0 0 0 8h2a4 4 0 0 0 0-8H8zm8 0a4 4 0 0 1 0 8h-2a4 4 0 0 1 0-8h2z" stroke-linecap="round"></path>
+</svg>
+</button>
+<span class="text-[11px] font-medium text-textPrimary text-center tracking-tight leading-tight">iQOOshare</span>
+</div>
+<!-- Row 3, Col 1: Calculator -->
+<div class="flex flex-col items-center gap-1.5" data-purpose="toggle-item">
+<button class="w-[52px] h-[52px] rounded-full bg-[#e2e5e9] hover:bg-[#d8dce1] flex items-center justify-center text-textPrimary transition shadow-sm" title="Calculator">
+<svg class="w-5 h-5 fill-current" viewBox="0 0 24 24">
+<path d="M19 13h-6v2h6v-2zm0 4h-6v2h6v-2zM6.5 5.5V3h-2v2.5H2v2h2.5V10h2V7.5H9v-2H6.5zm7.5 1.25L15.25 5.5 17 7.25 18.75 5.5 20 6.75l-1.75 1.75L20 10.25 18.75 11.5 17 9.75 15.25 11.5 14 10.25l1.75-1.75L14 6.75zM2 15h7v2H2v-2z"></path>
+</svg>
+</button>
+<span class="text-[11px] font-medium text-textPrimary text-center tracking-tight leading-tight">Calculator</span>
+</div>
+<!-- Row 3, Col 2: Ultra Game Mode -->
+<div class="flex flex-col items-center gap-1.5" data-purpose="toggle-item">
+<button class="w-[52px] h-[52px] rounded-full bg-[#e2e5e9] hover:bg-[#d8dce1] flex items-center justify-center text-textPrimary transition shadow-sm" title="Ultra Game Mode">
+<svg class="w-5 h-5 fill-current" viewBox="0 0 24 24">
+<path d="M21 6H3c-1.1 0-2 .9-2 2v8c0 1.1.9 2 2 2h18c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2zm-10 7H8v3H6v-3H3v-2h3V8h2v3h3v2zm4.5 2a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm3-3a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z"></path>
+</svg>
+</button>
+<span class="text-[11px] font-medium text-textPrimary text-center tracking-tight leading-tight">Ultra Game<br>Mode</span>
+</div>
+<!-- Row 3, Col 3: Scan code -->
+<div class="flex flex-col items-center gap-1.5" data-purpose="toggle-item">
+<button class="w-[52px] h-[52px] rounded-full bg-[#e2e5e9] hover:bg-[#d8dce1] flex items-center justify-center text-textPrimary transition shadow-sm" title="Scan code">
+<svg class="w-5 h-5 fill-none stroke-current stroke-[2.2]" viewBox="0 0 24 24">
+<path d="M4 8V4h4M16 4h4v4M4 16v4h4M16 20h4v-4" stroke-linecap="round" stroke-linejoin="round"></path>
+<line stroke-linecap="round" x1="8" x2="16" y1="12" y2="12"></line>
+</svg>
+</button>
+<span class="text-[11px] font-medium text-textPrimary text-center tracking-tight leading-tight">Scan code</span>
+</div>
+<!-- Row 3, Col 4: Speed up -->
+<div class="flex flex-col items-center gap-1.5" data-purpose="toggle-item">
+<button class="w-[52px] h-[52px] rounded-full bg-[#e2e5e9] hover:bg-[#d8dce1] flex items-center justify-center text-textPrimary transition shadow-sm" title="Speed up">
+<svg class="w-5 h-5 fill-current" viewBox="0 0 24 24">
+<path d="M13.13 2.18c-3.14.73-5.74 3.03-6.68 6.06L4.5 10.2C3.58 11.12 3 12.38 3 13.7v4.8c0 .83.67 1.5 1.5 1.5h4.8c1.32 0 2.58-.58 3.5-1.5l1.96-1.95c3.03-.94 5.33-3.54 6.06-6.68 1.4-6.02-4.66-12.08-7.69-7.69zM12 14a2 2 0 1 1 0-4 2 2 0 0 1 0 4z"></path>
+</svg>
+</button>
+<span class="text-[11px] font-medium text-textPrimary text-center tracking-tight leading-tight">Speed up</span>
+</div>
+<!-- Row 4, Col 1: Eye Protection -->
+<div class="flex flex-col items-center gap-1.5" data-purpose="toggle-item">
+<button class="w-[52px] h-[52px] rounded-full bg-[#e2e5e9] hover:bg-[#d8dce1] flex items-center justify-center text-textPrimary transition shadow-sm" title="Eye Protection">
+<svg class="w-5 h-5 fill-current" viewBox="0 0 24 24">
+<path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zm0 12.5a5 5 0 1 1 0-10 5 5 0 0 1 0 10zm0-8a3 3 0 1 0 0 6 3 3 0 0 0 0-6z"></path>
+</svg>
+</button>
+<span class="text-[11px] font-medium text-textPrimary text-center tracking-tight leading-tight">Eye<br>Protection</span>
+</div>
+<!-- Row 4, Col 2: Dark mode -->
+<div class="flex flex-col items-center gap-1.5" data-purpose="toggle-item">
+<button class="w-[52px] h-[52px] rounded-full bg-[#e2e5e9] hover:bg-[#d8dce1] flex items-center justify-center text-textPrimary transition shadow-sm" title="Dark mode">
+<!-- Half-filled Dark Mode icon -->
+<svg class="w-5 h-5" fill="none" viewBox="0 0 24 24">
+<circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2"></circle>
+<path d="M12 3a9 9 0 0 0 0 18V3z" fill="currentColor"></path>
+</svg>
+</button>
+<span class="text-[11px] font-medium text-textPrimary text-center tracking-tight leading-tight">Dark mode</span>
+</div>
+<!-- Row 4, Col 3: Family Mode (ACTIVE) -->
+<div class="flex flex-col items-center gap-1.5" data-purpose="toggle-item">
+<button class="w-[52px] h-[52px] rounded-full bg-darkActive hover:bg-darkActiveHover flex items-center justify-center text-white transition shadow-sm" title="Family Mode">
+<!-- House with 3 people outline inside -->
+<svg class="w-6 h-6 fill-none stroke-white stroke-[1.8]" viewBox="0 0 24 24">
+<path d="M3 10.5L12 3l9 7.5v10a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1v-10z" stroke-linecap="round" stroke-linejoin="round"></path>
+<!-- Parent left -->
+<circle cx="9.5" cy="11.5" fill="white" r="1.3" stroke="none"></circle>
+<path d="M7.5 17c0-1.5 1-2.2 2-2.2s2 .7 2 2.2" stroke-linecap="round"></path>
+<!-- Parent right -->
+<circle cx="14.5" cy="11.5" fill="white" r="1.3" stroke="none"></circle>
+<path d="M12.5 17c0-1.5 1-2.2 2-2.2s2 .7 2 2.2" stroke-linecap="round"></path>
+<!-- Child center -->
+<circle cx="12" cy="14" fill="white" r="1" stroke="none"></circle>
+<path d="M10.8 17.5c0-.8.5-1.2 1.2-1.2s1.2.4 1.2 1.2" stroke-linecap="round"></path>
+</svg>
+</button>
+<span class="text-[11px] font-medium text-textPrimary text-center tracking-tight leading-tight">Family Mode</span>
+</div>
+<!-- Row 4, Col 4: Battery Saver -->
+<div class="flex flex-col items-center gap-1.5" data-purpose="toggle-item">
+<button class="w-[52px] h-[52px] rounded-full bg-[#e2e5e9] hover:bg-[#d8dce1] flex items-center justify-center text-textPrimary transition shadow-sm" title="Battery Saver">
+<svg class="w-6 h-6 fill-current" viewBox="0 0 24 24">
+<path d="M17 5H7a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2zm-3 8h-4v-2h4v2zm7-3h1v4h-1v-4z"></path>
+</svg>
+</button>
+<span class="text-[11px] font-medium text-textPrimary text-center tracking-tight leading-tight">Battery<br>Saver</span>
+</div>
+</section>
+<!-- END: QuickTogglesGrid -->
+</div>
+<!-- BEGIN: HomeIndicator -->
+<!-- Minimalist bottom gesture navigation line bar -->
+<footer class="w-full flex items-center justify-center pt-3 pb-1" data-purpose="gesture-indicator">
+<div class="w-28 h-1 bg-black/25 rounded-full"></div>
+</footer>
+<!-- END: HomeIndicator -->
+</div>
+<!-- END: PhoneContainer -->
+</body></html>

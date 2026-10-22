@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport"/>
+  <title>Family Mode - Allow Selected Contacts</title>
+  <!-- Load Tailwind CSS v3 -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Google Fonts: Roboto -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+
+  <style>
+    * {
+      -webkit-tap-highlight-color: transparent;
+      user-select: none;
+      box-sizing: border-box;
+    }
+    ::-webkit-scrollbar,
+    html::-webkit-scrollbar,
+    body::-webkit-scrollbar,
+    *::-webkit-scrollbar {
+      display: none !important;
+      width: 0 !important;
+      height: 0 !important;
+      background: transparent !important;
+    }
+    html, body, * {
+      scrollbar-width: none !important;
+      -ms-overflow-style: none !important;
+    }
+    body {
+      background-color: #000000;
+      color: #E2E2E6;
+      font-family: 'Roboto', -apple-system, BlinkMacSystemFont, sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+    .app-checkbox {
+      appearance: none;
+      -webkit-appearance: none;
+      width: 20px;
+      height: 20px;
+      border: 2px solid #8C9199;
+      border-radius: 4px;
+      background-color: transparent;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      transition: all 0.15s ease;
+      flex-shrink: 0;
+    }
+    .app-checkbox:checked {
+      background-color: #7CAEFF;
+      border-color: #7CAEFF;
+    }
+    .app-checkbox:checked::after {
+      content: '';
+      width: 5px;
+      height: 10px;
+      border: solid #041E49;
+      border-width: 0 2.2px 2.2px 0;
+      transform: rotate(45deg);
+      margin-bottom: 2px;
+    }
+  </style>
+</head>
+<body class="min-h-screen flex items-center justify-center p-0 sm:p-4 bg-black">
+
+<!-- Phone Frame Container -->
+<main class="w-full max-w-[392px] h-screen sm:h-[844px] bg-[#121316] sm:rounded-[44px] shadow-2xl relative flex flex-col justify-between overflow-hidden border border-neutral-800/60 select-none">
+
+  <!-- TOP PULL HANDLE (Pull down or click to open Control Center) -->
+  <div id="top-status-bar" class="w-full pt-3 pb-1 flex flex-col items-center justify-center select-none cursor-pointer group z-30 transition-colors" title="Drag down or click to open Control Center" onclick="openControlCenter()">
+    <div class="w-10 h-1 bg-white/20 group-hover:bg-[#7CAEFF] rounded-full transition-colors duration-200"></div>
+  </div>
+
+  <!-- SLIDING CONTROL CENTER OVERLAY -->
+  <div id="control-center-drawer" class="absolute inset-0 bg-[#121316] z-50 transform -translate-y-full transition-transform duration-300 ease-out flex flex-col justify-between overflow-hidden shadow-2xl">
+    <iframe id="cc-iframe" src="/screens/screen-8-control-center-quick-settings/" class="w-full h-full border-none"></iframe>
+  </div>
+
+  <!-- NAVIGATION HEADER -->
+  <header class="w-full px-5 pt-3 pb-2 flex items-center justify-between text-white z-20">
+    <a href="/screens/screen-3-family-mode-set-duration/" aria-label="Go back" class="p-1 -ml-1 text-neutral-200 hover:text-white transition">
+      <svg class="w-6 h-6 stroke-[2]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path d="M10 19l-7-7m0 0l7-7m-7 7h18" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </a>
+    <div class="w-6"></div>
+  </header>
+
+  <!-- MAIN SCROLLABLE CONTENT (Original Title & 5 Contact Groups) -->
+  <div class="flex-1 px-6 pt-2 pb-4 overflow-y-auto">
+    
+    <h1 class="text-[34px] font-normal text-white tracking-tight leading-tight mb-2">
+      Allow selected contacts
+    </h1>
+    <p class="text-[14.5px] text-[#A0A4A8] leading-relaxed mb-5 font-normal">
+      Choose who can call or message you during Family Mode.
+    </p>
+
+    <!-- Contact Groups List (5 Original Items) -->
+    <section aria-label="Contact groups list" class="flex flex-col space-y-3 mb-6">
+      
+      <!-- Item 1: Family (Checked) -->
+      <label class="flex items-center justify-between p-3.5 bg-[#1A1D21] border border-neutral-800/80 rounded-[18px] cursor-pointer hover:bg-[#20242A] transition" data-purpose="contact-item">
+        <div class="flex items-center gap-3.5">
+          <div class="w-10 h-10 rounded-full bg-[#121316] border border-neutral-800 flex items-center justify-center text-[#7CAEFF]">
+            <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24">
+              <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+              <path d="M18 10c1.66 0 3-1.34 3-3s-1.34-3-3-3c-.28 0-.54.04-.79.11.5 1.15.79 2.42.79 3.89 0 1.47-.29 2.74-.79 3.89.25.07.51.11.79.11zm1.5 4c1.17 0 2.5.4 2.5 1.5V18h-3.5v-1.63c.63-.58 1-1.37 1-2.37z" opacity="0.6"/>
+            </svg>
+          </div>
+          <div>
+            <p class="text-[15.5px] font-normal text-white leading-snug">Family</p>
+            <p class="text-[13px] text-[#8C9094] font-normal mt-0.5">5 contacts</p>
+          </div>
+        </div>
+        <input checked type="checkbox" class="app-checkbox"/>
+      </label>
+
+      <!-- Item 2: Close Friends (Checked) -->
+      <label class="flex items-center justify-between p-3.5 bg-[#1A1D21] border border-neutral-800/80 rounded-[18px] cursor-pointer hover:bg-[#20242A] transition" data-purpose="contact-item">
+        <div class="flex items-center gap-3.5">
+          <div class="w-10 h-10 rounded-full bg-[#121316] border border-neutral-800 flex items-center justify-center text-[#7CAEFF]">
+            <svg class="w-5 h-5 stroke-[2] fill-none stroke-current" viewBox="0 0 24 24">
+              <path d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <div>
+            <p class="text-[15.5px] font-normal text-white leading-snug">Close Friends</p>
+            <p class="text-[13px] text-[#8C9094] font-normal mt-0.5">3 contacts</p>
+          </div>
+        </div>
+        <input checked type="checkbox" class="app-checkbox"/>
+      </label>
+
+      <!-- Item 3: Starred Contacts (Unchecked) -->
+      <label class="flex items-center justify-between p-3.5 bg-[#1A1D21] border border-neutral-800/80 rounded-[18px] cursor-pointer hover:bg-[#20242A] transition" data-purpose="contact-item">
+        <div class="flex items-center gap-3.5">
+          <div class="w-10 h-10 rounded-full bg-[#121316] border border-neutral-800 flex items-center justify-center text-[#8C9199]">
+            <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24">
+              <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
+            </svg>
+          </div>
+          <div>
+            <p class="text-[15.5px] font-normal text-white leading-snug">Starred Contacts</p>
+            <p class="text-[13px] text-[#8C9094] font-normal mt-0.5">2 contacts</p>
+          </div>
+        </div>
+        <input type="checkbox" class="app-checkbox"/>
+      </label>
+
+      <!-- Item 4: Work (Unchecked) -->
+      <label class="flex items-center justify-between p-3.5 bg-[#1A1D21] border border-neutral-800/80 rounded-[18px] cursor-pointer hover:bg-[#20242A] transition" data-purpose="contact-item">
+        <div class="flex items-center gap-3.5">
+          <div class="w-10 h-10 rounded-full bg-[#121316] border border-neutral-800 flex items-center justify-center text-[#8C9199]">
+            <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24">
+              <path d="M20 6h-4V4c0-1.11-.89-2-2-2h-4c-1.11 0-2 .89-2 2v2H4c-1.11 0-1.99.89-1.99 2L2 19c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V8c0-1.11-.89-2-2-2zm-6 0h-4V4h4v2z"/>
+            </svg>
+          </div>
+          <div>
+            <p class="text-[15.5px] font-normal text-white leading-snug">Work</p>
+            <p class="text-[13px] text-[#8C9094] font-normal mt-0.5">4 contacts</p>
+          </div>
+        </div>
+        <input type="checkbox" class="app-checkbox"/>
+      </label>
+
+      <!-- Item 5: Custom Contacts with Chevron -->
+      <div class="flex items-center justify-between p-3.5 bg-[#1A1D21] border border-neutral-800/80 rounded-[18px] cursor-pointer hover:bg-[#20242A] transition" data-purpose="contact-item">
+        <div class="flex items-center gap-3.5">
+          <div class="w-10 h-10 rounded-full bg-[#121316] border border-neutral-800 flex items-center justify-center text-[#8C9199]">
+            <svg class="w-5 h-5 stroke-[2] fill-none stroke-current" viewBox="0 0 24 24">
+              <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+              <circle cx="8.5" cy="7" r="4"/>
+              <line x1="20" y1="8" x2="20" y2="14"/>
+              <line x1="23" y1="11" x2="17" y2="11"/>
+            </svg>
+          </div>
+          <div>
+            <p class="text-[15.5px] font-normal text-white leading-snug">Custom Contacts</p>
+            <p class="text-[13px] text-[#8C9094] font-normal mt-0.5">Select specific people</p>
+          </div>
+        </div>
+        <svg class="w-4 h-4 text-[#8C9199] stroke-[2]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path d="M9 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+
+    </section>
+
+    <!-- INSPIRATION COMPONENT (From User Image 1): Alarm Behavior & Emergency calls card -->
+    <div class="mb-3">
+      <h2 class="text-[14px] font-medium text-[#8AB4F8] mb-3">
+        Alarm &amp; call behavior
+      </h2>
+
+      <!-- Toggle Card 1: Turn off at next alarm (Matched to Image 1) -->
+      <div class="w-full bg-[#1A1D21] border border-neutral-800/80 rounded-[20px] p-4 mb-2.5">
+        <div class="flex items-center justify-between">
+          <div class="flex items-start gap-3.5 pr-2">
+            <svg class="w-5 h-5 text-neutral-300 fill-none stroke-current stroke-[2] mt-0.5 flex-shrink-0" viewBox="0 0 24 24">
+              <circle cx="12" cy="13" r="8"/>
+              <path d="M12 9v4l2.5 2.5" stroke-linecap="round"/>
+              <path d="M5 3L2 6M19 3l3 3" stroke-linecap="round"/>
+            </svg>
+            <div>
+              <h3 class="text-[15px] font-normal text-white leading-snug">Turn off at next alarm</h3>
+              <p class="text-[12.5px] text-[#8C9094] mt-0.5 leading-tight">If no alarm is set, mode turns off at scheduled time</p>
+            </div>
+          </div>
+          <!-- Light Blue Toggle matching Image 1 -->
+          <label class="relative inline-flex items-center cursor-pointer flex-shrink-0">
+            <input type="checkbox" checked class="sr-only peer">
+            <div class="w-11 h-6 bg-neutral-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#8AB4F8]"></div>
+          </label>
+        </div>
+      </div>
+
+      <!-- Toggle Card 2: Repeated callers -->
+      <div class="w-full bg-[#1A1D21] border border-neutral-800/80 rounded-[20px] p-4">
+        <div class="flex items-center justify-between">
+          <div class="flex items-start gap-3.5 pr-2">
+            <svg class="w-5 h-5 text-neutral-300 fill-none stroke-current stroke-[2] mt-0.5 flex-shrink-0" viewBox="0 0 24 24">
+              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+            </svg>
+            <div>
+              <h3 class="text-[15px] font-normal text-white leading-snug">Allow repeated callers</h3>
+              <p class="text-[12.5px] text-[#8C9094] mt-0.5 leading-tight">A 2nd call within 3 minutes will not be silenced</p>
+            </div>
+          </div>
+          <label class="relative inline-flex items-center cursor-pointer flex-shrink-0">
+            <input type="checkbox" checked class="sr-only peer">
+            <div class="w-11 h-6 bg-neutral-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#8AB4F8]"></div>
+          </label>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- BOTTOM ACTION: Next to Screen 5 (Message Behaviour) -->
+  <footer class="w-full px-6 pt-2 pb-3">
+    <a href="/screens/screen-5-family-mode-message-behaviour/" class="w-full py-3.5 rounded-full bg-[#004F7C] hover:bg-[#005E94] active:scale-95 text-white text-[15.5px] font-medium transition shadow-sm flex items-center justify-center text-decoration-none">
+      Next
+    </a>
+
+    <!-- Bottom Gesture Home Bar -->
+    <div class="w-36 h-1 bg-[#4A4E54] rounded-full mx-auto mt-4"></div>
+  </footer>
+
+</main>
+
+<script>
+  function openControlCenter() {
+    const drawer = document.getElementById('control-center-drawer');
+    if (drawer) {
+      drawer.style.transition = 'transform 0.3s cubic-bezier(0.16, 1, 0.3, 1)';
+      drawer.classList.remove('-translate-y-full');
+      drawer.classList.add('translate-y-0');
+      drawer.style.transform = '';
+    }
+  }
+
+  function closeControlCenter() {
+    const drawer = document.getElementById('control-center-drawer');
+    if (drawer) {
+      drawer.style.transition = 'transform 0.3s cubic-bezier(0.16, 1, 0.3, 1)';
+      drawer.classList.remove('translate-y-0');
+      drawer.classList.add('-translate-y-full');
+      drawer.style.transform = '';
+    }
+  }
+
+  window.addEventListener('message', (e) => {
+    if (e.data === 'close-control-center') {
+      closeControlCenter();
+    } else if (e.data && e.data.action === 'open-family-mode') {
+      closeControlCenter();
+    }
+  });
+
+  // Touch & Mouse Drag Down Gestures
+  (function initDrag() {
+    const statusBar = document.getElementById('top-status-bar');
+    const drawer = document.getElementById('control-center-drawer');
+    const mainEl = document.querySelector('main');
+    if (!statusBar || !drawer || !mainEl) return;
+
+    let isDragging = false;
+    let startY = 0;
+
+    function onStart(clientY) {
+      isDragging = true;
+      startY = clientY;
+      drawer.style.transition = 'none';
+    }
+
+    function onMove(clientY) {
+      if (!isDragging) return;
+      const diff = clientY - startY;
+      if (diff > 0) {
+        const h = mainEl.clientHeight || 844;
+        const translateY = Math.min(0, -h + diff);
+        drawer.style.transform = `translateY(${translateY}px)`;
+      }
+    }
+
+    function onEnd(clientY) {
+      if (!isDragging) return;
+      isDragging = false;
+      const diff = clientY - startY;
+      if (diff > 60) {
+        openControlCenter();
+      } else {
+        closeControlCenter();
+      }
+    }
+
+    statusBar.addEventListener('touchstart', (e) => onStart(e.touches[0].clientY), { passive: true });
+    window.addEventListener('touchmove', (e) => { if (isDragging) onMove(e.touches[0].clientY); }, { passive: true });
+    window.addEventListener('touchend', (e) => { if (isDragging) onEnd(e.changedTouches[0].clientY); }, { passive: true });
+
+    statusBar.addEventListener('mousedown', (e) => {
+      onStart(e.clientY);
+      function onMouseMove(ev) { onMove(ev.clientY); }
+      function onMouseUp(ev) {
+        onEnd(ev.clientY);
+        window.removeEventListener('mousemove', onMouseMove);
+        window.removeEventListener('mouseup', onMouseUp);
+      }
+      window.addEventListener('mousemove', onMouseMove);
+      window.addEventListener('mouseup', onMouseUp);
+    });
+
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') closeControlCenter();
+      if (e.key.toLowerCase() === 'c') openControlCenter();
+    });
+  })();
+</script>
+
+</body>
+</html>

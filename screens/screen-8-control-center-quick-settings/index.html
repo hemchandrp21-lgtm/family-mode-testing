@@ -1,0 +1,717 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport"/>
+  <title>Control Center - Quick Settings</title>
+  <!-- Load Tailwind CSS v3 -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Google Fonts: Roboto & Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Roboto:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    * {
+      -webkit-tap-highlight-color: transparent;
+      user-select: none;
+      box-sizing: border-box;
+    }
+    body {
+      background-color: #000000;
+      color: #E2E2E6;
+      font-family: 'Roboto', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+
+    ::-webkit-scrollbar,
+    html::-webkit-scrollbar,
+    body::-webkit-scrollbar,
+    *::-webkit-scrollbar {
+      display: none !important;
+      width: 0 !important;
+      height: 0 !important;
+      background: transparent !important;
+    }
+    html, body, * {
+      scrollbar-width: none !important;
+      -ms-overflow-style: none !important;
+    }
+
+    /* Minimal Dark System Cards matching Family Mode Design System */
+    .dark-card {
+      background: #181A1F;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+    }
+    .dark-pill {
+      background: #23272F;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    /* Circular toggle button base styles matching reference image dimensions */
+    .toggle-circle {
+      width: 48px;
+      height: 48px;
+      border-radius: 9999px;
+      background-color: #242831;
+      color: #E2E2E6;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+    }
+    .toggle-circle:hover {
+      background-color: #2D323E;
+    }
+    .toggle-circle:active {
+      transform: scale(0.94);
+    }
+
+    /* Active circular toggle state (Sleek light fill matching OriginOS) */
+    .toggle-circle.active-light {
+      background-color: #E1E6EC !important;
+      color: #1A1D24 !important;
+      border-color: rgba(255, 255, 255, 0.3) !important;
+      box-shadow: 0 4px 12px rgba(255, 255, 255, 0.15);
+    }
+    .toggle-circle.active-light svg {
+      color: #1A1D24 !important;
+      fill: currentColor;
+    }
+
+    /* Family Mode Highlighted Active Toggle Button */
+    .family-mode-active {
+      background: #004F7C !important;
+      color: #FFFFFF !important;
+      border: 1.5px solid #7CAEFF !important;
+      box-shadow: 0 0 16px rgba(124, 174, 255, 0.35);
+      position: relative;
+    }
+    .family-mode-active::after {
+      content: '';
+      position: absolute;
+      top: 3px;
+      right: 3px;
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background-color: #7CAEFF;
+      box-shadow: 0 0 6px #7CAEFF;
+    }
+
+    /* Vertical slider tracks */
+    .slider-track {
+      position: relative;
+      background: #252830;
+      border-radius: 28px;
+      overflow: hidden;
+      cursor: pointer;
+      border: 1px solid rgba(255, 255, 255, 0.07);
+    }
+    .slider-fill {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: #FFFFFF;
+      border-radius: 0 0 28px 28px;
+      transition: height 0.12s ease-out;
+      pointer-events: none;
+    }
+
+    /* Smooth slide-down spring animation */
+    @keyframes slideDownIn {
+      0% { transform: translateY(-24px); opacity: 0; }
+      100% { transform: translateY(0); opacity: 1; }
+    }
+    .animate-slide-in {
+      animation: slideDownIn 0.28s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+  </style>
+</head>
+<body class="min-h-screen flex items-center justify-center p-0 sm:p-4 bg-black">
+
+<!-- Phone Frame Container -->
+<main class="w-full max-w-[392px] h-screen sm:h-[844px] bg-[#121316] sm:rounded-[44px] shadow-2xl relative flex flex-col justify-between overflow-hidden border border-neutral-800/80 select-none animate-slide-in">
+
+  <!-- TOP PULL / SLIDE HANDLE -->
+  <div class="w-full pt-3 pb-1.5 flex flex-col items-center justify-center cursor-pointer group" onclick="dismissOrGoBack()" title="Slide up to dismiss">
+    <div class="w-10 h-1 bg-white/20 group-hover:bg-[#7CAEFF] rounded-full transition-colors duration-200"></div>
+  </div>
+
+  <!-- QUICK ACTIONS BAR (Page Pill & System Controls: Settings, Edit, Overflow) -->
+  <section class="w-full px-5 pt-0.5 pb-2.5 flex items-center justify-between text-white z-20" data-purpose="quick-actions-bar">
+    <!-- Page Indicator Pill [ :: 1 > ] -->
+    <div class="dark-pill rounded-full px-3 py-1.5 flex items-center space-x-2 text-[#E2E2E6] hover:text-white cursor-pointer transition active:scale-95 shadow-sm" title="Switch page">
+      <!-- 4 dots grid -->
+      <svg class="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24">
+        <rect height="6" rx="1.5" width="6" x="3" y="3"/>
+        <rect height="6" rx="1.5" width="6" x="15" y="3"/>
+        <rect height="6" rx="1.5" width="6" x="3" y="15"/>
+        <rect height="6" rx="1.5" width="6" x="15" y="15"/>
+      </svg>
+      <span class="text-[13px] font-semibold text-white leading-none">1</span>
+      <svg class="w-3.5 h-3.5 stroke-[2.5]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <polyline points="9 18 15 12 9 6"/>
+      </svg>
+    </div>
+
+    <!-- Right System Controls: Settings, Edit, Overflow -->
+    <div class="flex items-center space-x-2">
+      <!-- Settings Icon (Links to Screen 2) -->
+      <a href="/screens/screen-2-settings-family-mode/" aria-label="Settings" class="w-9 h-9 rounded-full dark-pill flex items-center justify-center text-[#E2E2E6] hover:text-white hover:border-[#7CAEFF] active:scale-95 transition shadow-sm" title="Settings">
+        <svg class="w-4 h-4 fill-none stroke-current stroke-[2.2]" viewBox="0 0 24 24">
+          <circle cx="12" cy="12" r="3"/>
+          <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+        </svg>
+      </a>
+
+      <!-- Edit Icon -->
+      <button aria-label="Edit tiles" class="w-9 h-9 rounded-full dark-pill flex items-center justify-center text-[#E2E2E6] hover:text-white active:scale-95 transition shadow-sm" title="Edit">
+        <svg class="w-3.5 h-3.5 fill-none stroke-current stroke-[2.2]" viewBox="0 0 24 24">
+          <path d="M12 20h9"/>
+          <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/>
+        </svg>
+      </button>
+
+      <!-- More Options Icon -->
+      <button aria-label="More options" class="w-9 h-9 rounded-full dark-pill flex items-center justify-center text-[#E2E2E6] hover:text-white active:scale-95 transition shadow-sm" title="More">
+        <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24">
+          <circle cx="12" cy="5" r="1.7"/>
+          <circle cx="12" cy="12" r="1.7"/>
+          <circle cx="12" cy="19" r="1.7"/>
+        </svg>
+      </button>
+    </div>
+  </section>
+
+  <!-- SCROLLABLE CONTENT BODY -->
+  <div class="flex-1 px-5 pt-0 pb-3 overflow-y-auto no-scrollbar space-y-3">
+    
+    <!-- PRIMARY FEATURED WIDGETS ROW: Wi-Fi Card & Media Player Card -->
+    <section class="grid grid-cols-2 gap-3" data-purpose="featured-cards">
+      
+      <!-- Left Card: Network & Connectivity -->
+      <article class="dark-card rounded-[26px] py-3 px-0 flex flex-col justify-between h-[152px] shadow-sm">
+        <!-- Wi-Fi SSID Row -->
+        <div class="flex items-center justify-between cursor-pointer active:opacity-80 px-3.5" onclick="toggleActive(this.querySelector('.wifi-btn'))">
+          <div class="flex items-center space-x-2.5 min-w-0">
+            <div class="wifi-btn w-11 h-11 rounded-full bg-[#004F7C] text-white flex items-center justify-center shrink-0 shadow-sm transition">
+              <svg class="w-[18px] h-[18px] fill-current" viewBox="0 0 24 24">
+                <path d="M12 18.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3zm-5.66-5.66a8 8 0 0 1 11.32 0l-1.42 1.42a6 6 0 0 0-8.48 0l-1.42-1.42zm-2.83-2.83a12 12 0 0 1 16.98 0l-1.42 1.42a10 10 0 0 0-14.14 0l-1.42-1.42z"/>
+              </svg>
+            </div>
+            <div class="leading-tight truncate">
+              <span class="text-[13px] font-semibold text-white tracking-tight block truncate">SYMBI_N</span>
+              <span class="text-[13px] font-semibold text-white tracking-tight block truncate">GP_STU...</span>
+            </div>
+          </div>
+          <svg class="w-3.5 h-3.5 text-neutral-400 stroke-[2.5] shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <polyline points="9 18 15 12 9 6"/>
+          </svg>
+        </div>
+
+        <!-- Divider -->
+        <div class="w-full px-3.5 my-0.5">
+          <div class="w-full h-[1px] bg-white/10"></div>
+        </div>
+
+        <!-- Micro Toggles: Cellular Data & Airplane Mode (Aligned with Vibrate/Silent below) -->
+        <div class="w-full grid grid-cols-2 gap-3 px-0">
+          <div class="flex items-center justify-center">
+            <!-- Mobile Data: Deep blue circular button with compact down/up arrows -->
+            <button onclick="toggleActive(this)" class="w-11 h-11 rounded-full bg-[#0b5796] text-white flex items-center justify-center active:scale-95 transition shadow-sm" title="Mobile Data">
+              <svg class="w-4 h-4 fill-white" viewBox="0 0 20 20">
+                <!-- Left arrow pointing DOWN -->
+                <rect x="5.5" y="3" width="1.8" height="10" rx="0.4"/>
+                <polygon points="3,12 6.4,17 9.8,12"/>
+                <!-- Right arrow pointing UP -->
+                <rect x="12.7" y="7" width="1.8" height="10" rx="0.4"/>
+                <polygon points="10.2,8 13.6,3 17,8"/>
+              </svg>
+            </button>
+          </div>
+          
+          <div class="flex items-center justify-center">
+            <!-- Airplane Mode: Dark circular button with compact 45-degree airplane -->
+            <button onclick="toggleActive(this)" class="w-11 h-11 rounded-full bg-[#232730] hover:bg-[#2B303C] text-white flex items-center justify-center active:scale-95 transition shadow-sm" title="Airplane Mode">
+              <svg class="w-[17px] h-[17px] fill-white" viewBox="0 0 24 24">
+                <path d="M21 16v-2l-8-5V3.5c0-.83-.67-1.5-1.5-1.5S10 2.67 10 3.5V9l-8 5v2l8-2.5V19l-2 1.5V22l3.5-1 3.5 1v-1.5L13 19v-5.5l8 2.5z" transform="rotate(45 12 12)"/>
+              </svg>
+            </button>
+          </div>
+        </div>
+      </article>
+
+      <!-- Right Card: Media Player -->
+      <article class="dark-card rounded-[26px] p-3 flex flex-col justify-between h-[152px] shadow-sm relative" data-purpose="media-player-card">
+        <div class="flex items-start justify-between">
+          <!-- Squircle album icon -->
+          <div class="w-11 h-11 rounded-2xl bg-[#2A2E37] text-white flex items-center justify-center shadow-inner">
+            <svg class="w-5 h-5 fill-current text-white/95" viewBox="0 0 24 24">
+              <path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/>
+            </svg>
+          </div>
+          <!-- Cast / AirPlay icon -->
+          <button class="text-neutral-400 hover:text-white transition p-1" title="Output Audio">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <circle cx="12" cy="12" fill="currentColor" r="2"/>
+              <path d="M16.24 7.76a6 6 0 0 1 0 8.49m-8.48-.01a6 6 0 0 1 0-8.49m11.31-2.82a10 10 0 0 1 0 14.14m-14.14 0a10 10 0 0 1 0-14.14" stroke-linecap="round"/>
+            </svg>
+          </button>
+        </div>
+
+        <div class="px-0.5">
+          <span id="media-status" class="text-[13px] font-semibold text-white tracking-tight">Not playing</span>
+        </div>
+
+        <!-- Controls: Prev, Play/Pause, Next -->
+        <div class="flex items-center justify-between px-1 text-white/95">
+          <button class="hover:text-white active:scale-90 transition p-1" title="Previous">
+            <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24">
+              <path d="M6 6h2v12H6zm3.5 6l8.5 6V6z"/>
+            </svg>
+          </button>
+          <button id="btn-play-pause" onclick="togglePlayPause()" class="hover:text-white active:scale-90 transition p-1" title="Play/Pause">
+            <svg id="icon-play" class="w-5 h-5 fill-current" viewBox="0 0 24 24">
+              <polygon points="5 3 19 12 5 21 5 3"/>
+            </svg>
+          </button>
+          <button class="hover:text-white active:scale-90 transition p-1" title="Next">
+            <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24">
+              <path d="M6 18l8.5-6L6 6v12zM16 6v12h2V6h-2z"/>
+            </svg>
+          </button>
+        </div>
+      </article>
+
+    </section>
+
+    <!-- MIDDLE CONTROLS SECTION: Audio Profiles & Sliders (EXACT MATCH TO REFERENCE IMAGE) -->
+    <section class="grid grid-cols-2 gap-3" data-purpose="sound-and-sliders">
+      
+      <!-- Left Column: Sound Mode & Do Not Disturb -->
+      <div class="flex flex-col justify-between space-y-3">
+        
+        <!-- Vibrate / Mute Split Pill (PERFECTLY ALIGNED WITH BUTTONS ABOVE) -->
+        <div class="dark-card rounded-[24px] h-[68px] relative shadow-sm flex items-center">
+          <div class="w-full grid grid-cols-2 gap-3 px-0">
+            <div class="flex items-center justify-center">
+              <!-- Vibrate Button: Light gray/white circle with dark phone & vibrant orange waves -->
+              <button onclick="toggleVibrate(this)" id="btn-vibrate" class="w-11 h-11 rounded-full bg-[#E1E6EC] text-[#1A1D24] flex items-center justify-center active:scale-95 transition shadow-sm" title="Vibrate mode">
+                <svg class="w-[20px] h-[20px]" viewBox="0 0 24 24" fill="none">
+                  <!-- Phone body: vertical rounded rectangle with black/dark outline -->
+                  <rect x="7" y="4.5" width="10" height="15" rx="2" stroke="#1A1D24" stroke-width="2" fill="#E1E6EC"/>
+                  <!-- Small orange vibration wave on left -->
+                  <path d="M3.5 9c-.6 1-.9 2-.9 3s.3 2 .9 3" stroke="#FF9500" stroke-width="2.2" stroke-linecap="round"/>
+                  <!-- Small orange vibration wave on right -->
+                  <path d="M20.5 9c.6 1 .9 2 .9 3s-.3 2-.9 3" stroke="#FF9500" stroke-width="2.2" stroke-linecap="round"/>
+                </svg>
+              </button>
+            </div>
+
+            <div class="flex items-center justify-center">
+              <!-- Mute Button: Dark circle with compact white bell & slash -->
+              <button onclick="toggleMute(this)" id="btn-mute" class="w-11 h-11 rounded-full bg-[#232730] text-white flex items-center justify-center active:scale-95 transition shadow-sm" title="Mute mode">
+                <svg class="w-[18px] h-[18px]" viewBox="0 0 24 24" fill="none">
+                  <path d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.9 2 2 2zm6-6v-5c0-3.07-1.63-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.64 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2z" fill="white"/>
+                  <line x1="2" y1="2" x2="22" y2="22" stroke="#232730" stroke-width="3.5" stroke-linecap="round"/>
+                  <line x1="2" y1="2" x2="22" y2="22" stroke="white" stroke-width="2" stroke-linecap="round"/>
+                </svg>
+              </button>
+            </div>
+          </div>
+
+          <!-- Vertical Divider line exactly centered between columns -->
+          <div class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[1px] h-6 bg-white/10 pointer-events-none"></div>
+        </div>
+
+        <!-- Do Not Disturb Card -->
+        <div onclick="toggleDnd(this)" class="dark-card rounded-[24px] h-[68px] relative shadow-sm flex items-center cursor-pointer hover:border-white/20 active:scale-[0.98] transition">
+          <div class="w-full grid grid-cols-2 gap-3 px-0 items-center">
+            <div class="flex items-center justify-center">
+              <div id="dnd-icon-badge" class="w-11 h-11 rounded-full bg-[#232730] text-white flex items-center justify-center shadow-sm transition">
+                <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24">
+                  <path d="M12.3 2a10 10 0 0 0-1.9 19.8 10 10 0 0 0 10.9-10.9A10.02 10.02 0 0 1 12.3 2z"/>
+                </svg>
+              </div>
+            </div>
+            <div class="text-[13px] font-semibold text-white leading-tight pl-0.5">
+              Do Not<br/>Disturb
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Right Column: Dual Vertical Sliders -->
+      <div class="grid grid-cols-2 gap-3 h-[148px]">
+        
+        <!-- Volume Slider (Muted 0% State matching Reference) -->
+        <div id="volume-track" class="slider-track flex flex-col justify-end items-center p-2 shadow-sm" onclick="adjustSlider(event, this, 'volume')" title="Volume Slider">
+          <div id="volume-fill" class="slider-fill bg-white/30" style="height: 0%;"></div>
+          <!-- Muted Speaker Icon -->
+          <div class="w-7 h-7 flex items-center justify-center text-white z-10 pointer-events-none pb-1">
+            <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24">
+              <path d="M16.5 12c0-1.77-1.02-3.29-2.5-4.03v2.21l2.45 2.45c.03-.2.05-.41.05-.63zm2.5 0c0 .94-.2 1.82-.54 2.64l1.51 1.51C20.63 14.91 21 13.5 21 12c0-4.28-2.99-7.86-7-8.77v2.06c2.89.86 5 3.54 5 6.71zM4.27 3L3 4.27 7.73 9H3v6h4l5 5v-6.73l4.25 4.25c-.67.52-1.42.93-2.25 1.18v2.06c1.38-.31 2.63-.95 3.69-1.81L19.73 21 21 19.73l-9-9L4.27 3zM12 4L9.91 6.09 12 8.18V4z"/>
+            </svg>
+          </div>
+        </div>
+
+        <!-- Brightness Slider with Auto indicator (~52% white fill) -->
+        <div id="brightness-track" class="slider-track flex flex-col justify-end items-center shadow-sm" onclick="adjustSlider(event, this, 'brightness')" title="Brightness Slider">
+          <div id="brightness-fill" class="slider-fill bg-white" style="height: 52%;"></div>
+          <!-- Auto Brightness Sun icon with "A" inside -->
+          <div class="relative w-full py-2.5 flex flex-col items-center justify-center text-[#1C1E22] z-10 pointer-events-none">
+            <svg class="w-6 h-6 stroke-[2] text-[#1C1E22]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <circle cx="12" cy="12" r="5" stroke-dasharray="2 2"/>
+              <line x1="12" x2="12" y1="1" y2="3"/>
+              <line x1="12" x2="12" y1="21" y2="23"/>
+              <line x1="4.22" x2="5.64" y1="4.22" y2="5.64"/>
+              <line x1="18.36" x2="19.78" y1="18.36" y2="19.78"/>
+              <line x1="1" x2="3" y1="12" y2="12"/>
+              <line x1="21" x2="23" y1="12" y2="12"/>
+              <line x1="4.22" x2="5.64" y1="19.78" y2="18.36"/>
+              <line x1="18.36" x2="19.78" y1="5.64" y2="4.22"/>
+            </svg>
+            <span class="absolute text-[8.5px] font-black text-[#1C1E22] leading-none">A</span>
+          </div>
+        </div>
+
+      </div>
+
+    </section>
+
+    <!-- 4x4 QUICK TOGGLES GRID (Proportionally Balanced to Match Reference) -->
+    <section class="grid grid-cols-4 gap-y-3.5 gap-x-3 pt-1 pb-1" data-purpose="quick-toggles-grid">
+      
+      <!-- ROW 1 -->
+      <!-- 1: Bluetooth (Active Light State) -->
+      <div onclick="toggleActiveLight(this.querySelector('.toggle-circle'))" class="flex flex-col items-center space-y-1.5 cursor-pointer group">
+        <div class="toggle-circle active-light" title="Bluetooth">
+          <svg class="w-[18px] h-[18px] fill-none stroke-current stroke-[2]" viewBox="0 0 24 24">
+            <path d="m7 7 10 10-5 5V2l5 5L7 17"/>
+          </svg>
+        </div>
+        <span class="text-[11.5px] font-medium text-white text-center leading-tight">Bluetooth</span>
+      </div>
+
+      <!-- 2: Auto-rotate -->
+      <div onclick="toggleActiveLight(this.querySelector('.toggle-circle'))" class="flex flex-col items-center space-y-1.5 cursor-pointer group">
+        <div class="toggle-circle" title="Auto-rotate">
+          <svg class="w-[18px] h-[18px] fill-none stroke-current stroke-[2]" viewBox="0 0 24 24">
+            <path d="M21.5 2v6h-6M2.5 22v-6h6M2 11.5a10 10 0 0 1 18.8-4.3M22 12.5a10 10 0 0 1-18.8 4.2"/>
+          </svg>
+        </div>
+        <span class="text-[11.5px] font-medium text-white text-center leading-tight">Auto-rotate</span>
+      </div>
+
+      <!-- 3: Flashlight -->
+      <div onclick="toggleActiveLight(this.querySelector('.toggle-circle'))" class="flex flex-col items-center space-y-1.5 cursor-pointer group">
+        <div class="toggle-circle" title="Flashlight">
+          <svg class="w-[18px] h-[18px] fill-current" viewBox="0 0 24 24">
+            <path d="M6 2h12v3l-4 4v11a2 2 0 0 1-2 2h0a2 2 0 0 1-2-2V9L6 5V2zm5 9v3h2v-3h-2z"/>
+          </svg>
+        </div>
+        <span class="text-[11.5px] font-medium text-white text-center leading-tight">Flashlight</span>
+      </div>
+
+      <!-- 4: Location (Active Light State) -->
+      <div onclick="toggleActiveLight(this.querySelector('.toggle-circle'))" class="flex flex-col items-center space-y-1.5 cursor-pointer group">
+        <div class="toggle-circle active-light" title="Location">
+          <svg class="w-[18px] h-[18px] fill-current" viewBox="0 0 24 24">
+            <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5a2.5 2.5 0 1 1 0-5 2.5 2.5 0 0 1 0 5z"/>
+          </svg>
+        </div>
+        <span class="text-[11.5px] font-medium text-white text-center leading-tight">Location</span>
+      </div>
+
+      <!-- ROW 2 -->
+      <!-- 5: Personal hotspot -->
+      <div onclick="toggleActiveLight(this.querySelector('.toggle-circle'))" class="flex flex-col items-center space-y-1.5 cursor-pointer group">
+        <div class="toggle-circle" title="Personal hotspot">
+          <svg class="w-[18px] h-[18px] fill-none stroke-current stroke-[2]" viewBox="0 0 24 24">
+            <circle cx="12" cy="12" fill="currentColor" r="2"/>
+            <path d="M16.24 7.76a6 6 0 0 1 0 8.49m-8.48 0a6 6 0 0 1 0-8.49m11.31-2.83a10 10 0 0 1 0 14.15m-14.14 0a10 10 0 0 1 0-14.15" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <span class="text-[11.5px] font-medium text-white text-center leading-tight">Personal<br/>hotspot</span>
+      </div>
+
+      <!-- 6: Device controls -->
+      <div onclick="toggleActiveLight(this.querySelector('.toggle-circle'))" class="flex flex-col items-center space-y-1.5 cursor-pointer group">
+        <div class="toggle-circle" title="Device controls">
+          <svg class="w-[18px] h-[18px] fill-current" viewBox="0 0 24 24">
+            <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/>
+          </svg>
+        </div>
+        <span class="text-[11.5px] font-medium text-white text-center leading-tight">Device<br/>controls</span>
+      </div>
+
+      <!-- 7: Wallet -->
+      <div onclick="toggleActiveLight(this.querySelector('.toggle-circle'))" class="flex flex-col items-center space-y-1.5 cursor-pointer group opacity-90">
+        <div class="toggle-circle" title="Wallet">
+          <svg class="w-[18px] h-[18px] fill-current" viewBox="0 0 24 24">
+            <path d="M20 7h-2V5c0-1.1-.9-2-2-2H4c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2v-9a3 3 0 0 0-2-3zm-4-2v2H4V5h12zm4 14H4V9h16v10zm-3-4a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z"/>
+          </svg>
+        </div>
+        <span class="text-[11.5px] font-medium text-white text-center leading-tight">Wallet</span>
+      </div>
+
+      <!-- 8: iQOOshare -->
+      <div onclick="toggleActiveLight(this.querySelector('.toggle-circle'))" class="flex flex-col items-center space-y-1.5 cursor-pointer group">
+        <div class="toggle-circle" title="iQOOshare">
+          <svg class="w-[18px] h-[18px] fill-none stroke-current stroke-[2]" viewBox="0 0 24 24">
+            <path d="M8 8a4 4 0 0 0 0 8h2a4 4 0 0 0 0-8H8zm8 0a4 4 0 0 1 0 8h-2a4 4 0 0 1 0-8h2z" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <span class="text-[11.5px] font-medium text-white text-center leading-tight">iQOOshare</span>
+      </div>
+
+      <!-- ROW 3 -->
+      <!-- 9: Calculator -->
+      <div onclick="toggleActiveLight(this.querySelector('.toggle-circle'))" class="flex flex-col items-center space-y-1.5 cursor-pointer group">
+        <div class="toggle-circle" title="Calculator">
+          <svg class="w-[18px] h-[18px] fill-current" viewBox="0 0 24 24">
+            <path d="M19 13h-6v2h6v-2zm0 4h-6v2h6v-2zM6.5 5.5V3h-2v2.5H2v2h2.5V10h2V7.5H9v-2H6.5zm7.5 1.25L15.25 5.5 17 7.25 18.75 5.5 20 6.75l-1.75 1.75L20 10.25 18.75 11.5 17 9.75 15.25 11.5 14 10.25l1.75-1.75L14 6.75zM2 15h7v2H2v-2z"/>
+          </svg>
+        </div>
+        <span class="text-[11.5px] font-medium text-white text-center leading-tight">Calculator</span>
+      </div>
+
+      <!-- 10: Ultra Game Mode -->
+      <div onclick="toggleActiveLight(this.querySelector('.toggle-circle'))" class="flex flex-col items-center space-y-1.5 cursor-pointer group">
+        <div class="toggle-circle" title="Ultra Game Mode">
+          <svg class="w-[18px] h-[18px] fill-current" viewBox="0 0 24 24">
+            <path d="M21 6H3c-1.1 0-2 .9-2 2v8c0 1.1.9 2 2 2h18c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2zm-10 7H8v3H6v-3H3v-2h3V8h2v3h3v2zm4.5 2a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm3-3a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z"/>
+          </svg>
+        </div>
+        <span class="text-[11.5px] font-medium text-white text-center leading-tight">Ultra Game<br/>Mode</span>
+      </div>
+
+      <!-- 11: Scan code -->
+      <div onclick="toggleActiveLight(this.querySelector('.toggle-circle'))" class="flex flex-col items-center space-y-1.5 cursor-pointer group">
+        <div class="toggle-circle" title="Scan code">
+          <svg class="w-[18px] h-[18px] fill-none stroke-current stroke-[2]" viewBox="0 0 24 24">
+            <path d="M4 8V4h4M16 4h4v4M4 16v4h4M16 20h4v-4" stroke-linecap="round" stroke-linejoin="round"/>
+            <line stroke-linecap="round" x1="8" x2="16" y1="12" y2="12"/>
+          </svg>
+        </div>
+        <span class="text-[11.5px] font-medium text-white text-center leading-tight">Scan code</span>
+      </div>
+
+      <!-- 12: Speed up -->
+      <div onclick="toggleActiveLight(this.querySelector('.toggle-circle'))" class="flex flex-col items-center space-y-1.5 cursor-pointer group">
+        <div class="toggle-circle" title="Speed up">
+          <svg class="w-[18px] h-[18px] fill-current" viewBox="0 0 24 24">
+            <path d="M13.13 2.18c-3.14.73-5.74 3.03-6.68 6.06L4.5 10.2C3.58 11.12 3 12.38 3 13.7v4.8c0 .83.67 1.5 1.5 1.5h4.8c1.32 0 2.58-.58 3.5-1.5l1.96-1.95c3.03-.94 5.33-3.54 6.06-6.68 1.4-6.02-4.66-12.08-7.69-7.69zM12 14a2 2 0 1 1 0-4 2 2 0 0 1 0 4z"/>
+          </svg>
+        </div>
+        <span class="text-[11.5px] font-medium text-white text-center leading-tight">Speed up</span>
+      </div>
+
+      <!-- ROW 4 -->
+      <!-- 13: Eye Protection -->
+      <div onclick="toggleActiveLight(this.querySelector('.toggle-circle'))" class="flex flex-col items-center space-y-1.5 cursor-pointer group">
+        <div class="toggle-circle" title="Eye Protection">
+          <svg class="w-[18px] h-[18px] fill-current" viewBox="0 0 24 24">
+            <path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zm0 12.5a5 5 0 1 1 0-10 5 5 0 0 1 0 10zm0-8a3 3 0 1 0 0 6 3 3 0 0 0 0-6z"/>
+          </svg>
+        </div>
+        <span class="text-[11.5px] font-medium text-white text-center leading-tight">Eye<br/>Protection</span>
+      </div>
+
+      <!-- 14: Dark mode (Active Light State) -->
+      <div onclick="toggleActiveLight(this.querySelector('.toggle-circle'))" class="flex flex-col items-center space-y-1.5 cursor-pointer group">
+        <div class="toggle-circle active-light" title="Dark mode">
+          <svg class="w-[18px] h-[18px]" fill="none" viewBox="0 0 24 24">
+            <circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2"/>
+            <path d="M12 3a9 9 0 0 0 0 18V3z" fill="currentColor"/>
+          </svg>
+        </div>
+        <span class="text-[11.5px] font-medium text-white text-center leading-tight">Dark mode</span>
+      </div>
+
+      <!-- 15: FAMILY MODE (KEY SHORTCUT: Opens Family Mode Flow!) -->
+      <div onclick="openFamilyMode()" class="flex flex-col items-center space-y-1.5 cursor-pointer group" title="Click to Open Family Mode">
+        <div id="btn-family-mode" class="toggle-circle family-mode-active hover:brightness-110 active:scale-95 transition">
+          <!-- House with 3 family members silhouette outline -->
+          <svg class="w-[19px] h-[19px] fill-none stroke-white stroke-[1.8]" viewBox="0 0 24 24">
+            <path d="M3 10.5L12 3l9 7.5v10a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1v-10z" stroke-linecap="round" stroke-linejoin="round"/>
+            <!-- Parent left -->
+            <circle cx="9.5" cy="11.5" fill="white" r="1.3" stroke="none"/>
+            <path d="M7.5 17c0-1.5 1-2.2 2-2.2s2 .7 2 2.2" stroke-linecap="round"/>
+            <!-- Parent right -->
+            <circle cx="14.5" cy="11.5" fill="white" r="1.3" stroke="none"/>
+            <path d="M12.5 17c0-1.5 1-2.2 2-2.2s2 .7 2 2.2" stroke-linecap="round"/>
+            <!-- Child center -->
+            <circle cx="12" cy="14" fill="white" r="1" stroke="none"/>
+            <path d="M10.8 17.5c0-.8.5-1.2 1.2-1.2s1.2.4 1.2 1.2" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <span class="text-[11.5px] font-medium text-[#7CAEFF] group-hover:text-white text-center leading-tight transition">Family Mode</span>
+      </div>
+
+      <!-- 16: Battery Saver -->
+      <div onclick="toggleActiveLight(this.querySelector('.toggle-circle'))" class="flex flex-col items-center space-y-1.5 cursor-pointer group">
+        <div class="toggle-circle" title="Battery Saver">
+          <svg class="w-[18px] h-[18px] fill-current" viewBox="0 0 24 24">
+            <path d="M17 5H7a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2zm-3 8h-4v-2h4v2zm7-3h1v4h-1v-4z"/>
+          </svg>
+        </div>
+        <span class="text-[11.5px] font-medium text-white text-center leading-tight">Battery<br/>Saver</span>
+      </div>
+
+    </section>
+
+  </div>
+
+  <!-- BOTTOM GESTURE HOME BAR (Swipe up or click to dismiss) -->
+  <footer class="w-full flex flex-col items-center justify-center py-2.5 cursor-pointer group" onclick="dismissOrGoBack()" title="Slide up to dismiss">
+    <div class="w-32 h-1 bg-white/40 group-hover:bg-[#7CAEFF] rounded-full transition-colors duration-200"></div>
+  </footer>
+
+</main>
+
+<script>
+  function toggleActiveLight(btn) {
+    if (!btn) return;
+    btn.classList.toggle('active-light');
+  }
+
+  function toggleActive(btn) {
+    if (!btn) return;
+    btn.classList.toggle('bg-[#0b5796]');
+    btn.classList.toggle('bg-[#232730]');
+  }
+
+  function toggleVibrate(btn) {
+    const iconWrapper = btn.querySelector('div');
+    if (!iconWrapper) return;
+    iconWrapper.classList.toggle('bg-[#E1E6EC]');
+    iconWrapper.classList.toggle('bg-[#232730]');
+    iconWrapper.classList.toggle('text-[#1A1D24]');
+    iconWrapper.classList.toggle('text-white');
+    const phoneRect = iconWrapper.querySelector('rect');
+    if (phoneRect) {
+      if (iconWrapper.classList.contains('bg-[#E1E6EC]')) {
+        phoneRect.setAttribute('stroke', '#1A1D24');
+        phoneRect.setAttribute('fill', '#E1E6EC');
+      } else {
+        phoneRect.setAttribute('stroke', '#FFFFFF');
+        phoneRect.setAttribute('fill', '#232730');
+      }
+    }
+  }
+
+  function toggleMute(btn) {
+    const iconWrapper = btn.querySelector('div');
+    if (!iconWrapper) return;
+    iconWrapper.classList.toggle('bg-[#232730]');
+    iconWrapper.classList.toggle('bg-[#E1E6EC]');
+    iconWrapper.classList.toggle('text-white');
+    iconWrapper.classList.toggle('text-[#1A1D24]');
+    const svg = iconWrapper.querySelector('svg');
+    if (svg) {
+      if (iconWrapper.classList.contains('bg-[#E1E6EC]')) {
+        svg.classList.remove('text-white', 'fill-white');
+        svg.classList.add('text-[#1A1D24]', 'fill-[#1A1D24]');
+      } else {
+        svg.classList.remove('text-[#1A1D24]', 'fill-[#1A1D24]');
+        svg.classList.add('text-white', 'fill-white');
+      }
+    }
+  }
+
+  function toggleDnd(card) {
+    const badge = document.getElementById('dnd-icon-badge');
+    if (badge) {
+      badge.classList.toggle('bg-[#232730]');
+      badge.classList.toggle('bg-[#E1E6EC]');
+      badge.classList.toggle('text-white');
+      badge.classList.toggle('text-[#1A1D24]');
+    }
+  }
+
+  let isPlaying = false;
+  function togglePlayPause() {
+    isPlaying = !isPlaying;
+    const btn = document.getElementById('btn-play-pause');
+    const status = document.getElementById('media-status');
+    if (btn) {
+      if (isPlaying) {
+        btn.innerHTML = `<svg class="w-5 h-5 fill-current" viewBox="0 0 24 24"><rect x="6" y="5" width="3.5" height="14" rx="1"></rect><rect x="14.5" y="5" width="3.5" height="14" rx="1"></rect></svg>`;
+        if (status) status.textContent = "Now playing";
+      } else {
+        btn.innerHTML = `<svg class="w-5 h-5 fill-current" viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>`;
+        if (status) status.textContent = "Not playing";
+      }
+    }
+  }
+
+  function adjustSlider(e, track, type) {
+    const rect = track.getBoundingClientRect();
+    const clickY = e.clientY - rect.top;
+    const height = rect.height;
+    const percentage = Math.max(0, Math.min(100, Math.round(((height - clickY) / height) * 100)));
+    const fill = document.getElementById(`${type}-fill`);
+    if (fill) {
+      fill.style.height = `${percentage}%`;
+    }
+  }
+
+  // KEY ACTION: Open Family Mode
+  function openFamilyMode() {
+    const btn = document.getElementById('btn-family-mode');
+    if (btn) {
+      btn.classList.add('scale-90');
+      setTimeout(() => btn.classList.remove('scale-90'), 150);
+    }
+    
+    // Broadcast to parent if inside iframe drawer
+    if (window.self !== window.top) {
+      window.parent.postMessage({
+        action: 'open-family-mode',
+        screen: '/screens/screen-1-family-mode-intro/'
+      }, '*');
+    } else {
+      window.location.href = '/screens/screen-1-family-mode-intro/';
+    }
+  }
+
+  function dismissOrGoBack() {
+    if (window.self !== window.top) {
+      window.parent.postMessage('close-control-center', '*');
+    } else if (window.history.length > 1) {
+      window.history.back();
+    } else {
+      window.location.href = '/screens/screen-1-family-mode-intro/';
+    }
+  }
+
+  // Swipe up to dismiss gesture
+  let startTouchY = 0;
+  window.addEventListener('touchstart', (e) => {
+    startTouchY = e.touches[0].clientY;
+  }, { passive: true });
+  window.addEventListener('touchend', (e) => {
+    const diff = e.changedTouches[0].clientY - startTouchY;
+    if (diff < -40) {
+      dismissOrGoBack();
+    }
+  }, { passive: true });
+
+  window.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+      dismissOrGoBack();
+    }
+  });
+</script>
+
+</body>
+</html>
