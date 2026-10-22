@@ -1,0 +1,9 @@
+{
+  "id": "screen-9-family-mode-manage",
+  "stitchScreenId": "43afc693c93045b5b7498fdf4362adfa",
+  "title": "Family Mode - Manage and End Early",
+  "description": "Active Family Mode management screen showing remaining duration (2h 15m), End Early action, and quick links to Allowed Contacts, Message Behaviour, and Caller Status.",
+  "order": 10,
+  "flowStep": "Management",
+  "screenshotFile": "raw_screenshot.png"
+}

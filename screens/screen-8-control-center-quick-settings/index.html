@@ -665,6 +665,44 @@
     }
   }
 
+  // DYNAMIC FAMILY MODE STATE
+  const urlParams = new URLSearchParams(window.location.search);
+  let isFamilyModeOn = true;
+  if (urlParams.get('mode') === 'off') {
+    isFamilyModeOn = false;
+    try { localStorage.setItem('family_mode_active', 'false'); } catch (e) {}
+  } else if (urlParams.get('mode') === 'on') {
+    isFamilyModeOn = true;
+    try { localStorage.setItem('family_mode_active', 'true'); } catch (e) {}
+  } else {
+    try {
+      const stored = localStorage.getItem('family_mode_active');
+      if (stored === 'false') isFamilyModeOn = false;
+    } catch (e) {}
+  }
+
+  function applyFamilyModeState() {
+    const btn = document.getElementById('btn-family-mode');
+    const label = btn ? btn.parentElement.querySelector('span') : null;
+    if (btn) {
+      if (isFamilyModeOn) {
+        btn.classList.add('family-mode-active');
+        if (label) {
+          label.classList.add('text-[#7CAEFF]');
+          label.classList.remove('text-white');
+        }
+      } else {
+        btn.classList.remove('family-mode-active');
+        if (label) {
+          label.classList.remove('text-[#7CAEFF]');
+          label.classList.add('text-white');
+        }
+      }
+    }
+  }
+  window.addEventListener('DOMContentLoaded', applyFamilyModeState);
+  applyFamilyModeState();
+
   // KEY ACTION: Open Family Mode
   function openFamilyMode() {
     const btn = document.getElementById('btn-family-mode');
@@ -673,14 +711,20 @@
       setTimeout(() => btn.classList.remove('scale-90'), 150);
     }
     
+    // If the mode is currently ON, clicking on the mode again shows Screen 9 (Manage & End Early)
+    // If the mode is OFF, clicking it shows Screen 1 (Intro) to activate it
+    const targetScreen = isFamilyModeOn 
+      ? '/screens/screen-9-family-mode-manage/'
+      : '/screens/screen-1-family-mode-intro/';
+
     // Broadcast to parent if inside iframe drawer
     if (window.self !== window.top) {
       window.parent.postMessage({
         action: 'open-family-mode',
-        screen: '/screens/screen-1-family-mode-intro/'
+        screen: targetScreen
       }, '*');
     } else {
-      window.location.href = '/screens/screen-1-family-mode-intro/';
+      window.location.href = targetScreen;
     }
   }
 

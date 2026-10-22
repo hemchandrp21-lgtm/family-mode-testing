@@ -213,11 +213,20 @@
     }
   }
 
+  try {
+    localStorage.setItem('family_mode_active', 'true');
+  } catch (e) {}
+
   window.addEventListener('message', (e) => {
     if (e.data === 'close-control-center') {
       closeControlCenter();
     } else if (e.data && e.data.action === 'open-family-mode') {
       closeControlCenter();
+      if (e.data.screen) {
+        window.location.href = e.data.screen;
+      } else {
+        window.location.href = '/screens/screen-9-family-mode-manage/';
+      }
     }
   });
 

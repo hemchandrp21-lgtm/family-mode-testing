@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Family Mode - Settings</title>
+<!-- Tailwind CSS CDN with plugins -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            appBg: '#F3F4F6',
+            charcoal: '#333333',
+            buttonDark: '#3A3A3A',
+            badgeBg: '#E9EBEF',
+            subtleGray: '#8E8E93',
+            dividerColor: '#ECEEF1',
+          },
+          fontFamily: {
+            sans: [
+              '-apple-system',
+              'BlinkMacSystemFont',
+              '"SF Pro Display"',
+              '"SF Pro Text"',
+              'system-ui',
+              'sans-serif'
+            ],
+          },
+          borderRadius: {
+            '2xl': '24px',
+            '3xl': '32px',
+          }
+        }
+      }
+    }
+  </script>
+<!-- Custom global styles -->
+<style data-purpose="custom-layout">
+    body {
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      background-color: #E5E7EB;
+    }
+    .tap-highlight-none {
+      -webkit-tap-highlight-color: transparent;
+    }
+  </style>
+</head>
+<body class="min-h-screen flex items-center justify-center p-0 sm:p-4 select-none">
+<!-- BEGIN: PhoneShellContainer -->
+<!-- Container mimicking modern iOS viewport dimensions with rounded corners -->
+<div class="relative w-full max-w-[400px] h-[844px] bg-[#F5F5F7] rounded-[44px] shadow-2xl overflow-hidden flex flex-col justify-between border-[6px] border-white/60" data-purpose="mobile-screen">
+<!-- BEGIN: TopBarArea -->
+<!-- Top indicator bars and back navigation -->
+<header class="pt-5 px-6 pb-2" data-purpose="header-navigation">
+<!-- Progress Bar Indicators (4 segments, first 3 active) -->
+<div class="flex items-center justify-center gap-1.5 pt-2 pb-5" data-purpose="step-indicators">
+<span class="h-1 w-9 rounded-full bg-charcoal"></span>
+<span class="h-1 w-9 rounded-full bg-charcoal"></span>
+<span class="h-1 w-9 rounded-full bg-charcoal"></span>
+<span class="h-1 w-9 rounded-full bg-[#D1D5DB]"></span>
+</div>
+<!-- Navigation Bar with Chevron -->
+<div class="flex items-center justify-between -mt-2">
+<button aria-label="Go back" class="tap-highlight-none p-2 -ml-2 text-charcoal hover:opacity-75 transition-opacity" type="button">
+<!-- Left Chevron SVG -->
+<svg class="w-6 h-6 stroke-[2.5]" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" viewbox="0 0 24 24">
+<polyline points="15 18 9 12 15 6"></polyline>
+</svg>
+</button>
+</div>
+<!-- Title & Graphic Area -->
+<div class="relative flex items-center justify-between mt-2" data-purpose="title-and-illustration">
+<!-- Text Group -->
+<div class="z-10">
+<h1 class="text-[32px] font-bold tracking-tight text-charcoal leading-tight">Family Mode</h1>
+<p class="text-[17px] font-normal text-subtleGray mt-0.5">Active until 8:00 PM</p>
+</div>
+<!-- Decorative Illustration: House badge with family and clock -->
+<div class="relative flex-shrink-0 w-24 h-24 flex items-center justify-center" data-purpose="illustration-badge">
+<!-- Abstract Background Soft Circles -->
+<div class="absolute -top-1 right-2 w-16 h-16 bg-[#E8EAEF] rounded-full mix-blend-multiply opacity-80 pointer-events-none"></div>
+<div class="absolute -right-2 top-2 w-14 h-14 bg-[#E0E2E8] rounded-full mix-blend-multiply opacity-70 pointer-events-none"></div>
+<!-- House & Family SVG Icon Container -->
+<div class="relative z-10">
+<svg class="w-16 h-16 text-charcoal" fill="none" stroke="currentColor" viewbox="0 0 72 72">
+<!-- House Roof and Outline -->
+<path d="M12 36 L36 14 L60 36 V58 C60 60 58 62 56 62 H16 C14 62 12 60 12 58 Z" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="3"></path>
+<!-- People Silhouettes inside house -->
+<circle cx="27" cy="40" fill="currentColor" r="3.2"></circle>
+<path d="M20 54 C20 49 23 46 27 46 C31 46 34 49 34 54" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="2.5"></path>
+<circle cx="41" cy="42" fill="currentColor" r="3"></circle>
+<path d="M35 54 C35 50 38 48 41 48 C44 48 47 50 47 54" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="2.2"></path>
+</svg>
+<!-- Small Clock Badge overlapping bottom-right -->
+<div class="absolute -bottom-1 -right-1 bg-white rounded-full p-[2px] shadow-sm">
+<div class="w-6 h-6 rounded-full bg-charcoal flex items-center justify-center text-white">
+<svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="3" viewbox="0 0 24 24">
+<circle cx="12" cy="12" r="9"></circle>
+<polyline points="12 7 12 12 15 12"></polyline>
+</svg>
+</div>
+</div>
+</div>
+</div>
+</div>
+</header>
+<!-- END: TopBarArea -->
+<!-- BEGIN: MainContent -->
+<main class="flex-1 px-5 pt-3 pb-4 space-y-4 flex flex-col" data-purpose="screen-content">
+<!-- Status & Time Remaining Card -->
+<section class="bg-white rounded-[26px] p-5 shadow-[0_2px_12px_rgba(0,0,0,0.03)] border border-gray-100 flex flex-col justify-between" data-purpose="countdown-card">
+<div class="flex items-center space-x-4 mb-4">
+<!-- Circular Clock Icon Container -->
+<div class="w-14 h-14 rounded-full bg-[#F3F4F6] flex items-center justify-center flex-shrink-0">
+<svg class="w-8 h-8 text-charcoal stroke-[2.2]" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" viewbox="0 0 24 24">
+<circle cx="12" cy="12" r="10"></circle>
+<polyline points="12 6 12 12 16 14"></polyline>
+</svg>
+</div>
+<!-- Time info -->
+<div>
+<span class="block text-[14px] text-subtleGray font-normal">Time remaining</span>
+<span class="block text-[28px] leading-tight font-bold text-charcoal">2h 15m</span>
+</div>
+</div>
+<!-- End Early Action Button -->
+<button class="w-full py-3.5 px-4 bg-buttonDark text-white text-[17px] font-semibold rounded-[18px] hover:bg-black transition-colors duration-150 active:scale-[0.99] text-center shadow-sm" type="button">
+          End Early
+        </button>
+</section>
+<!-- Settings Menu List Container -->
+<section class="bg-white rounded-[26px] shadow-[0_2px_12px_rgba(0,0,0,0.03)] border border-gray-100 divide-y divide-gray-100 overflow-hidden" data-purpose="settings-menu-list">
+<!-- Row 1: Allowed Contacts -->
+<a class="flex items-center justify-between p-4 px-4 hover:bg-gray-50/75 transition-colors" href="#allowed-contacts">
+<div class="flex items-center space-x-3.5">
+<!-- Icon Badge -->
+<div class="w-12 h-12 rounded-full bg-badgeBg flex items-center justify-center text-charcoal flex-shrink-0">
+<!-- Group/Family Icon -->
+<svg class="w-6 h-6 stroke-[1.8]" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" viewbox="0 0 24 24">
+<path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+<circle cx="9" cy="7" r="4"></circle>
+<path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+<path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+</svg>
+</div>
+<!-- Labels -->
+<div>
+<div class="text-[16px] font-semibold text-charcoal">Allowed Contacts</div>
+<div class="text-[13px] text-subtleGray">5 contacts</div>
+</div>
+</div>
+<!-- Right Chevron Icon -->
+<svg class="w-5 h-5 text-gray-400 stroke-[2]" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" viewbox="0 0 24 24">
+<polyline points="9 18 15 12 9 6"></polyline>
+</svg>
+</a>
+<!-- Row 2: Message Behaviour -->
+<a class="flex items-center justify-between p-4 px-4 hover:bg-gray-50/75 transition-colors" href="#message-behaviour">
+<div class="flex items-center space-x-3.5">
+<!-- Icon Badge -->
+<div class="w-12 h-12 rounded-full bg-badgeBg flex items-center justify-center text-charcoal flex-shrink-0">
+<!-- Message Bubble Icon with dots -->
+<svg class="w-6 h-6 stroke-[1.8]" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" viewbox="0 0 24 24">
+<path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+<line stroke-width="2.5" x1="8" x2="8.01" y1="10" y2="10"></line>
+<line stroke-width="2.5" x1="12" x2="12.01" y1="10" y2="10"></line>
+<line stroke-width="2.5" x1="16" x2="16.01" y1="10" y2="10"></line>
+</svg>
+</div>
+<!-- Labels -->
+<div>
+<div class="text-[16px] font-semibold text-charcoal">Message Behaviour</div>
+<div class="text-[13px] text-subtleGray">Mark as undelivered</div>
+</div>
+</div>
+<!-- Right Chevron Icon -->
+<svg class="w-5 h-5 text-gray-400 stroke-[2]" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" viewbox="0 0 24 24">
+<polyline points="9 18 15 12 9 6"></polyline>
+</svg>
+</a>
+<!-- Row 3: Caller Status -->
+<a class="flex items-center justify-between p-4 px-4 hover:bg-gray-50/75 transition-colors" href="#caller-status">
+<div class="flex items-center space-x-3.5">
+<!-- Icon Badge -->
+<div class="w-12 h-12 rounded-full bg-badgeBg flex items-center justify-center text-charcoal flex-shrink-0">
+<!-- Phone Receiver Icon -->
+<svg class="w-5 h-5 text-charcoal" fill="currentColor" viewbox="0 0 24 24">
+<path d="M20.01 15.38c-1.23 0-2.42-.2-3.53-.56a.977.977 0 0 0-1.01.24l-1.57 1.97c-2.83-1.44-5.15-3.75-6.59-6.59l1.97-1.57c.28-.28.36-.67.25-1.02A11.36 11.36 0 0 1 8.5 4.31c-.08-.55-.55-.93-1.1-.93H4.16C3.54 3.38 3 3.91 3 4.54 3 13.61 10.39 21 19.46 21c.63 0 1.16-.54 1.16-1.16v-3.36c0-.55-.38-1.02-.93-1.1z"></path>
+</svg>
+</div>
+<!-- Labels -->
+<div>
+<div class="text-[16px] font-semibold text-charcoal">Caller Status</div>
+<div class="text-[13px] text-subtleGray">Show Family Mode status</div>
+</div>
+</div>
+<!-- Right Chevron Icon -->
+<svg class="w-5 h-5 text-gray-400 stroke-[2]" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" viewbox="0 0 24 24">
+<polyline points="9 18 15 12 9 6"></polyline>
+</svg>
+</a>
+</section>
+</main>
+<!-- END: MainContent -->
+<!-- BEGIN: BottomHomeIndicator -->
+<!-- iOS standard home indicator -->
+<footer class="w-full flex justify-center pb-2 pt-1" data-purpose="home-indicator-area">
+<div class="w-36 h-1 bg-gray-400/80 rounded-full"></div>
+</footer>
+<!-- END: BottomHomeIndicator -->
+</div>
+<!-- END: PhoneShellContainer -->
+</body></html>

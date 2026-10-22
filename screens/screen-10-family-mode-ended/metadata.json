@@ -1,0 +1,9 @@
+{
+  "id": "screen-10-family-mode-ended",
+  "stitchScreenId": "bca4f370a2d64bf681ee84afd6806725",
+  "title": "Family Mode Ended",
+  "description": "Confirmation screen indicating Family Mode has ended and all notifications/calls are restored, with OK action to return to Control Center.",
+  "order": 11,
+  "flowStep": "Completion",
+  "screenshotFile": "raw_screenshot.png"
+}

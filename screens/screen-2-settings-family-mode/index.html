@@ -481,8 +481,8 @@
       </div>
       <div class="setting-divider"></div>
 
-      <!-- 4. FAMILY MODE (Highlighted Core Feature Link to Screen 3!) -->
-      <a href="/screens/screen-3-family-mode-set-duration/" class="setting-row family-mode-highlight group" data-search-item="family mode focus duration contacts quiet quiet time call filter">
+      <!-- 4. FAMILY MODE (Highlighted Core Feature Link) -->
+      <a id="family-mode-setting-link" href="/screens/screen-3-family-mode-set-duration/" class="setting-row family-mode-highlight group" data-search-item="family mode focus duration contacts quiet quiet time call filter">
         <div class="flex items-center space-x-3.5 min-w-0">
           <div class="setting-icon text-[#5390F5]">
             <!-- OriginOS Family Silhouette + House Icon -->
@@ -496,7 +496,7 @@
           </div>
         </div>
         <div class="flex items-center space-x-2">
-          <span class="text-[12.5px] font-medium text-[#5390F5] bg-[#5390F5]/10 px-2 py-0.5 rounded-full border border-[#5390F5]/20">Setup &rarr;</span>
+          <span id="family-mode-badge" class="text-[12.5px] font-medium text-[#5390F5] bg-[#5390F5]/10 px-2 py-0.5 rounded-full border border-[#5390F5]/20">Setup &rarr;</span>
           <svg class="w-4 h-4 text-[#5390F5] stroke-[2.2]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <polyline points="9 18 15 12 9 6"/>
           </svg>
@@ -667,12 +667,29 @@
     }
   }
 
+  function checkActiveState() {
+    try {
+      const active = localStorage.getItem('family_mode_active');
+      const link = document.getElementById('family-mode-setting-link');
+      const badge = document.getElementById('family-mode-badge');
+      if (active === 'true') {
+        if (link) link.href = '/screens/screen-9-family-mode-manage/';
+        if (badge) badge.innerHTML = 'Active &rarr;';
+      } else {
+        if (link) link.href = '/screens/screen-3-family-mode-set-duration/';
+        if (badge) badge.innerHTML = 'Setup &rarr;';
+      }
+    } catch (e) {}
+  }
+  window.addEventListener('DOMContentLoaded', checkActiveState);
+  checkActiveState();
+
   window.addEventListener('message', (e) => {
     if (e.data === 'close-control-center') {
       closeControlCenter();
     } else if (e.data && e.data.action === 'open-family-mode') {
       closeControlCenter();
-      window.location.href = '/screens/screen-3-family-mode-set-duration/';
+      window.location.href = e.data.screen || '/screens/screen-9-family-mode-manage/';
     }
   });
 

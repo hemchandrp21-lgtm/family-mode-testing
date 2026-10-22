@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport"/>
+  <title>Family Mode Ended</title>
+  <!-- Load Tailwind CSS v3 -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Google Fonts: Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    * {
+      -webkit-tap-highlight-color: transparent;
+      user-select: none;
+      box-sizing: border-box;
+    }
+    ::-webkit-scrollbar,
+    html::-webkit-scrollbar,
+    body::-webkit-scrollbar,
+    *::-webkit-scrollbar {
+      display: none !important;
+      width: 0 !important;
+      height: 0 !important;
+      background: transparent !important;
+    }
+    html, body, * {
+      scrollbar-width: none !important;
+      -ms-overflow-style: none !important;
+    }
+    body {
+      background-color: #000000;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+  </style>
+</head>
+<body class="min-h-screen flex items-center justify-center p-0 sm:p-4 bg-black">
+
+<!-- Phone Frame Container -->
+<main class="w-full max-w-[392px] h-screen sm:h-[844px] bg-[#FAFAFA] sm:rounded-[44px] shadow-2xl relative flex flex-col justify-between overflow-hidden border border-neutral-700/40 select-none">
+
+  <!-- TOP PULL HANDLE (Pull down or click to open Control Center) -->
+  <div id="top-status-bar" class="w-full pt-3 pb-1 flex flex-col items-center justify-center select-none cursor-pointer group z-30 transition-colors" title="Drag down or click to open Control Center" onclick="openControlCenter()">
+    <div class="w-10 h-1 bg-black/20 group-hover:bg-[#7CAEFF] rounded-full transition-colors duration-200"></div>
+  </div>
+
+  <!-- SLIDING CONTROL CENTER OVERLAY -->
+  <div id="control-center-drawer" class="absolute inset-0 bg-[#121316] z-50 transform -translate-y-full transition-transform duration-300 ease-out flex flex-col justify-between overflow-hidden shadow-2xl">
+    <iframe id="cc-iframe" src="/screens/screen-8-control-center-quick-settings/" class="w-full h-full border-none"></iframe>
+  </div>
+
+  <!-- TOP STEP INDICATOR (2 active dark segments, 1 inactive light segment) -->
+  <section class="mt-2 flex justify-center items-center px-8 z-20" data-purpose="step-indicator">
+    <div class="flex items-center space-x-2">
+      <div class="w-11 h-[3px] bg-neutral-900 rounded-full"></div>
+      <div class="w-11 h-[3px] bg-neutral-900 rounded-full"></div>
+      <div class="w-11 h-[3px] bg-neutral-300 rounded-full"></div>
+    </div>
+  </section>
+
+  <!-- MAIN CONFIRMATION CONTENT -->
+  <section class="flex-1 flex flex-col justify-center items-center px-8 text-center pb-8" data-purpose="main-confirmation-content">
+    
+    <!-- Central Layered Circular Graphic -->
+    <div class="relative w-64 h-56 flex items-center justify-center mb-6" data-purpose="success-illustration">
+      <!-- Background Circle: Top Right Large Pale Gray -->
+      <div class="absolute w-32 h-32 rounded-full bg-[#EAEAEA] top-0 right-4"></div>
+      <!-- Background Circle: Left Middle Small Pale Gray -->
+      <div class="absolute w-20 h-20 rounded-full bg-[#ECECEC] bottom-10 left-2"></div>
+      <!-- Background Circle: Top Left Tiny Bubble -->
+      <div class="absolute w-8 h-8 rounded-full bg-[#E5E5E5] top-6 left-12"></div>
+      <!-- Background Circle: Bottom Right Tiny Bubble -->
+      <div class="absolute w-7 h-7 rounded-full bg-[#E2E2E2] bottom-9 right-8"></div>
+
+      <!-- Foreground Primary Circle with Checkmark -->
+      <div class="relative z-10 w-32 h-32 rounded-full bg-[#838383] shadow-md flex items-center justify-center">
+        <svg class="w-14 h-14 text-white stroke-[4.5]" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+          <polyline points="20 6 9 17 4 12"></polyline>
+        </svg>
+      </div>
+    </div>
+
+    <!-- Headline -->
+    <h1 class="text-[28px] font-bold text-neutral-950 tracking-tight leading-snug mb-3.5">
+      Family Mode Ended
+    </h1>
+
+    <!-- Description / Body Text -->
+    <p class="text-[17px] font-normal leading-relaxed text-[#5F5F5F] max-w-[270px] mx-auto">
+      You can now receive all notifications and calls.
+    </p>
+
+  </section>
+
+  <!-- BOTTOM ACTION AREA -->
+  <footer class="px-6 pb-2 pt-0 flex flex-col items-center shrink-0 z-20" data-purpose="actions-and-home-bar">
+    <!-- OK Button -->
+    <button onclick="handleOkClick()" class="w-full h-14 bg-[#383838] hover:bg-black active:scale-[0.98] transition-all rounded-2xl flex items-center justify-center text-white text-[17px] font-semibold tracking-wide shadow-sm cursor-pointer" data-purpose="confirm-button" type="button">
+      OK
+    </button>
+
+    <!-- iOS Home Indicator -->
+    <div class="w-32 h-1 bg-black/20 rounded-full mt-7 mb-2"></div>
+  </footer>
+
+</main>
+
+<script>
+  function handleOkClick() {
+    // Set family mode to inactive in local storage
+    try {
+      localStorage.setItem('family_mode_active', 'false');
+    } catch (e) {}
+
+    // Navigate back to Control Center with mode=off
+    window.location.href = '/screens/screen-8-control-center-quick-settings/?mode=off';
+  }
+
+  function openControlCenter() {
+    const drawer = document.getElementById('control-center-drawer');
+    if (drawer) {
+      drawer.style.transition = 'transform 0.3s cubic-bezier(0.16, 1, 0.3, 1)';
+      drawer.classList.remove('-translate-y-full');
+      drawer.classList.add('translate-y-0');
+      drawer.style.transform = '';
+    }
+  }
+
+  function closeControlCenter() {
+    const drawer = document.getElementById('control-center-drawer');
+    if (drawer) {
+      drawer.style.transition = 'transform 0.3s cubic-bezier(0.16, 1, 0.3, 1)';
+      drawer.classList.remove('translate-y-0');
+      drawer.classList.add('-translate-y-full');
+      drawer.style.transform = '';
+    }
+  }
+
+  window.addEventListener('message', (e) => {
+    if (e.data === 'close-control-center') {
+      closeControlCenter();
+    } else if (e.data && e.data.action === 'open-family-mode') {
+      closeControlCenter();
+    }
+  });
+
+  // Touch & Mouse Drag Down Gestures for top status handle
+  (function initDrag() {
+    const statusBar = document.getElementById('top-status-bar');
+    const drawer = document.getElementById('control-center-drawer');
+    const mainEl = document.querySelector('main');
+    if (!statusBar || !drawer || !mainEl) return;
+
+    let isDragging = false;
+    let startY = 0;
+
+    function onStart(clientY) {
+      isDragging = true;
+      startY = clientY;
+      drawer.style.transition = 'none';
+    }
+
+    function onMove(clientY) {
+      if (!isDragging) return;
+      const diff = clientY - startY;
+      if (diff > 0) {
+        const h = mainEl.clientHeight || 844;
+        const translateY = Math.min(0, -h + diff);
+        drawer.style.transform = `translateY(${translateY}px)`;
+      }
+    }
+
+    function onEnd(clientY) {
+      if (!isDragging) return;
+      isDragging = false;
+      const diff = clientY - startY;
+      drawer.style.transition = 'transform 0.3s cubic-bezier(0.16, 1, 0.3, 1)';
+      if (diff > 80) {
+        openControlCenter();
+      } else {
+        closeControlCenter();
+      }
+    }
+
+    statusBar.addEventListener('touchstart', (e) => onStart(e.touches[0].clientY), { passive: true });
+    window.addEventListener('touchmove', (e) => { if (isDragging) onMove(e.touches[0].clientY); }, { passive: true });
+    window.addEventListener('touchend', (e) => { if (isDragging) onEnd(e.changedTouches[0].clientY); }, { passive: true });
+
+    statusBar.addEventListener('mousedown', (e) => onStart(e.clientY));
+    window.addEventListener('mousemove', (e) => { if (isDragging) onMove(e.clientY); });
+    window.addEventListener('mouseup', (e) => { if (isDragging) onEnd(e.clientY); });
+  })();
+</script>
+
+</body>
+</html>

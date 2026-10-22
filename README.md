@@ -22,6 +22,10 @@ An end-to-end, high-fidelity clone of the **Family Mode** experience and **Origi
    - Verified active state confirmation, comprehensive settings summary card, and edit actions.
 9. **Screen 9 • Control Center - Quick Settings** (`/screens/screen-8-control-center-quick-settings/`)
    - OriginOS 4-column quick toggles grid, dual vertical interactive volume and brightness sliders, Wi-Fi widget, media player, and active Family Mode toggle.
+10. **Screen 10 • Family Mode - Manage & End Early** (`/screens/screen-9-family-mode-manage/`)
+   - Active state management: Live time remaining (2h 15m), End Early action, and quick access to Allowed Contacts, Message Behaviour, and Caller Status settings.
+11. **Screen 11 • Family Mode Ended** (`/screens/screen-10-family-mode-ended/`)
+   - Confirmation screen indicating Family Mode has ended and all notifications/calls are restored, with OK action to return to Control Center.
 
 ## ⚡ Interactions & Gestures
 
