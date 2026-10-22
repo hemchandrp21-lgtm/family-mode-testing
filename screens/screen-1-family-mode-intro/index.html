@@ -54,9 +54,14 @@
     <iframe id="cc-iframe" src="/screens/screen-8-control-center-quick-settings/" class="w-full h-full border-none"></iframe>
   </div>
 
-  <!-- TOP NAVIGATION: Skip button -->
-  <header class="w-full flex justify-end items-center px-6 pt-3 pb-1">
-    <a href="/screens/screen-2-settings-family-mode/" aria-label="Skip onboarding" class="text-[14px] font-normal text-[#8AB4F8] hover:text-white transition">
+  <!-- TOP NAVIGATION: Back to Settings & Skip button -->
+  <header class="w-full flex justify-between items-center px-6 pt-3 pb-1 z-20">
+    <a href="/screens/screen-2-settings-family-mode/" aria-label="Go back to Settings" class="p-1 -ml-1 text-neutral-300 hover:text-white transition active:scale-95">
+      <svg class="w-6 h-6 stroke-[2]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path d="M15 19l-7-7 7-7" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </a>
+    <a href="/screens/screen-3-family-mode-set-duration/" aria-label="Skip to duration setup" class="text-[14px] font-normal text-[#8AB4F8] hover:text-white transition">
       Skip
     </a>
   </header>
@@ -142,7 +147,7 @@
 
   <!-- BOTTOM ACTION (Minimal Deep Blue Pill Button) -->
   <footer class="w-full px-6 pt-2 pb-3">
-    <a href="/screens/screen-2-settings-family-mode/" aria-label="Get Started with Family Mode" class="w-full py-3.5 rounded-full bg-[#004F7C] hover:bg-[#005E94] active:scale-95 text-white text-[15.5px] font-medium transition shadow-sm flex items-center justify-center text-decoration-none">
+    <a href="/screens/screen-3-family-mode-set-duration/" aria-label="Get Started with Family Mode" class="w-full py-3.5 rounded-full bg-[#004F7C] hover:bg-[#005E94] active:scale-95 text-white text-[15.5px] font-medium transition shadow-sm flex items-center justify-center text-decoration-none border border-[#7CAEFF]/30">
       Get Started
     </a>
 

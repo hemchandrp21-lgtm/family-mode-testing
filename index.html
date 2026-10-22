@@ -162,33 +162,110 @@
     </div>
     <h1>Family Mode &amp; Control Center</h1>
     <p class="subtitle">
-      End-to-end Family Mode experience and OriginOS sliding Control Center quick settings panel: OLED pitch-black background, left-aligned typography, custom controls, and interactive sliding navigation gestures.
+      End-to-end Family Mode experience: First step is the <strong>Setup Wizard</strong>, and after setup is completed, Family Mode transitions into the <strong>Instant ON / OFF Toggle</strong> across Control Center and Settings.
     </p>
+
+    <!-- Interactive State Switcher for Pair Testing -->
+    <div style="margin-top: 18px; display: inline-flex; flex-wrap: wrap; gap: 10px; justify-content: center; align-items: center; background: #16181F; border: 1px solid #2B313E; padding: 12px 20px; border-radius: 9999px;">
+      <a href="/screens/screen-8-control-center-quick-settings/?reset=1" style="background: #004F7C; border: 1.5px solid #7CAEFF; color: #FFFFFF; font-size: 13px; font-weight: 600; padding: 7px 16px; border-radius: 9999px; text-decoration: none; display: inline-flex; align-items: center; gap: 6px; box-shadow: 0 0 12px rgba(124,174,255,0.3);">
+        <span>▶ Start from Control Center (Tap Mode &rarr; Setup Flow)</span>
+      </a>
+      <a href="/screens/screen-2-settings-family-mode/?reset=1" style="background: #181A22; border: 1px solid #333948; color: #E2E2E6; font-size: 13px; font-weight: 500; padding: 7px 16px; border-radius: 9999px; text-decoration: none; display: inline-flex; align-items: center; gap: 6px;">
+        <span>▶ Start from Settings</span>
+      </a>
+      <span style="font-size: 13px; color: #8E939D; margin-left: 6px;">Force State:</span>
+      <button onclick="setFlowState('reset')" id="btn-state-reset" style="background: #232731; border: 1px solid #333948; color: #FFFFFF; font-size: 12px; padding: 6px 12px; border-radius: 9999px; cursor: pointer; transition: all 0.15s ease;">
+        Reset to Setup
+      </button>
+      <button onclick="setFlowState('on')" id="btn-state-on" style="background: #232731; border: 1px solid #333948; color: #FFFFFF; font-size: 12px; padding: 6px 12px; border-radius: 9999px; cursor: pointer; transition: all 0.15s ease;">
+        Setup Done • Mode ON
+      </button>
+      <button onclick="setFlowState('off')" id="btn-state-off" style="background: #232731; border: 1px solid #333948; color: #FFFFFF; font-size: 12px; padding: 6px 12px; border-radius: 9999px; cursor: pointer; transition: all 0.15s ease;">
+        Setup Done • Mode OFF
+      </button>
+    </div>
   </header>
 
-  <main class="grid">
-    <!-- Screen 1 -->
-    <a href="/screens/screen-1-family-mode-intro/" class="card">
-      <div class="preview-frame">
-        <iframe src="/screens/screen-1-family-mode-intro/" scrolling="no"></iframe>
-      </div>
-      <div class="card-body">
-        <span class="screen-tag">Screen 1 • Onboarding</span>
-        <h2 class="card-title">Family Mode - Intro</h2>
-        <p class="card-desc">Original intro flow: Family graphic, Skip action, 3 key benefits (Silence distractions, Stay connected, Important calls), and "Get Started" pill.</p>
-        <div class="action-btn">Open Screen 1 &rarr;</div>
-      </div>
-    </a>
+  <script>
+    function resetToSetupFirst(e) {
+      if (e) e.preventDefault();
+      try {
+        localStorage.removeItem('familyModeSetupComplete');
+        localStorage.removeItem('familyModeActive');
+      } catch(err) {}
+      window.location.href = '/screens/screen-2-settings-family-mode/';
+    }
 
-    <!-- Screen 2 -->
+    function setFlowState(state) {
+      if (state === 'reset') {
+        localStorage.removeItem('familyModeSetupComplete');
+        localStorage.removeItem('familyModeActive');
+      } else if (state === 'on') {
+        localStorage.setItem('familyModeSetupComplete', 'true');
+        localStorage.setItem('familyModeActive', 'true');
+      } else if (state === 'off') {
+        localStorage.setItem('familyModeSetupComplete', 'true');
+        localStorage.setItem('familyModeActive', 'false');
+      }
+      syncSwitcherStyles();
+      location.reload();
+    }
+
+    function syncSwitcherStyles() {
+      const isSetup = localStorage.getItem('familyModeSetupComplete') === 'true';
+      const isActive = localStorage.getItem('familyModeActive') === 'true';
+      
+      const btnReset = document.getElementById('btn-state-reset');
+      const btnOn = document.getElementById('btn-state-on');
+      const btnOff = document.getElementById('btn-state-off');
+      
+      if (!isSetup) {
+        if (btnReset) { btnReset.style.background = '#004F7C'; btnReset.style.borderColor = '#7CAEFF'; }
+        if (btnOn) { btnOn.style.background = '#232731'; btnOn.style.borderColor = '#333948'; }
+        if (btnOff) { btnOff.style.background = '#232731'; btnOff.style.borderColor = '#333948'; }
+      } else if (isActive) {
+        if (btnReset) { btnReset.style.background = '#232731'; btnReset.style.borderColor = '#333948'; }
+        if (btnOn) { btnOn.style.background = '#004F7C'; btnOn.style.borderColor = '#7CAEFF'; }
+        if (btnOff) { btnOff.style.background = '#232731'; btnOff.style.borderColor = '#333948'; }
+      } else {
+        if (btnReset) { btnReset.style.background = '#232731'; btnReset.style.borderColor = '#333948'; }
+        if (btnOn) { btnOn.style.background = '#232731'; btnOn.style.borderColor = '#333948'; }
+        if (btnOff) { btnOff.style.background = '#004F7C'; btnOff.style.borderColor = '#7CAEFF'; }
+      }
+    }
+    window.addEventListener('DOMContentLoaded', syncSwitcherStyles);
+
+    // Allow iframe clicks to navigate parent window smoothly
+    window.addEventListener('message', (e) => {
+      if (e.data && e.data.action === 'open-family-mode' && e.data.screen) {
+        window.location.href = e.data.screen;
+      }
+    });
+  </script>
+
+  <main class="grid">
+    <!-- Screen 1: Settings (1st screen in flow) -->
     <a href="/screens/screen-2-settings-family-mode/" class="card">
       <div class="preview-frame">
         <iframe src="/screens/screen-2-settings-family-mode/" scrolling="no"></iframe>
       </div>
       <div class="card-body">
-        <span class="screen-tag">Screen 2 • System Settings</span>
+        <span class="screen-tag">Screen 1 • System Settings</span>
         <h2 class="card-title">Settings - OriginOS</h2>
-        <p class="card-desc">Authentic OriginOS settings: 6:48 status bar, Hemchand user profile card, grouped rounded cards, vibrant electric blue icons across connectivity, sound, display, apps, highlighted Family Mode, and system management.</p>
+        <p class="card-desc">Authentic OriginOS settings: Hemchand user profile card, grouped rounded cards, vibrant electric blue icons, and highlighted Family Mode entry point.</p>
+        <div class="action-btn">Open Screen 1 &rarr;</div>
+      </div>
+    </a>
+
+    <!-- Screen 2: Modes Onboarding (2nd screen in flow) -->
+    <a href="/screens/screen-1-family-mode-intro/" class="card">
+      <div class="preview-frame">
+        <iframe src="/screens/screen-1-family-mode-intro/" scrolling="no"></iframe>
+      </div>
+      <div class="card-body">
+        <span class="screen-tag">Screen 2 • Modes Onboarding</span>
+        <h2 class="card-title">Modes Onboarding - Intro</h2>
+        <p class="card-desc">Mode introduction flow launched from Settings: Family graphic, Skip action, 3 key benefits, and "Get Started" button leading into Duration setup.</p>
         <div class="action-btn">Open Screen 2 &rarr;</div>
       </div>
     </a>
@@ -279,20 +356,20 @@
       <div class="card-body">
         <span class="screen-tag">Screen 9 • Control Center</span>
         <h2 class="card-title">Control Center - Quick Settings</h2>
-        <p class="card-desc">OriginOS Quick Settings panel with Wi-Fi &amp; Media widgets, vertical sliders, and 4x4 toggles grid featuring the active Family Mode toggle that launches Family Mode.</p>
+        <p class="card-desc">OriginOS Quick Settings panel with Wi-Fi & Media widgets, vertical sliders, and 4x4 toggles grid featuring the active Family Mode toggle that launches Family Mode.</p>
         <div class="action-btn">Open Screen 9 &rarr;</div>
       </div>
     </a>
 
     <!-- Screen 10 -->
-    <a href="/screens/screen-9-family-mode-manage/" class="card">
+    <a href="/screens/screen-9-family-mode-active-status/" class="card">
       <div class="preview-frame">
-        <iframe src="/screens/screen-9-family-mode-manage/" scrolling="no"></iframe>
+        <iframe src="/screens/screen-9-family-mode-active-status/" scrolling="no"></iframe>
       </div>
       <div class="card-body">
-        <span class="screen-tag">Screen 10 • Management</span>
-        <h2 class="card-title">Family Mode - Manage &amp; End Early</h2>
-        <p class="card-desc">Active Family Mode management screen showing remaining duration (2h 15m), End Early action, and quick links to Allowed Contacts, Message Behaviour, and Caller Status.</p>
+        <span class="screen-tag">Screen 10 • Active Mode Management</span>
+        <h2 class="card-title">Family Mode - Active Status</h2>
+        <p class="card-desc">Active state management screen with "Time remaining 2h 15m", "End Early" action, and grouped quick-access rows for Allowed Contacts, Message Behaviour, and Caller Status.</p>
         <div class="action-btn">Open Screen 10 &rarr;</div>
       </div>
     </a>
@@ -303,9 +380,9 @@
         <iframe src="/screens/screen-10-family-mode-ended/" scrolling="no"></iframe>
       </div>
       <div class="card-body">
-        <span class="screen-tag">Screen 11 • Completion</span>
+        <span class="screen-tag">Screen 11 • Deactivation Complete</span>
         <h2 class="card-title">Family Mode Ended</h2>
-        <p class="card-desc">Confirmation screen indicating Family Mode has ended and all notifications/calls are restored, with OK action to return to Control Center.</p>
+        <p class="card-desc">Confirmation screen with bold checkmark emblem, message confirming all calls and notifications are restored, and "OK" completion button that turns off Family Mode.</p>
         <div class="action-btn">Open Screen 11 &rarr;</div>
       </div>
     </a>

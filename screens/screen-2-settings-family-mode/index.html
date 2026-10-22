@@ -481,27 +481,30 @@
       </div>
       <div class="setting-divider"></div>
 
-      <!-- 4. FAMILY MODE (Highlighted Core Feature Link) -->
-      <a id="family-mode-setting-link" href="/screens/screen-3-family-mode-set-duration/" class="setting-row family-mode-highlight group" data-search-item="family mode focus duration contacts quiet quiet time call filter">
-        <div class="flex items-center space-x-3.5 min-w-0">
+      <!-- 4. FAMILY MODE (Highlighted Core Feature Link / Toggle) -->
+      <div id="row-family-mode" class="setting-row family-mode-highlight group cursor-pointer" data-search-item="family mode focus duration contacts quiet quiet time call filter">
+        <div class="flex items-center space-x-3.5 min-w-0 flex-1" onclick="handleFamilyModeRowClick()">
           <div class="setting-icon text-[#5390F5]">
             <!-- OriginOS Family Silhouette + House Icon -->
             <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24">
               <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/>
             </svg>
           </div>
-          <div class="flex items-center space-x-2">
-            <span class="text-[15px] font-medium text-white tracking-tight group-hover:text-[#5390F5] transition">Family Mode</span>
-            <span class="w-2 h-2 rounded-full bg-[#5390F5] shadow-[0_0_8px_#5390F5]"></span>
+          <div class="flex flex-col">
+            <div class="flex items-center space-x-2">
+              <span class="text-[15px] font-medium text-white tracking-tight group-hover:text-[#5390F5] transition">Family Mode</span>
+              <span id="dot-family-mode" class="w-2 h-2 rounded-full bg-[#5390F5] shadow-[0_0_8px_#5390F5] hidden"></span>
+            </div>
+            <span id="subtext-family-mode" class="text-[12px] text-[#8E939D]">Set up focus routine</span>
           </div>
         </div>
-        <div class="flex items-center space-x-2">
-          <span id="family-mode-badge" class="text-[12.5px] font-medium text-[#5390F5] bg-[#5390F5]/10 px-2 py-0.5 rounded-full border border-[#5390F5]/20">Setup &rarr;</span>
-          <svg class="w-4 h-4 text-[#5390F5] stroke-[2.2]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <polyline points="9 18 15 12 9 6"/>
-          </svg>
+        <div id="action-container-family-mode" class="flex items-center space-x-2 flex-shrink-0">
+          <a href="/screens/screen-1-family-mode-intro/" class="text-[12.5px] font-medium text-[#5390F5] bg-[#5390F5]/10 px-2.5 py-1 rounded-full border border-[#5390F5]/20 hover:bg-[#5390F5]/20 transition flex items-center space-x-1">
+            <span>Setup</span>
+            <span>&rarr;</span>
+          </a>
         </div>
-      </a>
+      </div>
       <div class="setting-divider"></div>
 
       <!-- 5. Shortcuts & accessibility -->
@@ -667,31 +670,90 @@
     }
   }
 
-  function checkActiveState() {
-    try {
-      const active = localStorage.getItem('family_mode_active');
-      const link = document.getElementById('family-mode-setting-link');
-      const badge = document.getElementById('family-mode-badge');
-      if (active === 'true') {
-        if (link) link.href = '/screens/screen-9-family-mode-manage/';
-        if (badge) badge.innerHTML = 'Active &rarr;';
-      } else {
-        if (link) link.href = '/screens/screen-3-family-mode-set-duration/';
-        if (badge) badge.innerHTML = 'Setup &rarr;';
-      }
-    } catch (e) {}
-  }
-  window.addEventListener('DOMContentLoaded', checkActiveState);
-  checkActiveState();
-
   window.addEventListener('message', (e) => {
     if (e.data === 'close-control-center') {
       closeControlCenter();
     } else if (e.data && e.data.action === 'open-family-mode') {
       closeControlCenter();
-      window.location.href = e.data.screen || '/screens/screen-9-family-mode-manage/';
+      window.location.href = e.data.screen || '/screens/screen-9-family-mode-active-status/';
     }
   });
+
+  // URL reset parameter: ?reset=1
+  try {
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.get('reset') === '1') {
+      localStorage.removeItem('familyModeSetupComplete');
+      localStorage.removeItem('familyModeActive');
+    }
+  } catch(e) {}
+
+  function handleFamilyModeRowClick() {
+    const isSetupComplete = localStorage.getItem('familyModeSetupComplete') === 'true';
+    if (!isSetupComplete) {
+      window.location.href = '/screens/screen-1-family-mode-intro/';
+    } else {
+      const isActive = localStorage.getItem('familyModeActive') === 'true';
+      if (isActive) {
+        window.location.href = '/screens/screen-9-family-mode-active-status/';
+      } else {
+        toggleFamilyModeSwitch();
+      }
+    }
+  }
+
+  function toggleFamilyModeSwitch(e) {
+    if (e) e.stopPropagation();
+    const isActive = localStorage.getItem('familyModeActive') === 'true';
+    const nextState = !isActive;
+    try {
+      localStorage.setItem('familyModeActive', nextState ? 'true' : 'false');
+    } catch(err) {}
+    syncFamilyModeRow();
+  }
+
+  function syncFamilyModeRow() {
+    const isSetupComplete = localStorage.getItem('familyModeSetupComplete') === 'true';
+    const isActive = localStorage.getItem('familyModeActive') === 'true';
+    const container = document.getElementById('action-container-family-mode');
+    const dot = document.getElementById('dot-family-mode');
+    const subtext = document.getElementById('subtext-family-mode');
+    
+    if (!container) return;
+
+    if (!isSetupComplete) {
+      // Step 1: Not set up yet -> leads to Modes Onboarding!
+      if (dot) dot.classList.add('hidden');
+      if (subtext) subtext.textContent = 'Set up focus routine';
+      container.innerHTML = `
+        <a href="/screens/screen-1-family-mode-intro/" class="text-[12.5px] font-medium text-[#5390F5] bg-[#5390F5]/10 px-2.5 py-1 rounded-full border border-[#5390F5]/20 hover:bg-[#5390F5]/20 transition flex items-center space-x-1">
+          <span>Setup</span>
+          <span>&rarr;</span>
+        </a>
+      `;
+    } else {
+      // Step 2: Setup complete -> The ON / OFF switch!
+      if (isActive) {
+        if (dot) dot.classList.remove('hidden');
+        if (subtext) subtext.textContent = 'Active until 8:00 PM';
+        container.innerHTML = `
+          <div onclick="toggleFamilyModeSwitch(event)" class="w-12 h-7 bg-[#5390F5] rounded-full p-0.5 transition-colors duration-200 cursor-pointer flex items-center justify-end shadow-sm" title="Toggle Family Mode Off">
+            <div class="w-6 h-6 bg-white rounded-full shadow-md transform transition-transform duration-200"></div>
+          </div>
+        `;
+      } else {
+        if (dot) dot.classList.add('hidden');
+        if (subtext) subtext.textContent = 'Off';
+        container.innerHTML = `
+          <div onclick="toggleFamilyModeSwitch(event)" class="w-12 h-7 bg-[#333842] rounded-full p-0.5 transition-colors duration-200 cursor-pointer flex items-center justify-start shadow-sm" title="Toggle Family Mode On">
+            <div class="w-6 h-6 bg-[#A0A4A8] rounded-full shadow-md transform transition-transform duration-200"></div>
+          </div>
+        `;
+      }
+    }
+  }
+  window.addEventListener('DOMContentLoaded', syncFamilyModeRow);
+  window.addEventListener('storage', syncFamilyModeRow);
 
   // Touch & Mouse Drag Down Gestures for Pull-Down Control Center
   (function initDrag() {

@@ -177,7 +177,7 @@
   <!-- BOTTOM ACTION BUTTONS: Done (Primary) & Edit Settings (Secondary) -->
   <footer class="w-full px-6 pt-2 pb-3 flex flex-col space-y-2.5" data-purpose="bottom-actions">
     <!-- Primary Done Button -->
-    <a href="/screens/screen-2-settings-family-mode/" class="w-full py-3.5 rounded-full bg-[#004F7C] hover:bg-[#005E94] active:scale-95 text-white text-[15.5px] font-medium transition shadow-sm flex items-center justify-center text-decoration-none">
+    <a href="/screens/screen-8-control-center-quick-settings/" onclick="handleDone(event)" class="w-full py-3.5 rounded-full bg-[#004F7C] hover:bg-[#005E94] active:scale-95 text-white text-[15.5px] font-medium transition shadow-sm flex items-center justify-center text-decoration-none border border-[#7CAEFF]/30">
       Done
     </a>
 
@@ -213,22 +213,23 @@
     }
   }
 
-  try {
-    localStorage.setItem('family_mode_active', 'true');
-  } catch (e) {}
-
   window.addEventListener('message', (e) => {
     if (e.data === 'close-control-center') {
       closeControlCenter();
     } else if (e.data && e.data.action === 'open-family-mode') {
       closeControlCenter();
-      if (e.data.screen) {
-        window.location.href = e.data.screen;
-      } else {
-        window.location.href = '/screens/screen-9-family-mode-manage/';
-      }
+      window.location.href = e.data.screen || '/screens/screen-9-family-mode-active-status/';
     }
   });
+
+  function handleDone(e) {
+    if (e) e.preventDefault();
+    try {
+      localStorage.setItem('familyModeSetupComplete', 'true');
+      localStorage.setItem('familyModeActive', 'true');
+    } catch(err) {}
+    window.location.href = '/screens/screen-8-control-center-quick-settings/';
+  }
 
   // Touch & Mouse Drag Down Gestures
   (function initDrag() {

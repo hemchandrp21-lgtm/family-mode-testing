@@ -4,10 +4,10 @@ An end-to-end, high-fidelity clone of the **Family Mode** experience and **Origi
 
 ## 📱 Screens & Architecture
 
-1. **Screen 1 • Family Mode - Intro** (`/screens/screen-1-family-mode-intro/`)
-   - Onboarding introduction, hero line art, key benefits, and Get Started action.
-2. **Screen 2 • Settings - OriginOS** (`/screens/screen-2-settings-family-mode/`)
-   - Authentic OriginOS system settings with Hemchand user profile, grouped rounded cards, and electric blue icons.
+1. **Screen 1 • Settings - OriginOS** (`/screens/screen-2-settings-family-mode/`)
+   - Authentic OriginOS system settings with Hemchand user profile, grouped rounded cards, electric blue icons, and Family Mode entry point.
+2. **Screen 2 • Modes Onboarding - Intro** (`/screens/screen-1-family-mode-intro/`)
+   - Mode introduction flow launched from Settings: hero line art, key benefits, Skip, and Get Started action.
 3. **Screen 3 • Set a Duration** (`/screens/screen-3-family-mode-set-duration/`)
    - Routine hours picker (6:00 PM - 9:00 PM), weekday recurrence chips, and duration options.
 4. **Screen 4 • Allow Selected Contacts** (`/screens/screen-4-family-mode-allow-contacts/`)
@@ -22,10 +22,10 @@ An end-to-end, high-fidelity clone of the **Family Mode** experience and **Origi
    - Verified active state confirmation, comprehensive settings summary card, and edit actions.
 9. **Screen 9 • Control Center - Quick Settings** (`/screens/screen-8-control-center-quick-settings/`)
    - OriginOS 4-column quick toggles grid, dual vertical interactive volume and brightness sliders, Wi-Fi widget, media player, and active Family Mode toggle.
-10. **Screen 10 • Family Mode - Manage & End Early** (`/screens/screen-9-family-mode-manage/`)
-   - Active state management: Live time remaining (2h 15m), End Early action, and quick access to Allowed Contacts, Message Behaviour, and Caller Status settings.
+10. **Screen 10 • Family Mode - Active Status** (`/screens/screen-9-family-mode-active-status/`)
+   - Active state management screen with "Time remaining 2h 15m", "End Early" button, and grouped access to Allowed Contacts, Message Behaviour, and Caller Status.
 11. **Screen 11 • Family Mode Ended** (`/screens/screen-10-family-mode-ended/`)
-   - Confirmation screen indicating Family Mode has ended and all notifications/calls are restored, with OK action to return to Control Center.
+   - Deactivation confirmation screen with bold checkmark badge, notification restoration message, and "OK" completion button.
 
 ## ⚡ Interactions & Gestures
 

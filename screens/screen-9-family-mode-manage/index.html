@@ -3,13 +3,13 @@
 <head>
   <meta charset="utf-8"/>
   <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport"/>
-  <title>Family Mode - Manage &amp; End Early</title>
-  <!-- Load Tailwind CSS v3 -->
+  <title>Family Mode - Active Status</title>
+  <!-- Tailwind CSS v3 -->
   <script src="https://cdn.tailwindcss.com"></script>
-  <!-- Google Fonts: Inter -->
+  <!-- Google Fonts: Roboto & Inter -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
 
   <style>
     * {
@@ -17,6 +17,7 @@
       user-select: none;
       box-sizing: border-box;
     }
+    /* Universal scrollbar elimination */
     ::-webkit-scrollbar,
     html::-webkit-scrollbar,
     body::-webkit-scrollbar,
@@ -32,7 +33,8 @@
     }
     body {
       background-color: #000000;
-      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      color: #E2E2E6;
+      font-family: 'Roboto', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
       margin: 0;
       padding: 0;
     }
@@ -41,11 +43,11 @@
 <body class="min-h-screen flex items-center justify-center p-0 sm:p-4 bg-black">
 
 <!-- Phone Frame Container -->
-<main class="w-full max-w-[392px] h-screen sm:h-[844px] bg-[#F5F5F7] sm:rounded-[44px] shadow-2xl relative flex flex-col justify-between overflow-hidden border border-neutral-700/40 select-none">
+<main class="w-full max-w-[392px] h-screen sm:h-[844px] bg-[#121316] sm:rounded-[44px] shadow-2xl relative flex flex-col justify-between overflow-hidden border border-neutral-800/80 select-none">
 
   <!-- TOP PULL HANDLE (Pull down or click to open Control Center) -->
   <div id="top-status-bar" class="w-full pt-3 pb-1 flex flex-col items-center justify-center select-none cursor-pointer group z-30 transition-colors" title="Drag down or click to open Control Center" onclick="openControlCenter()">
-    <div class="w-10 h-1 bg-black/20 group-hover:bg-[#7CAEFF] rounded-full transition-colors duration-200"></div>
+    <div class="w-10 h-1 bg-white/20 group-hover:bg-[#7CAEFF] rounded-full transition-colors duration-200"></div>
   </div>
 
   <!-- SLIDING CONTROL CENTER OVERLAY -->
@@ -53,234 +55,243 @@
     <iframe id="cc-iframe" src="/screens/screen-8-control-center-quick-settings/" class="w-full h-full border-none"></iframe>
   </div>
 
-  <!-- TOP BAR AREA: Step Indicators & Back Navigation -->
-  <header class="pt-1 px-6 pb-2 z-20">
-    <!-- Progress Bar Indicators (4 segments, first 3 active) -->
-    <div class="flex items-center justify-center gap-1.5 pt-1 pb-3" data-purpose="step-indicators">
-      <span class="h-1 w-9 rounded-full bg-[#333333]"></span>
-      <span class="h-1 w-9 rounded-full bg-[#333333]"></span>
-      <span class="h-1 w-9 rounded-full bg-[#333333]"></span>
-      <span class="h-1 w-9 rounded-full bg-[#D1D5DB]"></span>
-    </div>
+  <!-- NAVIGATION HEADER -->
+  <header class="w-full px-5 pt-3 pb-2 flex items-center justify-between text-white z-20">
+    <a href="/screens/screen-8-control-center-quick-settings/" aria-label="Go back" class="p-1.5 -ml-1.5 rounded-full text-neutral-300 hover:text-white hover:bg-white/10 transition active:scale-95">
+      <svg class="w-6 h-6 stroke-[2]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path d="M15 19l-7-7 7-7" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </a>
 
-    <!-- Navigation Bar with Chevron -->
-    <div class="flex items-center justify-between">
-      <a href="/screens/screen-8-control-center-quick-settings/" aria-label="Go back" class="p-1 -ml-2 text-[#333333] hover:opacity-75 transition-opacity">
-        <svg class="w-6 h-6 stroke-[2.5]" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
-          <polyline points="15 18 9 12 15 6"></polyline>
-        </svg>
-      </a>
-      <div class="w-6"></div>
-    </div>
-
-    <!-- Title & Graphic Area -->
-    <div class="relative flex items-center justify-between mt-1" data-purpose="title-and-illustration">
-      <!-- Text Group -->
-      <div class="z-10">
-        <h1 class="text-[32px] font-bold tracking-tight text-[#1A1A1A] leading-tight">Family Mode</h1>
-        <p class="text-[16px] font-normal text-[#8E8E93] mt-0.5">Active until 8:00 PM</p>
-      </div>
-
-      <!-- Decorative Illustration: House badge with family and clock -->
-      <div class="relative flex-shrink-0 w-24 h-24 flex items-center justify-center" data-purpose="illustration-badge">
-        <div class="absolute -top-1 right-2 w-16 h-16 bg-[#E8EAEF] rounded-full mix-blend-multiply opacity-80 pointer-events-none"></div>
-        <div class="absolute -right-2 top-2 w-14 h-14 bg-[#E0E2E8] rounded-full mix-blend-multiply opacity-70 pointer-events-none"></div>
-
-        <div class="relative z-10">
-          <svg class="w-16 h-16 text-[#333333]" fill="none" stroke="currentColor" viewBox="0 0 72 72">
-            <path d="M12 36 L36 14 L60 36 V58 C60 60 58 62 56 62 H16 C14 62 12 60 12 58 Z" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="3"></path>
-            <circle cx="27" cy="40" fill="currentColor" r="3.2"></circle>
-            <path d="M20 54 C20 49 23 46 27 46 C31 46 34 49 34 54" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="2.5"></path>
-            <circle cx="41" cy="42" fill="currentColor" r="3"></circle>
-            <path d="M35 54 C35 50 38 48 41 48 C44 48 47 50 47 54" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="2.2"></path>
-          </svg>
-          <div class="absolute -bottom-1 -right-1 bg-white rounded-full p-[2px] shadow-sm">
-            <div class="w-6 h-6 rounded-full bg-[#333333] flex items-center justify-center text-white">
-              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="3" viewBox="0 0 24 24">
-                <circle cx="12" cy="12" r="9"></circle>
-                <polyline points="12 7 12 12 15 12"></polyline>
-              </svg>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+    <div class="w-7"></div>
   </header>
 
   <!-- MAIN SCROLLABLE CONTENT -->
-  <main class="flex-1 px-5 pt-2 pb-3 space-y-4 flex flex-col overflow-y-auto" data-purpose="screen-content">
+  <div class="flex-1 px-5 pt-1 pb-4 overflow-y-auto">
     
-    <!-- Status & Time Remaining Card -->
-    <section class="bg-white rounded-[26px] p-5 shadow-[0_2px_12px_rgba(0,0,0,0.03)] border border-gray-100 flex flex-col justify-between" data-purpose="countdown-card">
-      <div class="flex items-center space-x-4 mb-4">
-        <!-- Circular Clock Icon Container -->
-        <div class="w-14 h-14 rounded-full bg-[#F3F4F6] flex items-center justify-center flex-shrink-0">
-          <svg class="w-8 h-8 text-[#333333] stroke-[2.2]" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
-            <circle cx="12" cy="12" r="10"></circle>
-            <polyline points="12 6 12 12 16 14"></polyline>
+    <!-- HERO HEADER: Title, Active Dot, Subtitle -->
+    <div class="mb-5">
+      <h1 class="text-[32px] font-bold text-white tracking-tight leading-tight">
+        Family Mode
+      </h1>
+      <div class="flex items-center space-x-2 mt-1.5">
+        <span id="header-status-dot" class="w-2 h-2 rounded-full bg-[#7CAEFF] shadow-[0_0_8px_#7CAEFF] animate-pulse"></span>
+        <p id="header-status-text" class="text-[14.5px] text-[#A0A4A8] font-normal tracking-tight">
+          Active until 8:00 PM
+        </p>
+      </div>
+    </div>
+
+    <!-- CARD 1: TIME REMAINING & END EARLY BUTTON -->
+    <section class="bg-[#181A22] border border-[#262B38] rounded-[24px] p-5 mb-4 shadow-sm flex flex-col" data-purpose="time-remaining-card">
+      <div class="flex items-center space-x-3.5 mb-4">
+        <!-- Clock Icon in Electric Blue Circular Plate -->
+        <div class="w-12 h-12 rounded-full bg-[#004F7C] border border-[#7CAEFF]/40 flex items-center justify-center text-[#7CAEFF] flex-shrink-0 shadow-[0_0_16px_rgba(124,174,255,0.25)]">
+          <svg class="w-6 h-6 fill-none stroke-white stroke-[2.2]" viewBox="0 0 24 24">
+            <circle cx="12" cy="12" r="9.5"/>
+            <polyline points="12 6.5 12 12 16 14"/>
           </svg>
         </div>
-        <!-- Time info -->
+
         <div>
-          <span class="block text-[14px] text-[#8E8E93] font-normal">Time remaining</span>
-          <span class="block text-[28px] leading-tight font-bold text-[#1A1A1A]">2h 15m</span>
+          <span id="time-remaining-label" class="text-[13px] font-medium text-[#8C9094] block">Time remaining</span>
+          <span id="time-remaining-val" class="text-[28px] font-bold text-white tracking-tight leading-none mt-0.5 block">2h 15m</span>
         </div>
       </div>
 
-      <!-- End Early Action Button -->
-      <a href="/screens/screen-10-family-mode-ended/" class="w-full py-3.5 px-4 bg-[#3A3A3A] hover:bg-black active:scale-[0.98] text-white text-[17px] font-semibold rounded-[18px] transition-all duration-150 text-center shadow-sm block">
-        End Early
-      </a>
+      <!-- Action Button Container (End Early vs. Turn On) -->
+      <div id="action-btn-container">
+        <a id="btn-action" href="/screens/screen-10-family-mode-ended/" class="w-full py-3.5 rounded-full bg-[#004F7C] hover:bg-[#005E94] active:scale-95 text-white text-[15.5px] font-medium transition shadow-[0_4px_16px_rgba(0,79,124,0.35)] flex items-center justify-center text-decoration-none border border-[#7CAEFF]/30">
+          End Early
+        </a>
+      </div>
     </section>
 
-    <!-- Settings Menu List Container -->
-    <section class="bg-white rounded-[26px] shadow-[0_2px_12px_rgba(0,0,0,0.03)] border border-gray-100 divide-y divide-gray-100 overflow-hidden" data-purpose="settings-menu-list">
+    <!-- CARD 2: GROUPED SETTINGS / INFO ROWS -->
+    <section class="bg-[#181A22] border border-[#262B38] rounded-[24px] overflow-hidden shadow-sm flex flex-col divide-y divide-[#262B38]" data-purpose="active-mode-options-list">
       
       <!-- Row 1: Allowed Contacts -->
-      <a class="flex items-center justify-between p-4 px-4 hover:bg-gray-50/75 transition-colors" href="/screens/screen-4-family-mode-allow-contacts/">
-        <div class="flex items-center space-x-3.5">
-          <div class="w-12 h-12 rounded-full bg-[#E9EBEF] flex items-center justify-center text-[#333333] flex-shrink-0">
-            <svg class="w-6 h-6 stroke-[1.8]" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
-              <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
-              <circle cx="9" cy="7" r="4"></circle>
-              <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
-              <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+      <a href="/screens/screen-4-family-mode-allow-contacts/" class="flex items-center justify-between p-4 hover:bg-white/[0.03] transition group">
+        <div class="flex items-center space-x-3.5 min-w-0">
+          <div class="w-10 h-10 rounded-full bg-[#121316] border border-[#7CAEFF]/30 flex items-center justify-center text-[#7CAEFF] flex-shrink-0 shadow-sm group-hover:scale-105 transition-transform">
+            <!-- 2 contacts icon -->
+            <svg class="w-5 h-5 fill-none stroke-current stroke-[1.9]" viewBox="0 0 24 24">
+              <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" stroke-linecap="round" stroke-linejoin="round"/>
+              <circle cx="9" cy="7" r="4" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M22 21v-2a4 4 0 0 0-3-3.87" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M16 3.13a4 4 0 0 1 0 7.75" stroke-linecap="round" stroke-linejoin="round"/>
             </svg>
           </div>
-          <div>
-            <div class="text-[16px] font-semibold text-[#1A1A1A]">Allowed Contacts</div>
-            <div class="text-[13px] text-[#8E8E93]">5 contacts</div>
+          <div class="truncate">
+            <div class="text-[15px] font-normal text-white leading-snug group-hover:text-[#7CAEFF] transition-colors">Allowed Contacts</div>
+            <div class="text-[12.5px] text-[#8C9094] font-normal leading-tight">5 contacts</div>
           </div>
         </div>
-        <svg class="w-5 h-5 text-gray-400 stroke-[2]" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
-          <polyline points="9 18 15 12 9 6"></polyline>
-        </svg>
+        <div class="flex items-center space-x-2 flex-shrink-0">
+          <span class="text-[12px] font-medium text-[#7CAEFF] bg-[#7CAEFF]/10 px-2 py-0.5 rounded-full border border-[#7CAEFF]/20">5 allowed</span>
+          <div class="text-[#5F636B] group-hover:text-[#7CAEFF] transition">
+            <svg class="w-4 h-4 stroke-[2.2]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <polyline points="9 18 15 12 9 6"/>
+            </svg>
+          </div>
+        </div>
       </a>
 
       <!-- Row 2: Message Behaviour -->
-      <a class="flex items-center justify-between p-4 px-4 hover:bg-gray-50/75 transition-colors" href="/screens/screen-5-family-mode-message-behaviour/">
-        <div class="flex items-center space-x-3.5">
-          <div class="w-12 h-12 rounded-full bg-[#E9EBEF] flex items-center justify-center text-[#333333] flex-shrink-0">
-            <svg class="w-6 h-6 stroke-[1.8]" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
-              <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
-              <line stroke-width="2.5" x1="8" x2="8.01" y1="10" y2="10"></line>
-              <line stroke-width="2.5" x1="12" x2="12.01" y1="10" y2="10"></line>
-              <line stroke-width="2.5" x1="16" x2="16.01" y1="10" y2="10"></line>
+      <a href="/screens/screen-5-family-mode-message-behaviour/" class="flex items-center justify-between p-4 hover:bg-white/[0.03] transition group">
+        <div class="flex items-center space-x-3.5 min-w-0">
+          <div class="w-10 h-10 rounded-full bg-[#121316] border border-[#7CAEFF]/30 flex items-center justify-center text-[#7CAEFF] flex-shrink-0 shadow-sm group-hover:scale-105 transition-transform">
+            <!-- Message bubble with 3 dots -->
+            <svg class="w-5 h-5 stroke-[2] fill-none stroke-current" viewBox="0 0 24 24">
+              <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z" stroke-linecap="round" stroke-linejoin="round"></path>
+              <line stroke-width="2.5" x1="8" x2="8.01" y1="12" y2="12"></line>
+              <line stroke-width="2.5" x1="12" x2="12.01" y1="12" y2="12"></line>
+              <line stroke-width="2.5" x1="16" x2="16.01" y1="12" y2="12"></line>
             </svg>
           </div>
-          <div>
-            <div class="text-[16px] font-semibold text-[#1A1A1A]">Message Behaviour</div>
-            <div class="text-[13px] text-[#8E8E93]">Mark as undelivered</div>
+          <div class="truncate">
+            <div class="text-[15px] font-normal text-white leading-snug group-hover:text-[#7CAEFF] transition-colors">Message Behaviour</div>
+            <div class="text-[12.5px] text-[#8C9094] font-normal leading-tight">Mark as undelivered</div>
           </div>
         </div>
-        <svg class="w-5 h-5 text-gray-400 stroke-[2]" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
-          <polyline points="9 18 15 12 9 6"></polyline>
-        </svg>
+        <div class="text-[#5F636B] group-hover:text-[#7CAEFF] transition pr-0.5">
+          <svg class="w-4 h-4 stroke-[2.2]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <polyline points="9 18 15 12 9 6"/>
+          </svg>
+        </div>
       </a>
 
       <!-- Row 3: Caller Status -->
-      <a class="flex items-center justify-between p-4 px-4 hover:bg-gray-50/75 transition-colors" href="/screens/screen-5b-family-mode-caller-status/">
-        <div class="flex items-center space-x-3.5">
-          <div class="w-12 h-12 rounded-full bg-[#E9EBEF] flex items-center justify-center text-[#333333] flex-shrink-0">
-            <svg class="w-5 h-5 text-[#333333]" fill="currentColor" viewBox="0 0 24 24">
-              <path d="M20.01 15.38c-1.23 0-2.42-.2-3.53-.56a.977.977 0 0 0-1.01.24l-1.57 1.97c-2.83-1.44-5.15-3.75-6.59-6.59l1.97-1.57c.28-.28.36-.67.25-1.02A11.36 11.36 0 0 1 8.5 4.31c-.08-.55-.55-.93-1.1-.93H4.16C3.54 3.38 3 3.91 3 4.54 3 13.61 10.39 21 19.46 21c.63 0 1.16-.54 1.16-1.16v-3.36c0-.55-.38-1.02-.93-1.1z"></path>
+      <a href="/screens/screen-5b-family-mode-caller-status/" class="flex items-center justify-between p-4 hover:bg-white/[0.03] transition group">
+        <div class="flex items-center space-x-3.5 min-w-0">
+          <div class="w-10 h-10 rounded-full bg-[#121316] border border-[#7CAEFF]/30 flex items-center justify-center text-[#7CAEFF] flex-shrink-0 shadow-sm group-hover:scale-105 transition-transform">
+            <!-- Telephone handset -->
+            <svg class="w-5 h-5 fill-current text-[#7CAEFF]" viewBox="0 0 24 24">
+              <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
             </svg>
           </div>
-          <div>
-            <div class="text-[16px] font-semibold text-[#1A1A1A]">Caller Status</div>
-            <div class="text-[13px] text-[#8E8E93]">Show Family Mode status</div>
+          <div class="truncate">
+            <div class="text-[15px] font-normal text-white leading-snug group-hover:text-[#7CAEFF] transition-colors">Caller Status</div>
+            <div class="text-[12.5px] text-[#8C9094] font-normal leading-tight">Show Family Mode status</div>
           </div>
         </div>
-        <svg class="w-5 h-5 text-gray-400 stroke-[2]" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
-          <polyline points="9 18 15 12 9 6"></polyline>
-        </svg>
+        <div class="text-[#5F636B] group-hover:text-[#7CAEFF] transition pr-0.5">
+          <svg class="w-4 h-4 stroke-[2.2]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <polyline points="9 18 15 12 9 6"/>
+          </svg>
+        </div>
       </a>
 
     </section>
-  </main>
 
-  <!-- BOTTOM HOME BAR -->
-  <footer class="w-full flex justify-center pb-2 pt-1">
-    <div class="w-36 h-1 bg-gray-400/80 rounded-full"></div>
+  </div>
+
+  <!-- BOTTOM SAFE AREA & HOME INDICATOR -->
+  <footer class="w-full pb-3 pt-1 flex flex-col items-center justify-center bg-transparent z-20">
+    <div class="w-36 h-1 bg-[#4A4E54] rounded-full"></div>
   </footer>
 
 </main>
 
 <script>
+  // Control Center Drawer Interactions
+  const drawer = document.getElementById('control-center-drawer');
+  let isDrawerOpen = false;
+
   function openControlCenter() {
-    const drawer = document.getElementById('control-center-drawer');
-    if (drawer) {
-      drawer.style.transition = 'transform 0.3s cubic-bezier(0.16, 1, 0.3, 1)';
-      drawer.classList.remove('-translate-y-full');
-      drawer.classList.add('translate-y-0');
-      drawer.style.transform = '';
-    }
+    isDrawerOpen = true;
+    drawer.classList.remove('-translate-y-full');
+    drawer.classList.add('translate-y-0');
   }
 
   function closeControlCenter() {
-    const drawer = document.getElementById('control-center-drawer');
-    if (drawer) {
-      drawer.style.transition = 'transform 0.3s cubic-bezier(0.16, 1, 0.3, 1)';
-      drawer.classList.remove('translate-y-0');
-      drawer.classList.add('-translate-y-full');
-      drawer.style.transform = '';
+    isDrawerOpen = false;
+    drawer.classList.add('-translate-y-full');
+    drawer.classList.remove('translate-y-0');
+  }
+
+  // Dynamic state sync with localStorage
+  function syncScreen9State() {
+    const isActive = localStorage.getItem('familyModeActive') !== 'false'; // default active on this screen
+    const dot = document.getElementById('header-status-dot');
+    const text = document.getElementById('header-status-text');
+    const timeLabel = document.getElementById('time-remaining-label');
+    const timeVal = document.getElementById('time-remaining-val');
+    const btnContainer = document.getElementById('action-btn-container');
+
+    if (isActive) {
+      if (dot) {
+        dot.className = "w-2 h-2 rounded-full bg-[#7CAEFF] shadow-[0_0_8px_#7CAEFF] animate-pulse";
+      }
+      if (text) {
+        text.textContent = "Active until 8:00 PM";
+        text.className = "text-[14.5px] text-[#A0A4A8] font-normal tracking-tight";
+      }
+      if (timeLabel) timeLabel.textContent = "Time remaining";
+      if (timeVal) timeVal.textContent = "2h 15m";
+      if (btnContainer) {
+        btnContainer.innerHTML = `
+          <a id="btn-action" href="/screens/screen-10-family-mode-ended/" class="w-full py-3.5 rounded-full bg-[#004F7C] hover:bg-[#005E94] active:scale-95 text-white text-[15.5px] font-medium transition shadow-[0_4px_16px_rgba(0,79,124,0.35)] flex items-center justify-center text-decoration-none border border-[#7CAEFF]/30">
+            End Early
+          </a>
+        `;
+      }
+    } else {
+      if (dot) {
+        dot.className = "w-2 h-2 rounded-full bg-neutral-600";
+      }
+      if (text) {
+        text.textContent = "Turned Off";
+        text.className = "text-[14.5px] text-[#8E939D] font-normal tracking-tight";
+      }
+      if (timeLabel) timeLabel.textContent = "Duration Scheduled";
+      if (timeVal) timeVal.textContent = "2h 30m";
+      if (btnContainer) {
+        btnContainer.innerHTML = `
+          <button onclick="activateFamilyModeFromScreen9()" class="w-full py-3.5 rounded-full bg-[#004F7C] hover:bg-[#005E94] active:scale-95 text-white text-[15.5px] font-medium transition shadow-[0_4px_16px_rgba(0,79,124,0.35)] flex items-center justify-center border border-[#7CAEFF]/30">
+            Turn On Family Mode
+          </button>
+        `;
+      }
     }
   }
 
-  window.addEventListener('message', (e) => {
-    if (e.data === 'close-control-center') {
+  function activateFamilyModeFromScreen9() {
+    try {
+      localStorage.setItem('familyModeActive', 'true');
+    } catch(e) {}
+    syncScreen9State();
+  }
+
+  window.addEventListener('DOMContentLoaded', syncScreen9State);
+  window.addEventListener('storage', syncScreen9State);
+
+  // Handle messages from iframe
+  window.addEventListener('message', (event) => {
+    if (event.data === 'close-control-center') {
       closeControlCenter();
-    } else if (e.data && e.data.action === 'open-family-mode') {
+    } else if (event.data && event.data.action === 'open-family-mode') {
       closeControlCenter();
+      if (event.data.screen && event.data.screen !== window.location.pathname) {
+        window.location.href = event.data.screen;
+      } else {
+        syncScreen9State();
+      }
     }
   });
 
-  // Touch & Mouse Drag Down Gestures for top status handle
-  (function initDrag() {
-    const statusBar = document.getElementById('top-status-bar');
-    const drawer = document.getElementById('control-center-drawer');
-    const mainEl = document.querySelector('main');
-    if (!statusBar || !drawer || !mainEl) return;
+  // Pull down touch gesture from top
+  let touchStartY = 0;
+  window.addEventListener('touchstart', (e) => {
+    touchStartY = e.touches[0].clientY;
+  }, { passive: true });
 
-    let isDragging = false;
-    let startY = 0;
-
-    function onStart(clientY) {
-      isDragging = true;
-      startY = clientY;
-      drawer.style.transition = 'none';
+  window.addEventListener('touchend', (e) => {
+    const diff = e.changedTouches[0].clientY - touchStartY;
+    if (touchStartY < 90 && diff > 45) {
+      openControlCenter();
     }
-
-    function onMove(clientY) {
-      if (!isDragging) return;
-      const diff = clientY - startY;
-      if (diff > 0) {
-        const h = mainEl.clientHeight || 844;
-        const translateY = Math.min(0, -h + diff);
-        drawer.style.transform = `translateY(${translateY}px)`;
-      }
-    }
-
-    function onEnd(clientY) {
-      if (!isDragging) return;
-      isDragging = false;
-      const diff = clientY - startY;
-      drawer.style.transition = 'transform 0.3s cubic-bezier(0.16, 1, 0.3, 1)';
-      if (diff > 80) {
-        openControlCenter();
-      } else {
-        closeControlCenter();
-      }
-    }
-
-    statusBar.addEventListener('touchstart', (e) => onStart(e.touches[0].clientY), { passive: true });
-    window.addEventListener('touchmove', (e) => { if (isDragging) onMove(e.touches[0].clientY); }, { passive: true });
-    window.addEventListener('touchend', (e) => { if (isDragging) onEnd(e.changedTouches[0].clientY); }, { passive: true });
-
-    statusBar.addEventListener('mousedown', (e) => onStart(e.clientY));
-    window.addEventListener('mousemove', (e) => { if (isDragging) onMove(e.clientY); });
-    window.addEventListener('mouseup', (e) => { if (isDragging) onEnd(e.clientY); });
-  })();
+  }, { passive: true });
 </script>
 
 </body>
