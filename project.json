@@ -4,6 +4,19 @@
   "fetchedAt": "2026-10-22T18:30:00.000Z",
   "screens": [
     {
+      "order": 0,
+      "id": "f0a1b2c3d4e546789abcdef012345678",
+      "title": "Phone Home Screen",
+      "deviceType": "MOBILE",
+      "width": "780",
+      "height": "1768",
+      "htmlFile": "index.html",
+      "screenshotFile": "raw_screenshot.jpg",
+      "resourceName": "projects/1512790353726552019/screens/f0a1b2c3d4e546789abcdef012345678",
+      "slug": "screen-0-phone-home-screen",
+      "folderRel": "screens/screen-0-phone-home-screen"
+    },
+    {
       "order": 1,
       "id": "230ee72c78344ed5bb0e3c98321e0d27",
       "title": "Family Mode - Intro",
@@ -163,6 +176,19 @@
       "resourceName": "projects/1512790353726552019/screens/bca4f370a2d64bf681ee84afd6806725",
       "slug": "screen-10-family-mode-ended",
       "folderRel": "screens/screen-10-family-mode-ended"
+    },
+    {
+      "order": 12,
+      "id": "e7b8923a104c478fa9b31d0442cb9110",
+      "title": "Family Mode Missed Summary",
+      "deviceType": "MOBILE",
+      "width": "780",
+      "height": "1768",
+      "htmlFile": "index.html",
+      "screenshotFile": "screenshot.png",
+      "resourceName": "projects/1512790353726552019/screens/e7b8923a104c478fa9b31d0442cb9110",
+      "slug": "screen-11-family-mode-summary",
+      "folderRel": "screens/screen-11-family-mode-summary"
     }
   ]
 }

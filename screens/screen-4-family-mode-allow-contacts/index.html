@@ -10,6 +10,8 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../shared-interactions.css">
+  <link rel="stylesheet" href="/shared-interactions.css">
 
   <style>
     * {
@@ -94,7 +96,7 @@
   </header>
 
   <!-- MAIN SCROLLABLE CONTENT (Original Title & 5 Contact Groups) -->
-  <div class="flex-1 px-6 pt-2 pb-4 overflow-y-auto">
+  <div class="flex-1 px-6 pt-2 pb-28 overflow-y-auto min-h-0">
     
     <h1 class="text-[34px] font-normal text-white tracking-tight leading-tight mb-2">
       Allow selected contacts
@@ -244,14 +246,14 @@
 
   </div>
 
-  <!-- BOTTOM ACTION: Next to Screen 5 (Message Behaviour) -->
-  <footer class="w-full px-6 pt-2 pb-3">
-    <a href="/screens/screen-5-family-mode-message-behaviour/" class="w-full py-3.5 rounded-full bg-[#004F7C] hover:bg-[#005E94] active:scale-95 text-white text-[15.5px] font-medium transition shadow-sm flex items-center justify-center text-decoration-none">
+  <!-- BOTTOM ACTION: Sticky OriginOS Primary CTA -->
+  <footer class="origin-sticky-cta-footer">
+    <a href="/screens/screen-5-family-mode-message-behaviour/" class="origin-primary-pill-btn">
       Next
     </a>
 
     <!-- Bottom Gesture Home Bar -->
-    <div class="w-36 h-1 bg-[#4A4E54] rounded-full mx-auto mt-4"></div>
+    <div class="home-indicator-bar"></div>
   </footer>
 
 </main>

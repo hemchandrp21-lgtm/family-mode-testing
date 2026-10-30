@@ -10,6 +10,8 @@
   <link rel="preconnect" href="https://fonts.gstatic.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../shared-interactions.css">
+  <link rel="stylesheet" href="/shared-interactions.css">
 
   <style>
     * {
@@ -82,7 +84,7 @@
   </header>
 
   <!-- MAIN SCROLLABLE CONTENT -->
-  <div class="flex-1 px-6 pt-2 pb-4 overflow-y-auto flex flex-col justify-between">
+  <div class="flex-1 px-6 pt-2 pb-28 overflow-y-auto flex flex-col justify-between min-h-0">
     
     <!-- Title & Subtitle -->
     <div>
@@ -108,20 +110,20 @@
           <circle id="progress-circle" cx="100" cy="100" fill="transparent" r="82" stroke="#7CAEFF" stroke-dasharray="515.22" stroke-dashoffset="130" stroke-linecap="round" stroke-width="7" class="transition-all duration-1000 ease-out"></circle>
         </svg>
 
-        <!-- Center Line-Art Icon: House with Family Figures -->
+        <!-- Center Line-Art Icon: Authentic OriginOS Family Mode Icon -->
         <div class="absolute inset-0 flex items-center justify-center pointer-events-none" data-purpose="family-house-icon">
-          <svg class="w-24 h-24 text-neutral-100 drop-shadow-md" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.3" viewBox="0 0 100 100">
-            <!-- House Roof and Walls -->
-            <path d="M 50 16 L 86 46 L 86 84 L 14 84 L 14 46 Z"></path>
-            <!-- Person 1 (Adult Left) -->
-            <circle cx="36" cy="48" r="4.2" stroke-width="2.3"></circle>
-            <path d="M 28 66 C 28 58 44 58 44 66 L 44 76" stroke-width="2.3"></path>
-            <!-- Person 2 (Child Center) -->
-            <circle cx="50" cy="54" r="3.5" stroke-width="2.1"></circle>
-            <path d="M 43 72 C 43 65 57 65 57 72 L 57 76" stroke-width="2.1"></path>
-            <!-- Person 3 (Adult Right) -->
-            <circle cx="64" cy="48" r="4.2" stroke-width="2.3"></circle>
-            <path d="M 56 66 C 56 58 72 58 72 66 L 72 76" stroke-width="2.3"></path>
+          <svg class="w-24 h-24 text-[#7CAEFF] drop-shadow-[0_0_20px_rgba(124,174,255,0.55)]" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 100 100">
+            <!-- House Roof (Gable) -->
+            <polyline points="20,44 50,20 80,44" stroke-width="2.8"></polyline>
+            <!-- Left Wall & Baseline -->
+            <line x1="26" y1="40" x2="26" y2="65" stroke-width="2.6"></line>
+            <line x1="23" y1="65" x2="39" y2="65" stroke-width="2.6"></line>
+            <!-- Left Figure (Parent: Head & Shoulders) -->
+            <circle cx="48" cy="47" r="6.2" stroke-width="2.6"></circle>
+            <path d="M38,65 C38,56 42.5,55 48,55 C53.5,55 58,56 58,65" stroke-width="2.6"></path>
+            <!-- Right Figure (Child: Head & Shoulders) -->
+            <circle cx="63.5" cy="51" r="5.2" stroke-width="2.4"></circle>
+            <path d="M55,65 C55,60 58.5,59 63.5,59 C68.5,59 72,60 72,65" stroke-width="2.4"></path>
           </svg>
         </div>
       </div>
@@ -175,14 +177,14 @@
 
   </div>
 
-  <!-- BOTTOM ACTION (Deep Blue Pill Button -> Next to Screen 7) -->
-  <footer class="w-full px-6 pt-2 pb-3">
-    <a id="btn-next" href="/screens/screen-7-family-mode-active-summary/" class="w-full py-3.5 rounded-full bg-[#004F7C] hover:bg-[#005E94] active:scale-95 text-white text-[15.5px] font-medium transition shadow-sm flex items-center justify-center text-decoration-none">
+  <!-- BOTTOM ACTION: Sticky OriginOS Primary CTA -->
+  <footer class="origin-sticky-cta-footer">
+    <a id="btn-next" href="/screens/screen-7-family-mode-active-summary/" class="origin-primary-pill-btn">
       View Summary
     </a>
 
     <!-- Bottom Gesture Home Bar -->
-    <div class="w-36 h-1 bg-[#4A4E54] rounded-full mx-auto mt-4"></div>
+    <div class="home-indicator-bar"></div>
   </footer>
 
 </main>

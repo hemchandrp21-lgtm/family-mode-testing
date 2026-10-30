@@ -1,0 +1,665 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport"/>
+  <title>OriginOS Family Mode - Missed Summary</title>
+  <!-- Tailwind CSS v3 -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Google Fonts: Roboto (matching Screen 1 Intro) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/shared-interactions.css">
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Roboto', '-apple-system', 'BlinkMacSystemFont', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    * {
+      -webkit-tap-highlight-color: transparent;
+      user-select: none;
+      box-sizing: border-box;
+      font-family: 'Roboto', -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+    /* Universal scrollbar elimination */
+    ::-webkit-scrollbar,
+    html::-webkit-scrollbar,
+    body::-webkit-scrollbar,
+    *::-webkit-scrollbar {
+      display: none !important;
+      width: 0 !important;
+      height: 0 !important;
+      background: transparent !important;
+    }
+    html, body, * {
+      scrollbar-width: none !important;
+      -ms-overflow-style: none !important;
+    }
+    body {
+      background-color: #000000;
+      color: #E2E2E6;
+      font-family: 'Roboto', -apple-system, BlinkMacSystemFont, sans-serif;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+    }
+
+    /* OriginOS Dark Notification Card Design System */
+    .notif-card {
+      background: #181A22;
+      border: 1px solid #262B38;
+      border-radius: 22px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+      transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+      cursor: pointer;
+    }
+    .notif-card:hover {
+      background: #1E212C;
+      border-color: rgba(124, 174, 255, 0.45);
+      transform: translateY(-1.5px);
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5), 0 0 16px rgba(124, 174, 255, 0.12);
+    }
+    .notif-card:active {
+      transform: scale(0.985);
+      background: #161820;
+    }
+
+    /* Circular Contact Avatars in OriginOS Dark System */
+    .avatar-initial {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      background: #242A38;
+      border: 1px solid #3A445C;
+      color: #FFFFFF;
+      font-size: 13px;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.25);
+    }
+    .avatar-overflow {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      background: rgba(0, 79, 124, 0.5);
+      border: 1px solid rgba(124, 174, 255, 0.45);
+      color: #7CAEFF;
+      font-size: 12px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* Expandable details container */
+    .expand-content {
+      max-height: 0;
+      opacity: 0;
+      overflow: hidden;
+      transition: max-height 0.28s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.2s ease, margin-top 0.2s ease;
+    }
+    .notif-card.expanded .expand-content {
+      max-height: 220px;
+      opacity: 1;
+      margin-top: 10px;
+    }
+    .notif-card.expanded .chevron-arrow {
+      transform: rotate(180deg);
+    }
+    .chevron-arrow {
+      transition: transform 0.24s ease;
+    }
+
+    /* Home Bar animation */
+    .home-indicator-bar {
+      transition: all 0.2s ease;
+    }
+    .home-indicator-bar:active {
+      transform: scale(0.95);
+      background-color: #7CAEFF;
+    }
+
+    /* Vertical Slide In Animation (From Up to Down) */
+    @keyframes originHeaderSlideDown {
+      0% {
+        opacity: 0;
+        transform: translateY(-40px);
+      }
+      100% {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes originCardCascadeDown {
+      0% {
+        opacity: 0;
+        transform: translateY(-32px) scale(0.97);
+      }
+      100% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
+
+    .slide-in-down-header {
+      animation: originHeaderSlideDown 0.45s cubic-bezier(0.16, 1, 0.3, 1) both;
+    }
+
+    .slide-card-1 { animation: originCardCascadeDown 0.42s cubic-bezier(0.16, 1, 0.3, 1) 0.06s both; }
+    .slide-card-2 { animation: originCardCascadeDown 0.42s cubic-bezier(0.16, 1, 0.3, 1) 0.12s both; }
+    .slide-card-3 { animation: originCardCascadeDown 0.42s cubic-bezier(0.16, 1, 0.3, 1) 0.18s both; }
+    .slide-card-4 { animation: originCardCascadeDown 0.42s cubic-bezier(0.16, 1, 0.3, 1) 0.24s both; }
+    .slide-card-5 { animation: originCardCascadeDown 0.42s cubic-bezier(0.16, 1, 0.3, 1) 0.30s both; }
+    .slide-card-6 { animation: originCardCascadeDown 0.42s cubic-bezier(0.16, 1, 0.3, 1) 0.36s both; }
+  </style>
+</head>
+<body class="min-h-screen flex items-center justify-center p-0 sm:p-4 bg-black select-none">
+
+<!-- Phone Frame Container (OriginOS OLED Dark Chassis) -->
+<main class="w-full max-w-[392px] h-screen sm:h-[844px] bg-[#121316] sm:rounded-[44px] shadow-2xl relative flex flex-col justify-between overflow-hidden border border-neutral-800/80 select-none">
+
+  <!-- ==========================================
+       ORIGINOS AMBIENT GLOW & FLUID DARK WALLPAPER
+       ========================================== -->
+  <div class="absolute inset-0 pointer-events-none overflow-hidden z-0">
+    <!-- Top & Bottom Electric Blue Ambient Glows -->
+    <div class="absolute -top-20 left-1/2 -translate-x-1/2 w-80 h-80 rounded-full bg-[#004F7C]/30 blur-[90px]"></div>
+    <div class="absolute -bottom-24 right-0 w-72 h-72 rounded-full bg-[#7CAEFF]/12 blur-[100px]"></div>
+
+    <!-- Subtle Fluid Curves in Dark Obsidian -->
+    <svg class="w-full h-full object-cover opacity-60" viewBox="0 0 392 844" fill="none" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="56" cy="148" r="110" fill="#181B24" fill-opacity="0.5"/>
+      <path d="M190 0C250 80 392 110 392 230V0H190Z" fill="#151720" fill-opacity="0.6"/>
+      <path d="M0 216C120 216 230 180 392 238V844H0V216Z" fill="#14161E" fill-opacity="0.45"/>
+      <path d="M0 720C90 690 220 740 392 724V844H0V720Z" fill="#171A24" fill-opacity="0.7"/>
+    </svg>
+  </div>
+
+  <!-- TOP PULL HANDLE FOR CONTROL CENTER (Click / Pull down to open CC) -->
+  <div id="top-status-bar" class="w-full pt-3 pb-1 flex flex-col items-center justify-center select-none cursor-pointer group z-30 transition-colors" title="Swipe down or click to open Control Center" onclick="openControlCenter()">
+    <div class="w-10 h-1 bg-white/20 group-hover:bg-[#7CAEFF] rounded-full transition-colors duration-200"></div>
+  </div>
+
+  <!-- SLIDING CONTROL CENTER OVERLAY -->
+  <div id="control-center-drawer" class="absolute inset-0 bg-[#121316] z-50 transform -translate-y-full transition-transform duration-300 ease-out flex flex-col justify-between overflow-hidden shadow-2xl">
+    <iframe id="cc-iframe" src="/screens/screen-8-control-center-quick-settings/" class="w-full h-full border-none"></iframe>
+  </div>
+
+  <!-- ==========================================
+       STATUS BAR (Jio, Signal, Wi-Fi, Battery)
+       OriginOS Pure White on OLED Black
+       ========================================== -->
+  <div class="relative z-10 w-full px-7 pt-1 pb-2 flex items-center justify-between text-white">
+    <!-- Carrier -->
+    <span class="text-[14px] font-semibold tracking-normal pl-0.5">Jio</span>
+
+    <!-- System Icons -->
+    <div class="flex items-center gap-1.5 pr-0.5">
+      <!-- 4 Cellular Signal Bars -->
+      <svg class="w-4 h-3.5 fill-current" viewBox="0 0 17 14">
+        <rect x="0" y="10" width="2.8" height="4" rx="0.8"/>
+        <rect x="4.5" y="7" width="2.8" height="7" rx="0.8"/>
+        <rect x="9" y="4" width="2.8" height="10" rx="0.8"/>
+        <rect x="13.5" y="0.5" width="2.8" height="13.5" rx="0.8"/>
+      </svg>
+
+      <!-- Wi-Fi Waves -->
+      <svg class="w-4 h-3.5 fill-current ml-0.5" viewBox="0 0 16 12">
+        <path d="M8 2.5a9.8 9.8 0 0 1 6.8 2.7l1.2-1.2A11.5 11.5 0 0 0 0 4l1.2 1.2A9.8 9.8 0 0 1 8 2.5zm0 3.6a6.5 6.5 0 0 1 4.5 1.8l1.2-1.2A8.2 8.2 0 0 0 2.3 6.7l1.2 1.2A6.5 6.5 0 0 1 8 6.1zm0 3.7c1.3 0 2.4.5 3.3 1.3l1.2-1.2a6 6 0 0 0-9 0l1.2 1.2c.9-.8 2-1.3 3.3-1.3z"/>
+      </svg>
+
+      <!-- Battery Indicator (Horizontal pill) -->
+      <div class="ml-1 w-[22px] h-[11px] border-[1.6px] border-white rounded-[3.5px] p-[1px] relative flex items-center">
+        <div class="w-[82%] h-full bg-white rounded-[1.5px]"></div>
+        <div class="absolute -right-[3px] top-[2px] w-[1.8px] h-[4px] bg-white rounded-r-[1px]"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==========================================
+       SCROLLABLE LOCKSCREEN CONTENT
+       ========================================== -->
+  <div class="relative z-10 flex-1 overflow-y-auto px-5 pb-4 pt-1 flex flex-col">
+    
+    <!-- Padlock Icon Centered (Electric Blue Glow) -->
+    <div class="flex justify-center mb-1 slide-in-down-header">
+      <div class="p-1 rounded-full bg-[#004F7C]/20 border border-[#7CAEFF]/30 flex items-center justify-center shadow-[0_0_12px_rgba(124,174,255,0.3)]">
+        <svg class="w-4 h-4 fill-[#7CAEFF]" viewBox="0 0 24 24">
+          <path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/>
+        </svg>
+      </div>
+    </div>
+
+    <!-- Big Lockscreen Clock: Matches Real Time Live (Signature Roboto Typography) -->
+    <div class="text-center slide-in-down-header">
+      <h1 id="lockscreen-clock" class="text-[68px] sm:text-[72px] font-bold text-white leading-none tracking-tight font-['Roboto'] drop-shadow-[0_2px_14px_rgba(0,0,0,0.6)]">
+        11:20
+      </h1>
+      <!-- Date: Wed, Oct 28 -->
+      <p id="lockscreen-date" class="text-[17px] font-medium text-[#A0A4A8] mt-1 tracking-normal font-['Roboto']">
+        Wed, Oct 28
+      </p>
+    </div>
+
+    <!-- Notifications Section Header -->
+    <div class="mt-6 mb-2.5 px-0.5 flex items-center justify-between slide-in-down-header">
+      <h2 class="text-[19px] font-bold text-white tracking-tight flex items-center gap-2">
+        <span>Notifications</span>
+      </h2>
+      <span class="text-[11.5px] font-semibold text-[#7CAEFF] bg-[#004F7C]/30 border border-[#7CAEFF]/30 px-2.5 py-0.5 rounded-full">
+        Family Mode Summary
+      </span>
+    </div>
+
+    <!-- Notification Cards Stack (6 OriginOS Styled Cards) -->
+    <div class="flex flex-col gap-2.5">
+
+      <!-- ==========================================
+           CARD 1: Family Mode ended
+           ========================================== -->
+      <div class="notif-card slide-card-1 p-3.5 group" onclick="toggleCard(this)">
+        <div class="flex items-center gap-3">
+          <!-- House / Family Silhouette Icon in Signature OriginOS Blue Badge -->
+          <div class="w-11 h-11 rounded-full bg-[#004F7C] border border-[#7CAEFF]/40 flex items-center justify-center flex-shrink-0 text-[#7CAEFF] shadow-[0_0_14px_rgba(124,174,255,0.25)]">
+            <svg class="w-6 h-6 fill-current" viewBox="0 0 24 24">
+              <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8h5z" opacity="0.3"/>
+              <path d="M12 5.5l6 5.4V19h-3v-4H9v4H6v-8.1l6-5.4M12 3L2 12h3v8h6v-6h2v6h6v-8h3L12 3z"/>
+              <!-- Family silhouettes -->
+              <circle cx="10" cy="11" r="1.5"/>
+              <path d="M10 13c-1.3 0-2.5.7-2.5 1.5V15h5v-.5c0-.8-1.2-1.5-2.5-1.5z"/>
+              <circle cx="14" cy="11.5" r="1.2"/>
+              <path d="M14 13.2c-.9 0-1.8.5-1.8 1.1v.7h3.6v-.7c0-.6-.9-1.1-1.8-1.1z"/>
+            </svg>
+          </div>
+
+          <!-- Text Details -->
+          <div class="flex-1 min-w-0">
+            <h3 class="text-[15px] font-bold text-white leading-tight">
+              Family Mode ended
+            </h3>
+            <p class="text-[13px] text-[#A0A4A8] font-normal mt-0.5 truncate">
+              Here’s what you missed.
+            </p>
+          </div>
+
+          <!-- Time & Dropdown Arrow -->
+          <div class="flex items-center gap-1.5 text-[#7CAEFF] flex-shrink-0">
+            <span class="text-[12px] font-medium text-[#8E939E]">now</span>
+            <svg class="w-3.5 h-3.5 stroke-current stroke-2 fill-none chevron-arrow" viewBox="0 0 24 24">
+              <polyline points="6 9 12 15 18 9"/>
+            </svg>
+          </div>
+        </div>
+
+        <!-- Expanded Details -->
+        <div class="expand-content border-t border-[#262B38] pt-2.5 text-[12.5px] text-[#A0A4A8] leading-relaxed">
+          <div class="bg-[#101218] p-3 rounded-xl border border-[#262B38]">
+            <div class="flex justify-between items-center mb-1.5">
+              <span class="font-semibold text-white">Session Summary</span>
+              <span class="text-[11px] text-[#7CAEFF] font-semibold bg-[#004F7C]/40 border border-[#7CAEFF]/30 px-2 py-0.5 rounded-full">Completed</span>
+            </div>
+            <p>Active for <strong class="text-white">2h 00m</strong>. During this quiet time, 5 calls and 17 notifications were shielded to preserve your family time without disruption.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- ==========================================
+           CARD 2: 5 missed calls
+           ========================================== -->
+      <div class="notif-card slide-card-2 p-3.5 group" onclick="toggleCard(this)">
+        <div class="flex items-start gap-3">
+          <!-- Phone Handset Icon in OriginOS Blue Badge -->
+          <div class="w-11 h-11 rounded-full bg-[#004F7C]/30 border border-[#7CAEFF]/30 flex items-center justify-center flex-shrink-0 text-[#7CAEFF] mt-0.5 shadow-[0_0_12px_rgba(124,174,255,0.18)]">
+            <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24">
+              <path d="M6.62 10.79a15.053 15.053 0 006.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/>
+            </svg>
+          </div>
+
+          <!-- Content -->
+          <div class="flex-1 min-w-0">
+            <div class="flex items-center justify-between">
+              <h3 class="text-[15px] font-bold text-white leading-tight">
+                5 missed calls
+              </h3>
+              <div class="flex items-center gap-1.5 text-[#7CAEFF] flex-shrink-0">
+                <span class="text-[12px] font-medium text-[#8E939E]">2m ago</span>
+                <svg class="w-3.5 h-3.5 stroke-current stroke-2 fill-none chevron-arrow" viewBox="0 0 24 24">
+                  <polyline points="6 9 12 15 18 9"/>
+                </svg>
+              </div>
+            </div>
+            
+            <p class="text-[13px] text-[#A0A4A8] font-normal mt-0.5 mb-2.5">
+              from 4 people
+            </p>
+
+            <!-- Initials Avatar Badges: M, D, A, R, +1 in OriginOS Dark Style -->
+            <div class="flex items-center gap-1.5">
+              <div class="avatar-initial" title="Mom">M</div>
+              <div class="avatar-initial" title="Dad">D</div>
+              <div class="avatar-initial" title="Alex">A</div>
+              <div class="avatar-initial" title="Rahul">R</div>
+              <div class="avatar-overflow">+1</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Expanded Details -->
+        <div class="expand-content border-t border-[#262B38] pt-2.5 text-[12.5px] text-[#A0A4A8] space-y-2">
+          <div class="flex justify-between items-center py-1 border-b border-[#262B38]/60">
+            <span class="font-medium text-white">Mom (2 missed calls)</span>
+            <span class="text-[#7CAEFF] text-[11.5px]">10:24 AM</span>
+          </div>
+          <div class="flex justify-between items-center py-1 border-b border-[#262B38]/60">
+            <span class="font-medium text-white">Dad (1 missed call)</span>
+            <span class="text-[#7CAEFF] text-[11.5px]">10:12 AM</span>
+          </div>
+          <div class="flex justify-between items-center py-1">
+            <span class="font-medium text-white">Alex Morgan (1 missed call)</span>
+            <span class="text-[#7CAEFF] text-[11.5px]">9:52 AM</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- ==========================================
+           CARD 3: 12 new messages
+           ========================================== -->
+      <div class="notif-card slide-card-3 p-3.5 group" onclick="toggleCard(this)">
+        <div class="flex items-start gap-3">
+          <!-- Speech Bubble Icon in OriginOS Blue Badge -->
+          <div class="w-11 h-11 rounded-full bg-[#004F7C]/30 border border-[#7CAEFF]/30 flex items-center justify-center flex-shrink-0 text-[#7CAEFF] mt-0.5 shadow-[0_0_12px_rgba(124,174,255,0.18)]">
+            <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24">
+              <path d="M20 2H4c-1.1 0-1.99.9-1.99 2L2 22l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-3 12H7v-2h10v2zm0-3H7V9h10v2zm0-3H7V6h10v2z"/>
+            </svg>
+          </div>
+
+          <!-- Content -->
+          <div class="flex-1 min-w-0">
+            <div class="flex items-center justify-between">
+              <h3 class="text-[15px] font-bold text-white leading-tight">
+                12 new messages
+              </h3>
+              <div class="flex items-center gap-1.5 text-[#7CAEFF] flex-shrink-0">
+                <span class="text-[12px] font-medium text-[#8E939E]">5m ago</span>
+                <svg class="w-3.5 h-3.5 stroke-current stroke-2 fill-none chevron-arrow" viewBox="0 0 24 24">
+                  <polyline points="6 9 12 15 18 9"/>
+                </svg>
+              </div>
+            </div>
+            
+            <p class="text-[13px] text-[#A0A4A8] font-normal mt-0.5 mb-2.5">
+              from 4 people
+            </p>
+
+            <!-- Initials Avatar Badges: M, D, A, S, +8 -->
+            <div class="flex items-center gap-1.5">
+              <div class="avatar-initial" title="Mom">M</div>
+              <div class="avatar-initial" title="David">D</div>
+              <div class="avatar-initial" title="Ananya">A</div>
+              <div class="avatar-initial" title="Sarah">S</div>
+              <div class="avatar-overflow">+8</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Expanded Details -->
+        <div class="expand-content border-t border-[#262B38] pt-2.5 text-[12.5px] text-[#A0A4A8] space-y-2">
+          <div class="bg-[#101218] p-2.5 rounded-xl border border-[#262B38]">
+            <div class="flex justify-between font-semibold text-white text-[12px]">
+              <span>Mom</span>
+              <span class="text-[11px] text-[#7CAEFF]">10:35 AM</span>
+            </div>
+            <p class="text-[12px] text-[#8E939E] truncate mt-0.5">Let me know when you're free for dinner!</p>
+          </div>
+          <div class="bg-[#101218] p-2.5 rounded-xl border border-[#262B38]">
+            <div class="flex justify-between font-semibold text-white text-[12px]">
+              <span>Sarah Chen</span>
+              <span class="text-[11px] text-[#7CAEFF]">10:20 AM</span>
+            </div>
+            <p class="text-[12px] text-[#8E939E] truncate mt-0.5">Auto-reply sent: "I am spending time with family." Talk later!</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- ==========================================
+           CARD 4: 3 notifications (WhatsApp)
+           ========================================== -->
+      <div class="notif-card slide-card-4 p-3.5 group" onclick="toggleCard(this)">
+        <div class="flex items-center gap-3">
+          <!-- WhatsApp Icon in OriginOS Blue Badge -->
+          <div class="w-11 h-11 rounded-full bg-[#004F7C]/30 border border-[#7CAEFF]/30 flex items-center justify-center flex-shrink-0 text-[#7CAEFF] shadow-[0_0_12px_rgba(124,174,255,0.18)]">
+            <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24">
+              <path d="M12.04 2c-5.46 0-9.91 4.45-9.91 9.91 0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21 5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.816 9.816 0 0012.04 2m.01 1.67c2.2 0 4.26.86 5.82 2.42a8.225 8.225 0 012.41 5.83c0 4.54-3.7 8.24-8.24 8.24-1.44 0-2.85-.38-4.08-1.1l-.29-.17-3.03.8 0.81-2.96-.19-.3a8.21 8.21 0 01-1.26-4.34c0-4.54 3.7-8.24 8.24-8.24m4.52 11.53c-.19-.09-1.12-.55-1.29-.62-.18-.06-.31-.09-.44.09-.13.19-.51.64-.62.77-.12.13-.23.14-.42.05-.19-.09-.8-.29-1.52-.94-.56-.5-.94-1.12-1.05-1.31-.11-.19-.01-.29.08-.38.08-.09.19-.23.28-.34.09-.12.13-.2.19-.34.06-.13.03-.25-.01-.34-.05-.09-.44-1.06-.61-1.45-.16-.39-.33-.33-.45-.34h-.39c-.13 0-.34.05-.52.25-.18.19-.69.67-.69 1.64s.71 1.9 1.05 2.13c.12.08 1.62 1.48 3.93 2.47.55.24.98.38 1.31.49.55.18 1.06.15 1.46.09.45-.07 1.38-.56 1.57-1.11.19-.55.19-1.02.13-1.11-.06-.1-.22-.16-.41-.25z"/>
+            </svg>
+          </div>
+
+          <!-- Text Details -->
+          <div class="flex-1 min-w-0">
+            <h3 class="text-[15px] font-bold text-white leading-tight">
+              3 notifications
+            </h3>
+            <p class="text-[13px] text-[#A0A4A8] font-normal mt-0.5 truncate">
+              2 messages, 1 missed call
+            </p>
+          </div>
+
+          <!-- Time & Arrow -->
+          <div class="flex items-center gap-1.5 text-[#7CAEFF] flex-shrink-0">
+            <span class="text-[12px] font-medium text-[#8E939E]">8m ago</span>
+            <svg class="w-3.5 h-3.5 stroke-current stroke-2 fill-none chevron-arrow" viewBox="0 0 24 24">
+              <polyline points="6 9 12 15 18 9"/>
+            </svg>
+          </div>
+        </div>
+
+        <!-- Expanded Details -->
+        <div class="expand-content border-t border-[#262B38] pt-2 text-[12.5px] text-[#A0A4A8] space-y-1.5">
+          <p class="flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-[#7CAEFF]"></span> <strong class="text-white">Weekend Getaway Group:</strong> 2 new photos shared</p>
+          <p class="flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-[#7CAEFF]"></span> <strong class="text-white">Uncle Robert:</strong> Missed voice call (at 10:05 AM)</p>
+        </div>
+      </div>
+
+      <!-- ==========================================
+           CARD 5: 2 notifications (Instagram)
+           ========================================== -->
+      <div class="notif-card slide-card-5 p-3.5 group" onclick="toggleCard(this)">
+        <div class="flex items-center gap-3">
+          <!-- Instagram Outline Icon in OriginOS Blue Badge -->
+          <div class="w-11 h-11 rounded-full bg-[#004F7C]/30 border border-[#7CAEFF]/30 flex items-center justify-center flex-shrink-0 text-[#7CAEFF] shadow-[0_0_12px_rgba(124,174,255,0.18)]">
+            <svg class="w-5 h-5 fill-none stroke-current stroke-[2] stroke-linecap-round stroke-linejoin-round" viewBox="0 0 24 24">
+              <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+              <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+              <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+            </svg>
+          </div>
+
+          <!-- Text Details -->
+          <div class="flex-1 min-w-0">
+            <h3 class="text-[15px] font-bold text-white leading-tight">
+              2 notifications
+            </h3>
+            <p class="text-[13px] text-[#A0A4A8] font-normal mt-0.5 truncate">
+              1 message, 1 mention
+            </p>
+          </div>
+
+          <!-- Time & Arrow -->
+          <div class="flex items-center gap-1.5 text-[#7CAEFF] flex-shrink-0">
+            <span class="text-[12px] font-medium text-[#8E939E]">12m ago</span>
+            <svg class="w-3.5 h-3.5 stroke-current stroke-2 fill-none chevron-arrow" viewBox="0 0 24 24">
+              <polyline points="6 9 12 15 18 9"/>
+            </svg>
+          </div>
+        </div>
+
+        <!-- Expanded Details -->
+        <div class="expand-content border-t border-[#262B38] pt-2 text-[12.5px] text-[#A0A4A8] space-y-1.5">
+          <p class="flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-[#7CAEFF]"></span> <strong class="text-white">@priyasharma</strong> mentioned you in a comment</p>
+          <p class="flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-[#7CAEFF]"></span> <strong class="text-white">Arjun K.</strong> sent a reel: "Family roadtrip vibes"</p>
+        </div>
+      </div>
+
+      <!-- ==========================================
+           CARD 6: 3 new emails (Gmail)
+           ========================================== -->
+      <div class="notif-card slide-card-6 p-3.5 group" onclick="toggleCard(this)">
+        <div class="flex items-center gap-3">
+          <!-- Gmail 'M' Envelope Icon in OriginOS Blue Badge -->
+          <div class="w-11 h-11 rounded-full bg-[#004F7C]/30 border border-[#7CAEFF]/30 flex items-center justify-center flex-shrink-0 text-[#7CAEFF] shadow-[0_0_12px_rgba(124,174,255,0.18)]">
+            <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24">
+              <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
+            </svg>
+          </div>
+
+          <!-- Text Details -->
+          <div class="flex-1 min-w-0">
+            <h3 class="text-[15px] font-bold text-white leading-tight">
+              3 new emails
+            </h3>
+            <p class="text-[13px] text-[#A0A4A8] font-normal mt-0.5 truncate">
+              Updates, Promotions, Social
+            </p>
+          </div>
+
+          <!-- Time & Arrow -->
+          <div class="flex items-center gap-1.5 text-[#7CAEFF] flex-shrink-0">
+            <span class="text-[12px] font-medium text-[#8E939E]">15m ago</span>
+            <svg class="w-3.5 h-3.5 stroke-current stroke-2 fill-none chevron-arrow" viewBox="0 0 24 24">
+              <polyline points="6 9 12 15 18 9"/>
+            </svg>
+          </div>
+        </div>
+
+        <!-- Expanded Details -->
+        <div class="expand-content border-t border-[#262B38] pt-2 text-[12.5px] text-[#A0A4A8] space-y-1.5">
+          <p class="flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-[#7CAEFF]"></span> <strong class="text-white">Google Calendar:</strong> Reminder: Family Dinner Tonight at 7:30 PM</p>
+          <p class="flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-[#7CAEFF]"></span> <strong class="text-white">GitHub:</strong> [antigravity-ide] PR review requested</p>
+          <p class="flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-[#7CAEFF]"></span> <strong class="text-white">Zomato:</strong> Order delivered successfully</p>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Extra bottom spacing -->
+    <div class="h-6"></div>
+  </div>
+
+  <!-- ==========================================
+       BOTTOM HOME GESTURE BAR & UNLOCK ACTION
+       ========================================== -->
+  <div class="relative z-20 w-full px-6 pt-1 pb-3 flex flex-col items-center select-none cursor-pointer group" onclick="handleUnlock()" title="Swipe up or click to Unlock">
+    <span class="text-[11px] font-medium text-[#7CAEFF] opacity-0 group-hover:opacity-100 transition-opacity mb-1 flex items-center gap-1">
+      <svg class="w-3 h-3 stroke-current stroke-2 fill-none animate-bounce" viewBox="0 0 24 24"><polyline points="18 15 12 9 6 15"/></svg>
+      Swipe up or click to Unlock
+    </span>
+    <!-- Bottom Home Indicator Bar (Signature OriginOS Grey Pill with Blue Hover) -->
+    <div class="home-indicator-bar w-36 h-[5px] bg-[#4A4E54] group-hover:bg-[#7CAEFF] group-hover:shadow-[0_0_10px_#7CAEFF] rounded-full transition-colors"></div>
+  </div>
+
+</main>
+
+<script>
+  // Card expand/collapse toggling with tactile haptics
+  function toggleCard(cardElement) {
+    cardElement.classList.toggle('expanded');
+    if (window.OriginHaptics) {
+      window.OriginHaptics.tap();
+    }
+  }
+
+  // Handle Unlock / Return to Phone Home Screen (Slide up to dismiss)
+  function handleUnlock() {
+    if (window.OriginHaptics) {
+      window.OriginHaptics.success();
+    }
+    // Return to Phone Home Screen where mode is ended
+    if (window.smoothNavigate) {
+      window.smoothNavigate('/screens/screen-0-phone-home-screen/', 'up');
+    } else {
+      window.location.href = '/screens/screen-0-phone-home-screen/';
+    }
+  }
+
+  // Real-time lockscreen clock & date synchronizer
+  function syncSummaryRealTime() {
+    const now = new Date();
+    let hours = now.getHours();
+    let minutes = now.getMinutes();
+    const timeStr = `${hours}:${minutes < 10 ? '0' : ''}${minutes}`;
+    
+    const clockEl = document.getElementById('lockscreen-clock');
+    if (clockEl) clockEl.innerText = timeStr;
+
+    const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+    const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+    const dateStr = `${days[now.getDay()]}, ${months[now.getMonth()]} ${now.getDate()}`;
+    const dateEl = document.getElementById('lockscreen-date');
+    if (dateEl) dateEl.innerText = dateStr;
+  }
+  syncSummaryRealTime();
+  setInterval(syncSummaryRealTime, 1000);
+
+  // Control Center Drawer Interactions
+  const drawer = document.getElementById('control-center-drawer');
+  let isDrawerOpen = false;
+
+  function openControlCenter() {
+    isDrawerOpen = true;
+    drawer.classList.remove('-translate-y-full');
+    drawer.classList.add('translate-y-0');
+    if (window.OriginHaptics) window.OriginHaptics.toggleOn();
+  }
+
+  function closeControlCenter() {
+    isDrawerOpen = false;
+    drawer.classList.add('-translate-y-full');
+    drawer.classList.remove('translate-y-0');
+    if (window.OriginHaptics) window.OriginHaptics.toggleOff();
+  }
+
+  // Handle messages from iframe
+  window.addEventListener('message', (event) => {
+    if (event.data === 'close-control-center') {
+      closeControlCenter();
+    } else if (event.data && event.data.action === 'open-family-mode') {
+      closeControlCenter();
+    }
+  });
+
+  // Pull down touch gesture from top to open Control Center, or swipe up from bottom to unlock
+  let touchStartY = 0;
+  window.addEventListener('touchstart', (e) => {
+    touchStartY = e.touches[0].clientY;
+  }, { passive: true });
+
+  window.addEventListener('touchend', (e) => {
+    const diff = e.changedTouches[0].clientY - touchStartY;
+    // Swipe down from top edge opens Control Center
+    if (touchStartY < 90 && diff > 45) {
+      openControlCenter();
+    }
+    // Swipe up from bottom edge unlocks phone
+    if (touchStartY > window.innerHeight - 100 && diff < -45) {
+      handleUnlock();
+    }
+  }, { passive: true });
+</script>
+
+</body>
+</html>

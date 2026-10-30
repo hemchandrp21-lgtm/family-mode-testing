@@ -1,0 +1,9 @@
+{
+  "id": "a90f12c845b14e91823908db14a1982b",
+  "title": "Phone Home Screen",
+  "deviceType": "MOBILE",
+  "width": "780",
+  "height": "1768",
+  "htmlFile": "index.html",
+  "screenshotFile": "screenshot.png"
+}

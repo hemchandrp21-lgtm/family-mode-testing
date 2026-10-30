@@ -57,11 +57,11 @@
 
   <!-- NAVIGATION HEADER -->
   <header class="w-full px-5 pt-3 pb-2 flex items-center justify-between text-white z-20">
-    <a href="/screens/screen-8-control-center-quick-settings/" aria-label="Go back" class="p-1.5 -ml-1.5 rounded-full text-neutral-300 hover:text-white hover:bg-white/10 transition active:scale-95">
+    <button onclick="handleBack()" aria-label="Go back" class="p-1.5 -ml-1.5 rounded-full text-neutral-300 hover:text-white hover:bg-white/10 transition active:scale-95 cursor-pointer border-none bg-transparent flex items-center justify-center">
       <svg class="w-6 h-6 stroke-[2]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path d="M15 19l-7-7 7-7" stroke-linecap="round" stroke-linejoin="round"/>
       </svg>
-    </a>
+    </button>
 
     <div class="w-7"></div>
   </header>
@@ -279,6 +279,16 @@
       }
     }
   });
+
+  function handleBack() {
+    if (window.smoothNavigate) {
+      window.smoothNavigate('/screens/screen-0-phone-home-screen/', 'backward');
+    } else if (window.history.length > 1) {
+      window.history.back();
+    } else {
+      window.location.href = '/screens/screen-0-phone-home-screen/';
+    }
+  }
 
   // Pull down touch gesture from top
   let touchStartY = 0;

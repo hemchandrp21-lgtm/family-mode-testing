@@ -4,6 +4,8 @@ An end-to-end, high-fidelity clone of the **Family Mode** experience and **Origi
 
 ## 📱 Screens & Architecture
 
+0. **Screen 0 • Phone Home Screen** (`/screens/screen-0-phone-home-screen/`)
+   - The user's authentic phone home screen featuring the battlefield war chariot wallpaper, live synchronizing clock & date, Google search widget, app grid, dock apps, active Family Mode status pill, and pull-down Control Center drawer.
 1. **Screen 1 • Settings - OriginOS** (`/screens/screen-2-settings-family-mode/`)
    - Authentic OriginOS system settings with Hemchand user profile, grouped rounded cards, electric blue icons, and Family Mode entry point.
 2. **Screen 2 • Modes Onboarding - Intro** (`/screens/screen-1-family-mode-intro/`)
@@ -25,7 +27,9 @@ An end-to-end, high-fidelity clone of the **Family Mode** experience and **Origi
 10. **Screen 10 • Family Mode - Active Status** (`/screens/screen-9-family-mode-active-status/`)
    - Active state management screen with "Time remaining 2h 15m", "End Early" button, and grouped access to Allowed Contacts, Message Behaviour, and Caller Status.
 11. **Screen 11 • Family Mode Ended** (`/screens/screen-10-family-mode-ended/`)
-   - Deactivation confirmation screen with bold checkmark badge, notification restoration message, and "OK" completion button.
+   - Deactivation confirmation screen with bold checkmark badge, notification restoration message, and "View Missed Summary" transition button.
+12. **Screen 12 • Family Mode Missed Summary** (`/screens/screen-11-family-mode-summary/`)
+   - Lockscreen summary of all activity missed during Family Mode: 5 missed calls with caller avatars, 12 messages with contacts, WhatsApp, Instagram, and Gmail notification cards with expandable details.
 
 ## ⚡ Interactions & Gestures
 

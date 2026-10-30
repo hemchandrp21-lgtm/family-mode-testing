@@ -3,17 +3,31 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Family Mode - Minimal Dark Design Flow</title>
+  <title>OriginOS Family Mode - Interactive Flow & Prototype Hub</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@400;500;600;700&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/shared-interactions.css">
   <style>
+    :root {
+      --bg-dark: #0A0C10;
+      --bg-card: #13161C;
+      --border-subtle: rgba(255, 255, 255, 0.08);
+      --border-accent: #7CAEFF;
+      --accent-blue: #004F7C;
+      --accent-cyan: #7CAEFF;
+      --text-main: #FFFFFF;
+      --text-muted: #8E939E;
+    }
+
     * {
       box-sizing: border-box;
       margin: 0;
       padding: 0;
+      -webkit-font-smoothing: antialiased;
     }
-    /* Completely eliminate all scrollbars */
+
+    /* Scrollbar removal */
     ::-webkit-scrollbar,
     html::-webkit-scrollbar,
     body::-webkit-scrollbar,
@@ -21,194 +35,1206 @@
       display: none !important;
       width: 0 !important;
       height: 0 !important;
-      background: transparent !important;
     }
     html, body, * {
       scrollbar-width: none !important;
       -ms-overflow-style: none !important;
     }
+
     body {
-      font-family: 'Roboto', -apple-system, BlinkMacSystemFont, sans-serif;
-      background-color: #0A0B0E;
+      font-family: 'Inter', 'Roboto', sans-serif;
+      background-color: var(--bg-dark);
+      background-image: 
+        radial-gradient(circle at 15% 15%, rgba(0, 79, 124, 0.22) 0%, transparent 40%),
+        radial-gradient(circle at 85% 65%, rgba(124, 174, 255, 0.12) 0%, transparent 45%);
+      background-attachment: fixed;
       color: #E2E2E6;
       min-height: 100vh;
       display: flex;
       flex-direction: column;
       align-items: center;
-      padding: 40px 20px;
+      padding: 40px 24px 80px;
+      overflow-x: hidden;
     }
+
+    /* Ambient background blur spots */
+    .ambient-glow {
+      position: fixed;
+      width: 600px;
+      height: 600px;
+      border-radius: 50%;
+      filter: blur(140px);
+      pointer-events: none;
+      z-index: 0;
+      opacity: 0.35;
+    }
+    .glow-1 { top: -150px; left: -100px; background: #004F7C; }
+    .glow-2 { bottom: 50px; right: -150px; background: #7CAEFF; }
+
     header {
+      position: relative;
+      z-index: 10;
       text-align: left;
       width: 100%;
-      max-width: 1280px;
-      margin-bottom: 36px;
+      max-width: 1360px;
+      margin-bottom: 32px;
     }
-    .badge {
+
+    .badge-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(124, 174, 255, 0.1);
+      border: 1px solid rgba(124, 174, 255, 0.25);
+      padding: 6px 14px;
+      border-radius: 9999px;
+      color: #7CAEFF;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+      box-shadow: 0 0 16px rgba(124, 174, 255, 0.15);
+    }
+
+    .pulse-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background-color: #7CAEFF;
+      box-shadow: 0 0 8px #7CAEFF;
+      animation: originPulse 2s infinite ease-in-out;
+    }
+
+    h1 {
+      font-family: 'Outfit', sans-serif;
+      font-size: 2.75rem;
+      font-weight: 600;
+      color: #FFFFFF;
+      letter-spacing: -0.025em;
+      margin-bottom: 10px;
+      line-height: 1.15;
+    }
+
+    p.subtitle {
+      color: #9EA3B0;
+      font-size: 1.05rem;
+      line-height: 1.6;
+      max-width: 780px;
+    }
+
+    /* Interactive Toolbar */
+    .toolbar-container {
+      margin-top: 24px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+      align-items: center;
+      justify-content: space-between;
+      background: rgba(22, 25, 33, 0.75);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      padding: 14px 20px;
+      border-radius: 20px;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+    }
+
+    .toolbar-group {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .btn-action {
+      background: #181B22;
+      border: 1px solid #2B313E;
+      color: #E2E2E6;
+      font-size: 13px;
+      font-weight: 500;
+      padding: 8px 16px;
+      border-radius: 9999px;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .btn-action:hover {
+      background: #222631;
+      border-color: #3F4758;
+      color: #FFFFFF;
+      transform: translateY(-1.5px);
+    }
+    .btn-action.primary {
+      background: linear-gradient(135deg, #004F7C 0%, #006AA8 100%);
+      border: 1px solid #7CAEFF;
+      color: #FFFFFF;
+      box-shadow: 0 4px 18px rgba(124, 174, 255, 0.3);
+    }
+    .btn-action.primary:hover {
+      box-shadow: 0 6px 22px rgba(124, 174, 255, 0.45);
+      border-color: #B2D0FF;
+    }
+
+    /* Segmented Filter Control */
+    .filter-tabs {
+      display: flex;
+      background: #101217;
+      padding: 4px;
+      border-radius: 9999px;
+      border: 1px solid #262B36;
+      gap: 2px;
+    }
+    .filter-btn {
+      background: transparent;
+      border: none;
+      color: #8C92A0;
+      font-size: 12px;
+      font-weight: 500;
+      padding: 6px 14px;
+      border-radius: 9999px;
+      cursor: pointer;
+      transition: all 0.18s ease;
+    }
+    .filter-btn.active {
+      background: #004F7C;
+      color: #FFFFFF;
+      box-shadow: 0 2px 8px rgba(0, 79, 124, 0.5);
+    }
+
+    /* Sound FX switch */
+    .sound-toggle-btn {
       display: inline-flex;
       align-items: center;
       gap: 6px;
+      background: #14161C;
+      border: 1px solid #262B36;
       color: #7CAEFF;
-      font-size: 13px;
+      font-size: 12px;
       font-weight: 500;
-      margin-bottom: 8px;
+      padding: 6px 14px;
+      border-radius: 9999px;
+      cursor: pointer;
     }
-    h1 {
-      font-size: 2.25rem;
-      font-weight: 400;
-      color: #FFFFFF;
-      letter-spacing: -0.02em;
-      margin-bottom: 8px;
-    }
-    p.subtitle {
-      color: #9E9E9E;
-      font-size: 1rem;
-      line-height: 1.5;
-      max-width: 720px;
-    }
-    
+
+    /* Grid Layout */
     .grid {
+      position: relative;
+      z-index: 10;
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 24px;
+      grid-template-columns: repeat(auto-fill, minmax(310px, 1fr));
+      gap: 28px;
       width: 100%;
-      max-width: 1280px;
+      max-width: 1360px;
       margin-bottom: 40px;
     }
+
+    /* 3D Glass Card */
     .card {
-      background: #14161A;
-      border: 1px solid #23272F;
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
       border-radius: 28px;
       overflow: hidden;
       display: flex;
       flex-direction: column;
-      transition: transform 0.2s ease, border-color 0.2s ease;
       text-decoration: none;
       color: inherit;
+      position: relative;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+      transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1),
+                  border-color 0.25s ease,
+                  box-shadow 0.28s ease;
+      transform-style: preserve-3d;
     }
     .card:hover {
-      transform: translateY(-4px);
-      border-color: #7CAEFF;
+      transform: translateY(-8px) scale(1.01);
+      border-color: rgba(124, 174, 255, 0.7);
+      box-shadow: 0 18px 45px rgba(0, 0, 0, 0.6), 0 0 25px rgba(124, 174, 255, 0.2);
     }
+
     .preview-frame {
-      background: #000;
-      height: 420px;
+      background: #000000;
+      height: 440px;
       overflow: hidden;
       position: relative;
-      border-bottom: 1px solid #23272F;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
     }
+
     .preview-frame iframe {
       width: 392px;
       height: 844px;
       border: none;
-      transform: scale(0.49);
+      transform: scale(0.51);
       transform-origin: top left;
       position: absolute;
       top: 0;
       left: 50%;
-      margin-left: -96px;
+      margin-left: -100px;
       pointer-events: none;
-      overflow: hidden !important;
-      scrollbar-width: none !important;
-      -ms-overflow-style: none !important;
+      transition: opacity 0.3s ease;
     }
+
     .card-body {
-      padding: 20px 24px 24px;
+      padding: 22px 24px 24px;
       display: flex;
       flex-direction: column;
       flex-grow: 1;
+      position: relative;
+      z-index: 2;
     }
+
     .screen-tag {
-      font-size: 12px;
-      font-weight: 500;
-      color: #7CAEFF;
+      font-size: 11.5px;
+      font-weight: 600;
+      color: var(--accent-cyan);
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
       margin-bottom: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
     }
+
     .card-title {
-      font-size: 1.25rem;
-      font-weight: 400;
+      font-family: 'Outfit', sans-serif;
+      font-size: 1.35rem;
+      font-weight: 500;
       color: #FFFFFF;
-      margin-bottom: 6px;
+      margin-bottom: 8px;
+      line-height: 1.3;
     }
+
     .card-desc {
       font-size: 13px;
-      color: #8C9199;
-      line-height: 1.4;
-      margin-bottom: 18px;
+      color: #9297A4;
+      line-height: 1.5;
+      margin-bottom: 20px;
+      flex-grow: 1;
     }
-    .action-btn {
+
+    .card-actions {
+      display: flex;
+      gap: 10px;
       margin-top: auto;
+    }
+
+    .action-btn {
+      flex: 1;
       display: inline-flex;
       align-items: center;
       justify-content: center;
       gap: 8px;
       background: #004F7C;
       color: #FFFFFF;
-      font-weight: 500;
-      font-size: 14px;
-      padding: 10px 18px;
+      font-weight: 600;
+      font-size: 13.5px;
+      padding: 11px 16px;
       border-radius: 9999px;
       text-align: center;
+      border: none;
+      cursor: pointer;
+      text-decoration: none;
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .action-btn:hover {
+      background: #006AA8;
+      box-shadow: 0 4px 16px rgba(124, 174, 255, 0.3);
+    }
+
+    .btn-sim-quick {
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      background: #1C202B;
+      border: 1px solid #2F3647;
+      color: #7CAEFF;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      flex-shrink: 0;
+      transition: all 0.2s ease;
+    }
+    .btn-sim-quick:hover {
+      background: #004F7C;
+      color: #FFFFFF;
+      border-color: #7CAEFF;
+      transform: scale(1.08);
+    }
+
+    /* ========================================================
+       Interactive OriginOS Phone Simulator Modal
+       ======================================================== */
+    .simulator-modal {
+      position: fixed;
+      inset: 0;
+      background: rgba(4, 6, 10, 0.85);
+      backdrop-filter: blur(28px);
+      -webkit-backdrop-filter: blur(28px);
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .simulator-modal.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .phone-mockup-wrapper {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      transform: scale(0.92) translateY(24px);
+      transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+    .simulator-modal.active .phone-mockup-wrapper {
+      transform: scale(1) translateY(0);
+    }
+
+    /* Realistic Smartphone Bezel */
+    .phone-chassis {
+      width: 396px;
+      height: 848px;
+      background: #0D0E12;
+      border-radius: 52px;
+      border: 4px solid #2B2F3A;
+      box-shadow: 
+        0 0 0 2px #101217,
+        0 25px 60px rgba(0, 0, 0, 0.85),
+        0 0 50px rgba(124, 174, 255, 0.25);
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Dynamic Camera Punch Hole */
+    .camera-punchhole {
+      position: absolute;
+      top: 14px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 13px;
+      height: 13px;
+      background: #050608;
+      border-radius: 50%;
+      border: 1px solid #1C1E26;
+      z-index: 60;
+      pointer-events: none;
+      box-shadow: inset 0 0 3px rgba(255,255,255,0.2);
+    }
+
+    .simulator-iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+      background: #000000;
+    }
+
+    /* Modal Navigation Controller Dock */
+    .simulator-dock {
+      margin-top: 18px;
+      background: rgba(22, 25, 34, 0.9);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 9999px;
+      padding: 8px 18px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    }
+    .dock-btn {
+      background: #181B24;
+      border: 1px solid #2D3344;
+      color: #FFFFFF;
+      padding: 7px 16px;
+      border-radius: 9999px;
+      font-size: 13px;
+      font-weight: 500;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.15s ease;
+    }
+    .dock-btn:hover {
+      background: #004F7C;
+      border-color: #7CAEFF;
+    }
+    .dock-screen-title {
+      font-size: 13px;
+      font-weight: 500;
+      color: #9EA4B3;
+      min-width: 170px;
+      text-align: center;
+    }
+    .dock-close-btn {
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      background: #232733;
+      border: none;
+      color: #FFFFFF;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
       transition: background 0.15s ease;
     }
-    .card:hover .action-btn {
-      background: #00679E;
+    .dock-close-btn:hover {
+      background: #E53935;
+    }
+
+    /* Bottom Quick-Jump Dock */
+    .quick-flow-bar {
+      position: fixed;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(18, 21, 28, 0.92);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid rgba(124, 174, 255, 0.3);
+      padding: 8px 20px;
+      border-radius: 9999px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      box-shadow: 0 12px 35px rgba(0, 0, 0, 0.6), 0 0 20px rgba(124, 174, 255, 0.2);
+      z-index: 50;
+    }
+
+    /* Micro-badges for keyboard shortcuts */
+    .kbd-shortcut {
+      background: #262B36;
+      border: 1px solid #3B4254;
+      font-size: 11px;
+      font-family: monospace;
+      padding: 2px 6px;
+      border-radius: 4px;
+      color: #B5B9C4;
     }
   </style>
 </head>
 <body>
+  <!-- Ambient background lighting -->
+  <div class="ambient-glow glow-1"></div>
+  <div class="ambient-glow glow-2"></div>
+
   <header>
-    <div class="badge">
-      <span>COMPLETE ORIGINOS FLOW • 11 SCREENS &amp; SLIDING CONTROL CENTER</span>
+    <div class="badge-pill">
+      <span class="pulse-dot"></span>
+      <span>ORIGINOS FAMILY MODE • COMPLETE 13-SCREEN INTERACTIVE SYSTEM</span>
     </div>
-    <h1>Family Mode &amp; Control Center</h1>
+
+    <h1>OriginOS Family Mode Experience</h1>
     <p class="subtitle">
-      End-to-end Family Mode experience: First step is the <strong>Setup Wizard</strong>, and after setup is completed, Family Mode transitions into the <strong>Instant ON / OFF Toggle</strong> across Control Center and Settings.
+      Explore the full end-to-end OS feature. Start directly from your authentic <strong>Phone Home Screen</strong>, enter the <strong>Setup Wizard</strong>, activate Family Mode with system checklists, manage contacts & auto-replies, experience the seamless <strong>sliding Control Center quick toggle</strong>, and review post-session <strong>missed notification summary</strong> with instant unlock.
     </p>
 
-    <!-- Interactive State Switcher for Pair Testing -->
-    <div style="margin-top: 18px; display: inline-flex; flex-wrap: wrap; gap: 10px; justify-content: center; align-items: center; background: #16181F; border: 1px solid #2B313E; padding: 12px 20px; border-radius: 9999px;">
-      <a href="/screens/screen-8-control-center-quick-settings/?reset=1" style="background: #004F7C; border: 1.5px solid #7CAEFF; color: #FFFFFF; font-size: 13px; font-weight: 600; padding: 7px 16px; border-radius: 9999px; text-decoration: none; display: inline-flex; align-items: center; gap: 6px; box-shadow: 0 0 12px rgba(124,174,255,0.3);">
-        <span>▶ Start from Control Center (Tap Mode &rarr; Setup Flow)</span>
-      </a>
-      <a href="/screens/screen-2-settings-family-mode/?reset=1" style="background: #181A22; border: 1px solid #333948; color: #E2E2E6; font-size: 13px; font-weight: 500; padding: 7px 16px; border-radius: 9999px; text-decoration: none; display: inline-flex; align-items: center; gap: 6px;">
-        <span>▶ Start from Settings</span>
-      </a>
-      <span style="font-size: 13px; color: #8E939D; margin-left: 6px;">Force State:</span>
-      <button onclick="setFlowState('reset')" id="btn-state-reset" style="background: #232731; border: 1px solid #333948; color: #FFFFFF; font-size: 12px; padding: 6px 12px; border-radius: 9999px; cursor: pointer; transition: all 0.15s ease;">
-        Reset to Setup
-      </button>
-      <button onclick="setFlowState('on')" id="btn-state-on" style="background: #232731; border: 1px solid #333948; color: #FFFFFF; font-size: 12px; padding: 6px 12px; border-radius: 9999px; cursor: pointer; transition: all 0.15s ease;">
-        Setup Done • Mode ON
-      </button>
-      <button onclick="setFlowState('off')" id="btn-state-off" style="background: #232731; border: 1px solid #333948; color: #FFFFFF; font-size: 12px; padding: 6px 12px; border-radius: 9999px; cursor: pointer; transition: all 0.15s ease;">
-        Setup Done • Mode OFF
-      </button>
+    <!-- Interactive Flow Control Toolbar -->
+    <div class="toolbar-container">
+      <div class="toolbar-group">
+        <!-- Interactive Simulator Launcher -->
+        <button onclick="openSimulator(0)" class="btn-action primary" title="Launch Interactive Phone Simulator">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="5" y="2" width="14" height="20" rx="2" ry="2"/>
+            <line x1="12" y1="18" x2="12.01" y2="18"/>
+          </svg>
+          <span>Open Live Device Simulator</span>
+          <span class="kbd-shortcut">Space</span>
+        </button>
+
+        <a href="/screens/screen-0-phone-home-screen/" class="btn-action">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+            <polyline points="9 22 9 12 15 12 15 22"/>
+          </svg>
+          <span>Home Screen</span>
+        </a>
+
+        <a href="/screens/screen-8-control-center-quick-settings/?reset=1" class="btn-action">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polygon points="5 3 19 12 5 21 5 3"/>
+          </svg>
+          <span>Control Center First</span>
+        </a>
+
+        <a href="/screens/screen-2-settings-family-mode/?reset=1" class="btn-action">
+          <span>Settings First</span>
+        </a>
+      </div>
+
+      <!-- State Simulation Buttons -->
+      <div class="toolbar-group">
+        <span style="font-size: 12px; color: #8A909E; font-weight: 500;">Simulate State:</span>
+        <button onclick="setFlowState('reset')" id="btn-state-reset" class="btn-action" style="padding: 6px 14px; font-size: 12px;">
+          Reset to Setup
+        </button>
+        <button onclick="setFlowState('on')" id="btn-state-on" class="btn-action" style="padding: 6px 14px; font-size: 12px;">
+          Setup Done • ON
+        </button>
+        <button onclick="setFlowState('off')" id="btn-state-off" class="btn-action" style="padding: 6px 14px; font-size: 12px;">
+          Setup Done • OFF
+        </button>
+
+        <!-- Sound FX Toggle -->
+        <button onclick="toggleSoundHaptics()" id="sound-btn" class="sound-toggle-btn" title="Toggle audio haptics (M)">
+          <svg id="sound-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
+            <path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/>
+          </svg>
+          <span id="sound-label">Audio On</span>
+        </button>
+      </div>
+
+      <!-- Category Filter Tabs -->
+      <div class="filter-tabs">
+        <button onclick="filterScreens('all', this)" class="filter-btn active">All (13)</button>
+        <button onclick="filterScreens('setup', this)" class="filter-btn">Setup Flow</button>
+        <button onclick="filterScreens('active', this)" class="filter-btn">Active Mode</button>
+        <button onclick="filterScreens('system', this)" class="filter-btn">System &amp; CC</button>
+      </div>
     </div>
   </header>
 
+  <!-- Flow Grid Cards -->
+  <main class="grid" id="screens-grid">
+    
+    <!-- Screen 0: Phone Home Screen -->
+    <div class="card" data-category="system" data-index="0">
+      <div class="preview-frame">
+        <iframe src="/screens/screen-0-phone-home-screen/" scrolling="no" loading="lazy"></iframe>
+      </div>
+      <div class="card-body">
+        <div class="screen-tag">
+          <span>Screen 0 • Phone Home Screen</span>
+          <span style="font-size: 11px; opacity: 0.7;">Device Start/End</span>
+        </div>
+        <h2 class="card-title">Phone Home Screen</h2>
+        <p class="card-desc">Authentic phone home screen with live real-time clock &amp; date, battlefield chariot wheel wallpaper, Google search bar, app dock, dynamic Family Mode active banner, and swipe-down Control Center drawer.</p>
+        <div class="card-actions">
+          <a href="/screens/screen-0-phone-home-screen/" class="action-btn">Open Page &rarr;</a>
+          <button onclick="openSimulator(0)" class="btn-sim-quick" title="Simulate Screen 0">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="5" y="2" width="14" height="20" rx="2" ry="2"/>
+              <line x1="12" y1="18" x2="12.01" y2="18"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Screen 1: Settings -->
+    <div class="card" data-category="system" data-index="1">
+      <div class="preview-frame">
+        <iframe src="/screens/screen-2-settings-family-mode/" scrolling="no" loading="lazy"></iframe>
+      </div>
+      <div class="card-body">
+        <div class="screen-tag">
+          <span>Screen 1 • System Settings</span>
+          <span style="font-size: 11px; opacity: 0.7;">OriginOS 4</span>
+        </div>
+        <h2 class="card-title">Settings - OriginOS</h2>
+        <p class="card-desc">Authentic settings screen with Hemchand profile card, rounded group containers, electric blue iconography, and highlighted entry for Family Mode.</p>
+        <div class="card-actions">
+          <a href="/screens/screen-2-settings-family-mode/" class="action-btn">Open Page &rarr;</a>
+          <button onclick="openSimulator(1)" class="btn-sim-quick" title="Simulate Screen 1">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="5" y="2" width="14" height="20" rx="2" ry="2"/>
+              <line x1="12" y1="18" x2="12.01" y2="18"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Screen 2: Modes Onboarding -->
+    <div class="card" data-category="setup" data-index="2">
+      <div class="preview-frame">
+        <iframe src="/screens/screen-1-family-mode-intro/" scrolling="no" loading="lazy"></iframe>
+      </div>
+      <div class="card-body">
+        <div class="screen-tag">
+          <span>Screen 2 • Modes Onboarding</span>
+          <span style="font-size: 11px; opacity: 0.7;">Setup 1/6</span>
+        </div>
+        <h2 class="card-title">Modes Intro &amp; Benefits</h2>
+        <p class="card-desc">Warm minimal introduction launched from Settings: Minimal house graphic, Skip action, 3 key benefits, and "Get Started" call-to-action.</p>
+        <div class="card-actions">
+          <a href="/screens/screen-1-family-mode-intro/" class="action-btn">Open Page &rarr;</a>
+          <button onclick="openSimulator(2)" class="btn-sim-quick" title="Simulate Screen 2">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="5" y="2" width="14" height="20" rx="2" ry="2"/>
+              <line x1="12" y1="18" x2="12.01" y2="18"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Screen 3: Set Duration -->
+    <div class="card" data-category="setup" data-index="3">
+      <div class="preview-frame">
+        <iframe src="/screens/screen-3-family-mode-set-duration/" scrolling="no" loading="lazy"></iframe>
+      </div>
+      <div class="card-body">
+        <div class="screen-tag">
+          <span>Screen 3 • Stepper Flow</span>
+          <span style="font-size: 11px; opacity: 0.7;">Setup 2/6</span>
+        </div>
+        <h2 class="card-title">Set a Duration</h2>
+        <p class="card-desc">Flexible duration selection: Preset durations (30m, 1h, 2h, Until tonight), day-of-week chips, custom schedule, and 4-segment progress bar.</p>
+        <div class="card-actions">
+          <a href="/screens/screen-3-family-mode-set-duration/" class="action-btn">Open Page &rarr;</a>
+          <button onclick="openSimulator(3)" class="btn-sim-quick" title="Simulate Screen 3">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="5" y="2" width="14" height="20" rx="2" ry="2"/>
+              <line x1="12" y1="18" x2="12.01" y2="18"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Screen 4: Allow Contacts -->
+    <div class="card" data-category="setup" data-index="4">
+      <div class="preview-frame">
+        <iframe src="/screens/screen-4-family-mode-allow-contacts/" scrolling="no" loading="lazy"></iframe>
+      </div>
+      <div class="card-body">
+        <div class="screen-tag">
+          <span>Screen 4 • Contact Groups</span>
+          <span style="font-size: 11px; opacity: 0.7;">Setup 3/6</span>
+        </div>
+        <h2 class="card-title">Allow Selected Contacts</h2>
+        <p class="card-desc">Group permissions: Family, Close Friends, Starred Contacts, and Work with tactile spring checkboxes and emergency repeat caller exceptions.</p>
+        <div class="card-actions">
+          <a href="/screens/screen-4-family-mode-allow-contacts/" class="action-btn">Open Page &rarr;</a>
+          <button onclick="openSimulator(4)" class="btn-sim-quick" title="Simulate Screen 4">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="5" y="2" width="14" height="20" rx="2" ry="2"/>
+              <line x1="12" y1="18" x2="12.01" y2="18"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Screen 5: Message Behaviour -->
+    <div class="card" data-category="setup" data-index="5">
+      <div class="preview-frame">
+        <iframe src="/screens/screen-5-family-mode-message-behaviour/" scrolling="no" loading="lazy"></iframe>
+      </div>
+      <div class="card-body">
+        <div class="screen-tag">
+          <span>Screen 5 • Message Rules</span>
+          <span style="font-size: 11px; opacity: 0.7;">Setup 4/6</span>
+        </div>
+        <h2 class="card-title">Message Behaviour</h2>
+        <p class="card-desc">Behavior rules: Mark as undelivered, Send auto-reply, or Deliver silently with interactive selection and customizable automated message template.</p>
+        <div class="card-actions">
+          <a href="/screens/screen-5-family-mode-message-behaviour/" class="action-btn">Open Page &rarr;</a>
+          <button onclick="openSimulator(5)" class="btn-sim-quick" title="Simulate Screen 5">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="5" y="2" width="14" height="20" rx="2" ry="2"/>
+              <line x1="12" y1="18" x2="12.01" y2="18"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Screen 6: Caller Status -->
+    <div class="card" data-category="setup" data-index="6">
+      <div class="preview-frame">
+        <iframe src="/screens/screen-5b-family-mode-caller-status/" scrolling="no" loading="lazy"></iframe>
+      </div>
+      <div class="card-body">
+        <div class="screen-tag">
+          <span>Screen 6 • Caller Visibility</span>
+          <span style="font-size: 11px; opacity: 0.7;">Setup 5/6</span>
+        </div>
+        <h2 class="card-title">Caller Status Screen</h2>
+        <p class="card-desc">Control what callers see when dialling you: Interactive phone mockup preview with status card, direct message action, and fallback options.</p>
+        <div class="card-actions">
+          <a href="/screens/screen-5b-family-mode-caller-status/" class="action-btn">Open Page &rarr;</a>
+          <button onclick="openSimulator(6)" class="btn-sim-quick" title="Simulate Screen 6">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="5" y="2" width="14" height="20" rx="2" ry="2"/>
+              <line x1="12" y1="18" x2="12.01" y2="18"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Screen 7: Activating -->
+    <div class="card" data-category="setup" data-index="7">
+      <div class="preview-frame">
+        <iframe src="/screens/screen-6-family-mode-activating/" scrolling="no" loading="lazy"></iframe>
+      </div>
+      <div class="card-body">
+        <div class="screen-tag">
+          <span>Screen 7 • Transition</span>
+          <span style="font-size: 11px; opacity: 0.7;">Setup 6/6</span>
+        </div>
+        <h2 class="card-title">Activating Family Mode</h2>
+        <p class="card-desc">Dynamic status ring with family line-art, sequential system checklist animation, and auto-transition to the active summary.</p>
+        <div class="card-actions">
+          <a href="/screens/screen-6-family-mode-activating/" class="action-btn">Open Page &rarr;</a>
+          <button onclick="openSimulator(7)" class="btn-sim-quick" title="Simulate Screen 7">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="5" y="2" width="14" height="20" rx="2" ry="2"/>
+              <line x1="12" y1="18" x2="12.01" y2="18"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Screen 8: Active Summary -->
+    <div class="card" data-category="active" data-index="8">
+      <div class="preview-frame">
+        <iframe src="/screens/screen-7-family-mode-active-summary/" scrolling="no" loading="lazy"></iframe>
+      </div>
+      <div class="card-body">
+        <div class="screen-tag">
+          <span>Screen 8 • Active State</span>
+          <span style="font-size: 11px; opacity: 0.7;">Active 1/3</span>
+        </div>
+        <h2 class="card-title">Active Summary</h2>
+        <p class="card-desc">Confirmation screen with verified check badge, comprehensive active rule summary card, and "Done" / "Edit Settings" actions.</p>
+        <div class="card-actions">
+          <a href="/screens/screen-7-family-mode-active-summary/" class="action-btn">Open Page &rarr;</a>
+          <button onclick="openSimulator(8)" class="btn-sim-quick" title="Simulate Screen 8">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="5" y="2" width="14" height="20" rx="2" ry="2"/>
+              <line x1="12" y1="18" x2="12.01" y2="18"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Screen 9: Control Center Quick Settings -->
+    <div class="card" data-category="system" data-index="9">
+      <div class="preview-frame">
+        <iframe src="/screens/screen-8-control-center-quick-settings/" scrolling="no" loading="lazy"></iframe>
+      </div>
+      <div class="card-body">
+        <div class="screen-tag">
+          <span>Screen 9 • Quick Settings</span>
+          <span style="font-size: 11px; opacity: 0.7;">OriginOS System</span>
+        </div>
+        <h2 class="card-title">Sliding Control Center</h2>
+        <p class="card-desc">Interactive Quick Settings panel: Wi-Fi, draggable volume &amp; brightness sliders, and the active Family Mode quick toggle with long-press support.</p>
+        <div class="card-actions">
+          <a href="/screens/screen-8-control-center-quick-settings/" class="action-btn">Open Page &rarr;</a>
+          <button onclick="openSimulator(9)" class="btn-sim-quick" title="Simulate Screen 9">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="5" y="2" width="14" height="20" rx="2" ry="2"/>
+              <line x1="12" y1="18" x2="12.01" y2="18"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Screen 10: Active Status Management -->
+    <div class="card" data-category="active" data-index="10">
+      <div class="preview-frame">
+        <iframe src="/screens/screen-9-family-mode-active-status/" scrolling="no" loading="lazy"></iframe>
+      </div>
+      <div class="card-body">
+        <div class="screen-tag">
+          <span>Screen 10 • In-Mode Management</span>
+          <span style="font-size: 11px; opacity: 0.7;">Active 2/3</span>
+        </div>
+        <h2 class="card-title">Family Mode - Active Status</h2>
+        <p class="card-desc">Real-time status management: Live time remaining countdown, "End Early" action, and fast-access management rows for allowed contacts and caller status.</p>
+        <div class="card-actions">
+          <a href="/screens/screen-9-family-mode-active-status/" class="action-btn">Open Page &rarr;</a>
+          <button onclick="openSimulator(10)" class="btn-sim-quick" title="Simulate Screen 10">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="5" y="2" width="14" height="20" rx="2" ry="2"/>
+              <line x1="12" y1="18" x2="12.01" y2="18"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Screen 11: Mode Ended -->
+    <div class="card" data-category="active" data-index="11">
+      <div class="preview-frame">
+        <iframe src="/screens/screen-10-family-mode-ended/" scrolling="no" loading="lazy"></iframe>
+      </div>
+      <div class="card-body">
+        <div class="screen-tag">
+          <span>Screen 11 • Deactivation</span>
+          <span style="font-size: 11px; opacity: 0.7;">Active 3/3</span>
+        </div>
+        <h2 class="card-title">Family Mode Ended</h2>
+        <p class="card-desc">Clean conclusion screen with checkmark emblem confirming that all incoming calls and notifications have been restored to normal, transitioning to missed summary.</p>
+        <div class="card-actions">
+          <a href="/screens/screen-10-family-mode-ended/" class="action-btn">Open Page &rarr;</a>
+          <button onclick="openSimulator(11)" class="btn-sim-quick" title="Simulate Screen 11">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="5" y="2" width="14" height="20" rx="2" ry="2"/>
+              <line x1="12" y1="18" x2="12.01" y2="18"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Screen 12: Missed Summary Lockscreen -->
+    <div class="card" data-category="active" data-index="12">
+      <div class="preview-frame">
+        <iframe src="/screens/screen-11-family-mode-summary/" scrolling="no" loading="lazy"></iframe>
+      </div>
+      <div class="card-body">
+        <div class="screen-tag">
+          <span>Screen 12 • Missed Summary</span>
+          <span style="font-size: 11px; opacity: 0.7;">Lockscreen</span>
+        </div>
+        <h2 class="card-title">Missed Summary Lockscreen</h2>
+        <p class="card-desc">Lockscreen overview of missed activity: 5 missed calls with caller initial avatars, 12 new messages, WhatsApp, Instagram, and Gmail notification cards with expand details.</p>
+        <div class="card-actions">
+          <a href="/screens/screen-11-family-mode-summary/" class="action-btn">Open Page &rarr;</a>
+          <button onclick="openSimulator(12)" class="btn-sim-quick" title="Simulate Screen 12">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="5" y="2" width="14" height="20" rx="2" ry="2"/>
+              <line x1="12" y1="18" x2="12.01" y2="18"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- ========================================================
+       Interactive OriginOS Phone Simulator Modal (Smart Animate)
+       ======================================================== -->
+  <div id="simulator-modal" class="simulator-modal" onclick="onModalBackdropClick(event)">
+    <div class="phone-mockup-wrapper">
+      
+      <!-- Phone Bezel Body with Smart Animate Stage -->
+      <div class="phone-chassis">
+        <div class="camera-punchhole"></div>
+        
+        <!-- Persistent Status Bar (Smart Animate Shared Element) -->
+        <div style="position: absolute; top: 0; left: 0; right: 0; height: 38px; display: flex; align-items: center; justify-content: space-between; padding: 8px 24px; z-index: 55; pointer-events: none; color: #FFFFFF; font-size: 13px; font-weight: 500; font-family: -apple-system, BlinkMacSystemFont, sans-serif;">
+          <span id="simulator-clock">9:41</span>
+          <div style="display: flex; align-items: center; gap: 6px; opacity: 0.9;">
+            <svg width="15" height="12" viewBox="0 0 16 12" fill="currentColor">
+              <path d="M1 9.5h2.5V12H1v-2.5zm4-3.5h2.5V12H5V6zm4-3.5h2.5V12H9V2.5zm4-2.5h2.5V12H13V0z"/>
+            </svg>
+            <svg width="15" height="11" viewBox="0 0 16 12" fill="currentColor">
+              <path d="M8 2.5a9.8 9.8 0 0 1 6.8 2.7l1.2-1.2A11.5 11.5 0 0 0 0 4l1.2 1.2A9.8 9.8 0 0 1 8 2.5zm0 3.6a6.5 6.5 0 0 1 4.5 1.8l1.2-1.2A8.2 8.2 0 0 0 2.3 6.7l1.2 1.2A6.5 6.5 0 0 1 8 6.1zm0 3.7c1.3 0 2.4.5 3.3 1.3l1.2-1.2a6 6 0 0 0-9 0l1.2 1.2c.9-.8 2-1.3 3.3-1.3z"/>
+            </svg>
+            <div style="width: 22px; height: 11px; border: 1.5px solid rgba(255,255,255,0.7); border-radius: 3.5px; position: relative; padding: 1px;">
+              <div style="width: 80%; height: 100%; background: #FFFFFF; border-radius: 1.5px;"></div>
+              <div style="position: absolute; right: -3.5px; top: 2px; width: 2px; height: 4px; background: rgba(255,255,255,0.7); border-radius: 0 1px 1px 0;"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Instant Pre-Mounted Screen Stage (0ms Latency) -->
+        <div id="smart-stage" class="smart-stage">
+          <iframe class="sim-screen-layer active" id="sim-screen-0" src="/screens/screen-0-phone-home-screen/"></iframe>
+          <iframe class="sim-screen-layer" id="sim-screen-1" src="/screens/screen-2-settings-family-mode/"></iframe>
+          <iframe class="sim-screen-layer" id="sim-screen-2" src="/screens/screen-1-family-mode-intro/"></iframe>
+          <iframe class="sim-screen-layer" id="sim-screen-3" src="/screens/screen-3-family-mode-set-duration/"></iframe>
+          <iframe class="sim-screen-layer" id="sim-screen-4" src="/screens/screen-4-family-mode-allow-contacts/"></iframe>
+          <iframe class="sim-screen-layer" id="sim-screen-5" src="/screens/screen-5-family-mode-message-behaviour/"></iframe>
+          <iframe class="sim-screen-layer" id="sim-screen-6" src="/screens/screen-5b-family-mode-caller-status/"></iframe>
+          <iframe class="sim-screen-layer" id="sim-screen-7" src="/screens/screen-6-family-mode-activating/"></iframe>
+          <iframe class="sim-screen-layer" id="sim-screen-8" src="/screens/screen-7-family-mode-active-summary/"></iframe>
+          <iframe class="sim-screen-layer" id="sim-screen-9" src="/screens/screen-8-control-center-quick-settings/"></iframe>
+          <iframe class="sim-screen-layer" id="sim-screen-10" src="/screens/screen-9-family-mode-active-status/"></iframe>
+          <iframe class="sim-screen-layer" id="sim-screen-11" src="/screens/screen-10-family-mode-ended/"></iframe>
+          <iframe class="sim-screen-layer" id="sim-screen-12" src="/screens/screen-11-family-mode-summary/"></iframe>
+        </div>
+      </div>
+
+      <!-- Simulator Navigation Dock with Instant Switch Controls -->
+      <div class="simulator-dock">
+        <button onclick="navigateSimulator(-1)" class="dock-btn" title="Previous Screen (Left Arrow)">
+          &larr; Prev
+        </button>
+        
+        <div style="display: flex; flex-direction: column; align-items: center;">
+          <span id="dock-title" class="dock-screen-title">Screen 0 of 13: Phone Home Screen</span>
+          <span style="font-size: 10.5px; color: #7CAEFF; font-weight: 500; letter-spacing: 0.04em;">INSTANT SWITCH ACTIVE</span>
+        </div>
+
+        <button onclick="navigateSimulator(1)" class="dock-btn" title="Next Screen (Right Arrow)">
+          Next &rarr;
+        </button>
+
+        <a id="dock-open-tab" href="#" target="_blank" class="dock-btn" style="color: #7CAEFF;">
+          Popout &#8599;
+        </a>
+
+        <button onclick="closeSimulator()" class="dock-close-btn" title="Close (Escape)">
+          &times;
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Bottom Floating Flow Quick-Jump -->
+  <div class="quick-flow-bar">
+    <span style="font-size: 12px; font-weight: 600; color: #7CAEFF; display: flex; align-items: center; gap: 6px;">
+      <span class="pulse-dot" style="width: 6px; height: 6px;"></span>
+      Interactive Flow:
+    </span>
+    <button onclick="smartAnimateTo(0, 'forward')" class="btn-action" style="padding: 5px 12px; font-size: 12px; background: #004F7C; border-color: #7CAEFF;">
+      0. Home
+    </button>
+    <button onclick="smartAnimateTo(1, 'forward')" class="btn-action" style="padding: 5px 12px; font-size: 12px; background: #1C202A;">
+      1. Settings
+    </button>
+    <button onclick="smartAnimateTo(2, 'forward')" class="btn-action" style="padding: 5px 12px; font-size: 12px; background: #1C202A;">
+      2. Intro
+    </button>
+    <button onclick="smartAnimateTo(7, 'forward')" class="btn-action" style="padding: 5px 12px; font-size: 12px; background: #1C202A;">
+      7. Activating
+    </button>
+    <button onclick="smartAnimateTo(9, 'forward')" class="btn-action" style="padding: 5px 12px; font-size: 12px; background: #1C202A;">
+      9. Control Center
+    </button>
+    <button onclick="smartAnimateTo(10, 'forward')" class="btn-action" style="padding: 5px 12px; font-size: 12px; background: #1C202A;">
+      10. Active Status
+    </button>
+    <button onclick="smartAnimateTo(11, 'forward')" class="btn-action" style="padding: 5px 12px; font-size: 12px; background: #1C202A;">
+      11. Mode Ended
+    </button>
+    <button onclick="smartAnimateTo(12, 'down')" class="btn-action" style="padding: 5px 12px; font-size: 12px; background: #004F7C; border-color: #7CAEFF;">
+      12. Summary &darr;
+    </button>
+  </div>
+
+  <script src="/shared-interactions.js"></script>
   <script>
-    function resetToSetupFirst(e) {
-      if (e) e.preventDefault();
-      try {
-        localStorage.removeItem('familyModeSetupComplete');
-        localStorage.removeItem('familyModeActive');
-      } catch(err) {}
-      window.location.href = '/screens/screen-2-settings-family-mode/';
+    const SCREEN_FLOW = [
+      { name: "Screen 0 • Phone Home Screen", url: "/screens/screen-0-phone-home-screen/" },
+      { name: "Screen 1 • Settings", url: "/screens/screen-2-settings-family-mode/" },
+      { name: "Screen 2 • Modes Onboarding", url: "/screens/screen-1-family-mode-intro/" },
+      { name: "Screen 3 • Set Duration", url: "/screens/screen-3-family-mode-set-duration/" },
+      { name: "Screen 4 • Allow Contacts", url: "/screens/screen-4-family-mode-allow-contacts/" },
+      { name: "Screen 5 • Message Behaviour", url: "/screens/screen-5-family-mode-message-behaviour/" },
+      { name: "Screen 6 • Caller Status", url: "/screens/screen-5b-family-mode-caller-status/" },
+      { name: "Screen 7 • Activating Mode", url: "/screens/screen-6-family-mode-activating/" },
+      { name: "Screen 8 • Active Summary", url: "/screens/screen-7-family-mode-active-summary/" },
+      { name: "Screen 9 • Control Center", url: "/screens/screen-8-control-center-quick-settings/" },
+      { name: "Screen 10 • Active Management", url: "/screens/screen-9-family-mode-active-status/" },
+      { name: "Screen 11 • Mode Ended", url: "/screens/screen-10-family-mode-ended/" },
+      { name: "Screen 12 • Missed Summary", url: "/screens/screen-11-family-mode-summary/" }
+    ];
+
+    let currentSimulatorIndex = 0;
+    let isTransitioning = false;
+
+    function updateLiveClock() {
+      const clockEl = document.getElementById('simulator-clock');
+      if (!clockEl) return;
+      const now = new Date();
+      let hours = now.getHours();
+      let minutes = now.getMinutes();
+      clockEl.innerText = `${hours}:${minutes < 10 ? '0' : ''}${minutes}`;
+    }
+    setInterval(updateLiveClock, 30000);
+    updateLiveClock();
+
+    function openSimulator(index) {
+      if (index === undefined || index < 0) index = 0;
+      if (index >= SCREEN_FLOW.length) index = SCREEN_FLOW.length - 1;
+      currentSimulatorIndex = index;
+
+      const modal = document.getElementById('simulator-modal');
+      
+      // Instantly activate target screen layer
+      for (let i = 0; i < SCREEN_FLOW.length; i++) {
+        const layer = document.getElementById(`sim-screen-${i}`);
+        if (layer) {
+          layer.className = i === index ? 'sim-screen-layer active' : 'sim-screen-layer';
+        }
+      }
+
+      const screen = SCREEN_FLOW[index];
+      document.getElementById('dock-title').innerText = `${index}/${SCREEN_FLOW.length - 1}: ${screen.name}`;
+      document.getElementById('dock-open-tab').href = screen.url;
+
+      modal.classList.add('active');
+      if (window.OriginHaptics) window.OriginHaptics.tap();
     }
 
+    function closeSimulator() {
+      const modal = document.getElementById('simulator-modal');
+      modal.classList.remove('active');
+      if (window.OriginHaptics) window.OriginHaptics.toggleOff();
+    }
+
+    function onModalBackdropClick(e) {
+      if (e.target.id === 'simulator-modal') {
+        closeSimulator();
+      }
+    }
+
+    // Animated Screen Switcher (Spring Slide Transition)
+    function smartAnimateTo(targetIndex, direction) {
+      if (targetIndex === undefined || targetIndex < 0) targetIndex = 0;
+      if (targetIndex >= SCREEN_FLOW.length) targetIndex = SCREEN_FLOW.length - 1;
+
+      const modal = document.getElementById('simulator-modal');
+      if (!modal.classList.contains('active')) {
+        openSimulator(targetIndex);
+        return;
+      }
+
+      if (targetIndex === currentSimulatorIndex) return;
+      if (isTransitioning) return;
+
+      const oldIndex = currentSimulatorIndex;
+      const oldLayer = document.getElementById(`sim-screen-${oldIndex}`);
+      const newLayer = document.getElementById(`sim-screen-${targetIndex}`);
+
+      const dir = direction || (
+        targetIndex === 12 && oldIndex === 11 ? 'down' :
+        targetIndex === 0 && (oldIndex === 11 || oldIndex === 12) ? 'up' :
+        targetIndex > oldIndex ? 'forward' : 'backward'
+      );
+
+      if (oldLayer && newLayer) {
+        isTransitioning = true;
+
+        if (dir === 'down' || dir === 'from-top') {
+          // Slide in from UP to DOWN (Authentic notification shade pull-down)
+          newLayer.className = 'sim-screen-layer enter-from-top';
+          void newLayer.offsetWidth; // Force DOM reflow
+
+          oldLayer.className = 'sim-screen-layer exit-to-bottom';
+          newLayer.className = 'sim-screen-layer active';
+        } else if (dir === 'up' || dir === 'to-top') {
+          // Slide up from DOWN to UP
+          newLayer.className = 'sim-screen-layer enter-from-bottom';
+          void newLayer.offsetWidth; // Force DOM reflow
+
+          oldLayer.className = 'sim-screen-layer exit-to-top';
+          newLayer.className = 'sim-screen-layer active';
+        } else if (dir === 'forward') {
+          // Prepare incoming layer at right edge
+          newLayer.className = 'sim-screen-layer enter-from-right';
+          void newLayer.offsetWidth; // Force DOM reflow
+
+          // Execute slide forward animation
+          oldLayer.className = 'sim-screen-layer exit-to-left';
+          newLayer.className = 'sim-screen-layer active';
+        } else {
+          // Prepare incoming layer at left edge
+          newLayer.className = 'sim-screen-layer enter-from-left';
+          void newLayer.offsetWidth; // Force DOM reflow
+
+          // Execute slide backward animation
+          oldLayer.className = 'sim-screen-layer exit-to-right';
+          newLayer.className = 'sim-screen-layer active';
+        }
+
+        setTimeout(() => {
+          if (oldLayer && oldLayer !== newLayer) {
+            oldLayer.className = 'sim-screen-layer';
+          }
+          isTransitioning = false;
+        }, 360);
+      } else if (newLayer) {
+        newLayer.className = 'sim-screen-layer active';
+      }
+
+      currentSimulatorIndex = targetIndex;
+      const targetScreen = SCREEN_FLOW[targetIndex];
+      document.getElementById('dock-title').innerText = `${targetIndex + 1}/${SCREEN_FLOW.length}: ${targetScreen.name}`;
+      document.getElementById('dock-open-tab').href = targetScreen.url;
+
+      if (window.OriginHaptics) window.OriginHaptics.tap();
+    }
+
+    // Catch smart animate navigation events from inside child iframes
+    window.addEventListener('message', (event) => {
+      if (event.data && event.data.action === 'smart-animate-navigate') {
+        const url = event.data.url;
+        const direction = event.data.direction || 'forward';
+        
+        // Find screen index by matching URL path
+        const targetIndex = SCREEN_FLOW.findIndex(s => {
+          const normA = s.url.replace(/\/$/, '').toLowerCase();
+          const normB = url.replace(/\/$/, '').toLowerCase();
+          return normA === normB || normB.includes(normA) || normA.includes(normB);
+        });
+
+        if (targetIndex !== -1) {
+          smartAnimateTo(targetIndex, direction);
+        }
+      }
+    });
+
+    function navigateSimulator(delta) {
+      let nextIndex = currentSimulatorIndex + delta;
+      if (nextIndex < 0) nextIndex = SCREEN_FLOW.length - 1;
+      if (nextIndex >= SCREEN_FLOW.length) nextIndex = 0;
+      const direction = delta > 0 ? 'forward' : 'backward';
+      smartAnimateTo(nextIndex, direction);
+    }
+
+    // Category Filtering
+    function filterScreens(category, btn) {
+      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+
+      const cards = document.querySelectorAll('.card');
+      cards.forEach(card => {
+        if (category === 'all' || card.dataset.category === category) {
+          card.style.display = 'flex';
+          card.style.animation = 'pageFadeIn 0.35s ease forwards';
+        } else {
+          card.style.display = 'none';
+        }
+      });
+      if (window.OriginHaptics) window.OriginHaptics.tap();
+    }
+
+    // State switcher
     function setFlowState(state) {
       if (state === 'reset') {
         localStorage.removeItem('familyModeSetupComplete');
         localStorage.removeItem('familyModeActive');
+        if (window.showOriginToast) window.showOriginToast('Flow reset to Setup Wizard', 'info');
       } else if (state === 'on') {
         localStorage.setItem('familyModeSetupComplete', 'true');
         localStorage.setItem('familyModeActive', 'true');
+        if (window.showOriginToast) window.showOriginToast('Setup Complete • Family Mode is ON', 'check');
       } else if (state === 'off') {
         localStorage.setItem('familyModeSetupComplete', 'true');
         localStorage.setItem('familyModeActive', 'false');
+        if (window.showOriginToast) window.showOriginToast('Setup Complete • Family Mode is OFF', 'bell');
       }
       syncSwitcherStyles();
-      location.reload();
+      // Reload iframes to reflect updated state
+      document.querySelectorAll('.preview-frame iframe, .sim-screen-layer').forEach(iframe => {
+        iframe.src = iframe.src;
+      });
     }
 
     function syncSwitcherStyles() {
@@ -219,173 +1245,106 @@
       const btnOn = document.getElementById('btn-state-on');
       const btnOff = document.getElementById('btn-state-off');
       
+      [btnReset, btnOn, btnOff].forEach(btn => {
+        if (!btn) return;
+        btn.style.background = '#181B22';
+        btn.style.borderColor = '#2B313E';
+      });
+
       if (!isSetup) {
         if (btnReset) { btnReset.style.background = '#004F7C'; btnReset.style.borderColor = '#7CAEFF'; }
-        if (btnOn) { btnOn.style.background = '#232731'; btnOn.style.borderColor = '#333948'; }
-        if (btnOff) { btnOff.style.background = '#232731'; btnOff.style.borderColor = '#333948'; }
       } else if (isActive) {
-        if (btnReset) { btnReset.style.background = '#232731'; btnReset.style.borderColor = '#333948'; }
         if (btnOn) { btnOn.style.background = '#004F7C'; btnOn.style.borderColor = '#7CAEFF'; }
-        if (btnOff) { btnOff.style.background = '#232731'; btnOff.style.borderColor = '#333948'; }
       } else {
-        if (btnReset) { btnReset.style.background = '#232731'; btnReset.style.borderColor = '#333948'; }
-        if (btnOn) { btnOn.style.background = '#232731'; btnOn.style.borderColor = '#333948'; }
         if (btnOff) { btnOff.style.background = '#004F7C'; btnOff.style.borderColor = '#7CAEFF'; }
       }
     }
-    window.addEventListener('DOMContentLoaded', syncSwitcherStyles);
 
-    // Allow iframe clicks to navigate parent window smoothly
+    // Audio Haptics toggle
+    function toggleSoundHaptics() {
+      const current = localStorage.getItem('familyModeSoundEnabled') !== 'false';
+      const next = !current;
+      localStorage.setItem('familyModeSoundEnabled', next ? 'true' : 'false');
+      updateSoundButtonUI();
+      if (next && window.OriginHaptics) window.OriginHaptics.success();
+    }
+
+    function updateSoundButtonUI() {
+      const isEnabled = localStorage.getItem('familyModeSoundEnabled') !== 'false';
+      const label = document.getElementById('sound-label');
+      const btn = document.getElementById('sound-btn');
+      if (label) label.innerText = isEnabled ? 'Audio On' : 'Audio Muted';
+      if (btn) {
+        btn.style.borderColor = isEnabled ? '#7CAEFF' : '#333948';
+        btn.style.color = isEnabled ? '#7CAEFF' : '#888E99';
+      }
+    }
+
+    // 3D Magnetic Card Hover Microinteraction
+    function initCard3DTilt() {
+      const cards = document.querySelectorAll('.card');
+      cards.forEach(card => {
+        card.addEventListener('mousemove', (e) => {
+          const rect = card.getBoundingClientRect();
+          const x = e.clientX - rect.left;
+          const y = e.clientY - rect.top;
+          const centerX = rect.width / 2;
+          const centerY = rect.height / 2;
+          const rotateX = ((y - centerY) / centerY) * -5.5;
+          const rotateY = ((x - centerX) / centerX) * 5.5;
+
+          card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-8px) scale(1.01)`;
+        });
+
+        card.addEventListener('mouseleave', () => {
+          card.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) translateY(0) scale(1)';
+        });
+      });
+    }
+
+    // Global Keyboard Shortcuts
+    document.addEventListener('keydown', (e) => {
+      const modal = document.getElementById('simulator-modal');
+      const isModalOpen = modal && modal.classList.contains('active');
+
+      if (e.key === 'Escape' && isModalOpen) {
+        closeSimulator();
+      } else if (e.key === ' ' && !isModalOpen && e.target.tagName !== 'INPUT' && e.target.tagName !== 'TEXTAREA') {
+        e.preventDefault();
+        smartAnimateTo(0, 'forward');
+      } else if (isModalOpen && (e.key === 'ArrowRight' || e.key === 'd')) {
+        navigateSimulator(1);
+      } else if (isModalOpen && (e.key === 'ArrowLeft' || e.key === 'a')) {
+        navigateSimulator(-1);
+      } else if (e.key === 'm' || e.key === 'M') {
+        toggleSoundHaptics();
+      }
+    });
+
+    window.addEventListener('DOMContentLoaded', () => {
+      syncSwitcherStyles();
+      updateSoundButtonUI();
+      initCard3DTilt();
+    });
+
+    // Listen to iframe postMessage events for seamless Smart Animate navigation
     window.addEventListener('message', (e) => {
-      if (e.data && e.data.action === 'open-family-mode' && e.data.screen) {
-        window.location.href = e.data.screen;
+      if (e.data && e.data.action === 'smart-animate-navigate') {
+        const url = e.data.url;
+        const direction = e.data.direction || 'forward';
+        const foundIdx = SCREEN_FLOW.findIndex(s => url.includes(s.url) || s.url.includes(url));
+        if (foundIdx !== -1) {
+          smartAnimateTo(foundIdx, direction);
+        }
+      } else if (e.data && e.data.action === 'open-family-mode' && e.data.screen) {
+        const foundIdx = SCREEN_FLOW.findIndex(s => s.url.includes(e.data.screen) || e.data.screen.includes(s.url));
+        if (foundIdx !== -1) {
+          smartAnimateTo(foundIdx, 'forward');
+        } else {
+          window.location.href = e.data.screen;
+        }
       }
     });
   </script>
-
-  <main class="grid">
-    <!-- Screen 1: Settings (1st screen in flow) -->
-    <a href="/screens/screen-2-settings-family-mode/" class="card">
-      <div class="preview-frame">
-        <iframe src="/screens/screen-2-settings-family-mode/" scrolling="no"></iframe>
-      </div>
-      <div class="card-body">
-        <span class="screen-tag">Screen 1 • System Settings</span>
-        <h2 class="card-title">Settings - OriginOS</h2>
-        <p class="card-desc">Authentic OriginOS settings: Hemchand user profile card, grouped rounded cards, vibrant electric blue icons, and highlighted Family Mode entry point.</p>
-        <div class="action-btn">Open Screen 1 &rarr;</div>
-      </div>
-    </a>
-
-    <!-- Screen 2: Modes Onboarding (2nd screen in flow) -->
-    <a href="/screens/screen-1-family-mode-intro/" class="card">
-      <div class="preview-frame">
-        <iframe src="/screens/screen-1-family-mode-intro/" scrolling="no"></iframe>
-      </div>
-      <div class="card-body">
-        <span class="screen-tag">Screen 2 • Modes Onboarding</span>
-        <h2 class="card-title">Modes Onboarding - Intro</h2>
-        <p class="card-desc">Mode introduction flow launched from Settings: Family graphic, Skip action, 3 key benefits, and "Get Started" button leading into Duration setup.</p>
-        <div class="action-btn">Open Screen 2 &rarr;</div>
-      </div>
-    </a>
-
-    <!-- Screen 3 -->
-    <a href="/screens/screen-3-family-mode-set-duration/" class="card">
-      <div class="preview-frame">
-        <iframe src="/screens/screen-3-family-mode-set-duration/" scrolling="no"></iframe>
-      </div>
-      <div class="card-body">
-        <span class="screen-tag">Screen 3 • Stepper Flow</span>
-        <h2 class="card-title">Set a Duration</h2>
-        <p class="card-desc">Original duration options (30m, 1h [checked], 2h, Until tonight, Custom) with 4-segment stepper header and "Next" action.</p>
-        <div class="action-btn">Open Screen 3 &rarr;</div>
-      </div>
-    </a>
-
-    <!-- Screen 4 -->
-    <a href="/screens/screen-4-family-mode-allow-contacts/" class="card">
-      <div class="preview-frame">
-        <iframe src="/screens/screen-4-family-mode-allow-contacts/" scrolling="no"></iframe>
-      </div>
-      <div class="card-body">
-        <span class="screen-tag">Screen 4 • Contact Groups</span>
-        <h2 class="card-title">Allow Selected Contacts</h2>
-        <p class="card-desc">Contact groups (Family, Close Friends, Starred Contacts, Work, Custom Contacts) with minimal square checkboxes and alarm/call behavior options.</p>
-        <div class="action-btn">Open Screen 4 &rarr;</div>
-      </div>
-    </a>
-
-    <!-- Screen 5 -->
-    <a href="/screens/screen-5-family-mode-message-behaviour/" class="card">
-      <div class="preview-frame">
-        <iframe src="/screens/screen-5-family-mode-message-behaviour/" scrolling="no"></iframe>
-      </div>
-      <div class="card-body">
-        <span class="screen-tag">Screen 5 • Message Rules</span>
-        <h2 class="card-title">Message Behaviour</h2>
-        <p class="card-desc">Behavior rules (Mark as undelivered, Send auto-reply, Deliver silently) with minimal radio selection and customizable auto-reply textarea.</p>
-        <div class="action-btn">Open Screen 5 &rarr;</div>
-      </div>
-    </a>
-
-    <!-- Screen 6: Caller status (New Stitch Screen d2b75d65a0284c2b8154d86ec156f81a) -->
-    <a href="/screens/screen-5b-family-mode-caller-status/" class="card">
-      <div class="preview-frame">
-        <iframe src="/screens/screen-5b-family-mode-caller-status/" scrolling="no"></iframe>
-      </div>
-      <div class="card-body">
-        <span class="screen-tag">Screen 6 • Caller Visibility</span>
-        <h2 class="card-title">Caller Status</h2>
-        <p class="card-desc">Choose what others see when calling: Interactive phone mockup showing Family Mode status card, call/message actions, and voicemail fallback toggle.</p>
-        <div class="action-btn">Open Screen 6 &rarr;</div>
-      </div>
-    </a>
-
-    <!-- Screen 7 -->
-    <a href="/screens/screen-6-family-mode-activating/" class="card">
-      <div class="preview-frame">
-        <iframe src="/screens/screen-6-family-mode-activating/" scrolling="no"></iframe>
-      </div>
-      <div class="card-body">
-        <span class="screen-tag">Screen 7 • Transition</span>
-        <h2 class="card-title">Activating Family Mode</h2>
-        <p class="card-desc">Animated status ring with family line art, multi-step system checklist with completion checkmarks, and dynamic transition loader.</p>
-        <div class="action-btn">Open Screen 7 &rarr;</div>
-      </div>
-    </a>
-
-    <!-- Screen 8 -->
-    <a href="/screens/screen-7-family-mode-active-summary/" class="card">
-      <div class="preview-frame">
-        <iframe src="/screens/screen-7-family-mode-active-summary/" scrolling="no"></iframe>
-      </div>
-      <div class="card-body">
-        <span class="screen-tag">Screen 8 • Active State</span>
-        <h2 class="card-title">Active Summary</h2>
-        <p class="card-desc">Family Mode active confirmation with verified check badge, comprehensive settings summary card, and "Done" / "Edit Settings" actions.</p>
-        <div class="action-btn">Open Screen 8 &rarr;</div>
-      </div>
-    </a>
-
-    <!-- Screen 9 -->
-    <a href="/screens/screen-8-control-center-quick-settings/" class="card">
-      <div class="preview-frame">
-        <iframe src="/screens/screen-8-control-center-quick-settings/" scrolling="no"></iframe>
-      </div>
-      <div class="card-body">
-        <span class="screen-tag">Screen 9 • Control Center</span>
-        <h2 class="card-title">Control Center - Quick Settings</h2>
-        <p class="card-desc">OriginOS Quick Settings panel with Wi-Fi & Media widgets, vertical sliders, and 4x4 toggles grid featuring the active Family Mode toggle that launches Family Mode.</p>
-        <div class="action-btn">Open Screen 9 &rarr;</div>
-      </div>
-    </a>
-
-    <!-- Screen 10 -->
-    <a href="/screens/screen-9-family-mode-active-status/" class="card">
-      <div class="preview-frame">
-        <iframe src="/screens/screen-9-family-mode-active-status/" scrolling="no"></iframe>
-      </div>
-      <div class="card-body">
-        <span class="screen-tag">Screen 10 • Active Mode Management</span>
-        <h2 class="card-title">Family Mode - Active Status</h2>
-        <p class="card-desc">Active state management screen with "Time remaining 2h 15m", "End Early" action, and grouped quick-access rows for Allowed Contacts, Message Behaviour, and Caller Status.</p>
-        <div class="action-btn">Open Screen 10 &rarr;</div>
-      </div>
-    </a>
-
-    <!-- Screen 11 -->
-    <a href="/screens/screen-10-family-mode-ended/" class="card">
-      <div class="preview-frame">
-        <iframe src="/screens/screen-10-family-mode-ended/" scrolling="no"></iframe>
-      </div>
-      <div class="card-body">
-        <span class="screen-tag">Screen 11 • Deactivation Complete</span>
-        <h2 class="card-title">Family Mode Ended</h2>
-        <p class="card-desc">Confirmation screen with bold checkmark emblem, message confirming all calls and notifications are restored, and "OK" completion button that turns off Family Mode.</p>
-        <div class="action-btn">Open Screen 11 &rarr;</div>
-      </div>
-    </a>
-  </main>
 </body>
 </html>

@@ -52,6 +52,22 @@ const server = http.createServer((req, res) => {
         res.writeHead(500, { 'Content-Type': 'text/plain' });
         res.end('500 Internal Server Error');
       } else {
+        if (ext === '.html') {
+          let html = content.toString('utf-8');
+          const injection = '\n  <link rel="stylesheet" href="/shared-interactions.css">\n  <script src="/shared-interactions.js"></script>\n';
+          if (!html.includes('shared-interactions.js')) {
+            if (html.includes('</head>')) {
+              html = html.replace('</head>', `${injection}</head>`);
+            } else if (html.includes('</body>')) {
+              html = html.replace('</body>', `${injection}</body>`);
+            } else {
+              html += injection;
+            }
+          }
+          res.writeHead(200, { 'Content-Type': contentType });
+          res.end(html);
+          return;
+        }
         res.writeHead(200, { 'Content-Type': contentType });
         res.end(content);
       }
